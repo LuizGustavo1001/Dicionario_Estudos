@@ -1,0 +1,139 @@
+@use "mixins" as m;
+@use "variables";
+@use "buttons";
+
+/* -=-=-=-=-=-=-=-=- General -=-=-=-=-=-=-=-=- */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    font-family: var(--font-sans);
+
+    transition: 0.1s linear;
+}
+
+html, body{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    min-height: 100dvh;
+    color: var(--blue-800);
+    background: var(--blue-200);
+}
+
+svg{
+    width: 25px;
+    color: var(--blue-800);
+}
+
+a{
+    text-decoration: none;
+    color: var(--blue-750);
+}
+
+p{
+    font-size: 0.9em;
+}
+
+ul{
+    list-style-type: none;
+}
+
+h1{
+    color: var(--pink-850);
+    font-family: var(--font-style);
+    font-size: 1.6em;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.messages-box{
+    position: absolute;
+    top: 1em;
+    right: 1em;
+
+    font-size: 0.8em;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    
+    width: min(90dvw, 500px);
+
+    .warning-item{
+        background: rgba(255, 103, 103, 0.454);
+        color: rgb(255, 0, 0);
+        padding: 0.5em;
+
+        cursor: pointer;
+
+        &.success{
+            background: rgba(76, 143, 231, 0.498);
+            color: rgb(0, 110, 255);
+        }
+    }
+}
+
+
+/* -=-=-=-=-=-=-=-=- Animations -=-=-=-=-=-=-=-=- */
+.fade-in-up{
+    animation: fade-in-up 0.5s ease-in;
+}
+
+.fade-out{
+    animation: fade-out 0.5s ease-in;
+}
+
+@keyframes fade-in-up{
+    from{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fade-out{
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+
+/* -=-=-=-=-=-=-=-=- Others -=-=-=-=-=-=-=-=- */
+.inactive{
+    display: none;
+}
+
+@include m.respond(desktop){
+    .mobile{
+        display: none;
+    }
+}
+
+/* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
+.dark-mode{
+    background: var(--blue-900);
+    color: var(--blue-200);
+
+    svg{ color: var(--blue-200); }
+
+    a{ color: var(--blue-300); }
+
+    h1{ color: var(--pink-100); }
+}

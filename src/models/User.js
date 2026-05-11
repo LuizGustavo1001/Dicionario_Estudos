@@ -1,0 +1,58 @@
+const db = require("../database/connection")
+
+class User{
+    static async getByName(name){
+        const [rows] = await db.execute(`
+            SELECT idUser, username, password
+            FROM user_data
+            WHERE username = ?
+        `, [name])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return rows[0] || null
+    }
+
+    static async create(name, email, password){
+        const query = await db.execute(`
+            INSERT INTO user_data (username, userMail, password) VALUES (?, ?, ?)
+        `, [name, email, password])
+
+        if(! query){
+            return false
+        }
+
+        return true
+    }
+
+    static async getByEmail(email){
+        const [rows] = await db.execute(`
+            SELECT idUser, username, password, userMail
+            FROM user_data
+            WHERE userMail = ?
+        `, [email])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return rows[0] || null
+    }
+
+    static async verifyEmail(email){
+        const [rows] = await db.execute(`
+            SELECT userMail FROM user_data WHERE userMail = ?
+        `, [email])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return true
+    }
+
+}
+
+module.exports = User

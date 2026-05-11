@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1778030830/favicon_pywkaw.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/auth.css">
+
+    <title>Login - Dicionário Estudos</title>
+</head>
+<body>
+    <div class="messages-box"></div>
+
+    <main class="fade-in-up login">
+        <section class="auth-image-box tablet">
+            <nav class="dev-info">
+                <a href="https://github.com/LuizGustavo1001" class="icon-hold icon-hold--secondary" rel="external" target="_blank">
+                    <i data-icon="github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/luizgustavo1001/" class="icon-hold icon-hold--secondary" rel="external" target="_blank">
+                    <i data-icon="linkedin"></i>
+                </a>
+            </nav>
+            <i data-icon="brandLogo" class="brand-logo"></i>
+            <div class="image-title regular-title">
+                <h1>Dicionário de Estudos</h1>
+                <p>Armazene termos e seus significados em um único lugar</p>
+            </div>
+        </section>
+
+        <section class="hero">
+            <div class="hero-container">
+                <div class="main-title regular-title">
+                    <h1>Bem-vindo de volta!</h1>
+                    <p>Autentique-se para continuar</p>
+                </div>
+                <form action="#" method="POST">
+                    <div class="form-input-box form--w-label">
+                        <label for="iuserName">Nome de Usuário</label>
+                        <input type="text" name="userName" id="iuserName" class="input" placeholder="Nome de usuário aqui" maxlength="30" minlength="8" required>
+                    </div>
+                    <div class="form-input-box form--w-label">
+                        <label for="ipassword">Senha</label>
+                        <input type="password" name="password" id="ipassword" class="input" placeholder="********" minlength="4" required>
+                    </div>
+                    <button type="submit" class="btn submit">Entrar</button>
+                </form>
+            </div>
+
+            <div class="pages-nav">
+                <a href="/auth/login" class="btn">Login</a>
+                <a href="/auth/register" class="btn btn--just-text">Registro</a>
+            </div>
+        </section>
+    </main>
+    
+    <script type="module" src="/assets/js/baseController.js"></script>
+    <script type="module" src="/assets/js/auth/login.js"></script>
+
+    <script src="/assets/js/toggleTheme.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    container_name: node_app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app:Z
+      - /app/node_modules
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db_2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dictionary_admin
+      JWT_SECRET: teste_JWT
+    ports: 
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_2
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  db_data:

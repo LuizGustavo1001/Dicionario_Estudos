@@ -1,0 +1,116 @@
+@use "mixins" as m;
+
+body{
+    align-items: center;
+    justify-content: center;
+
+    padding: 1em;
+}
+
+main{
+    width: 100%;
+    height: fit-content;
+
+    @include m.respond(tablet){
+        width: clamp(300px, 100%, 1000px);
+        height: clamp(500px, 100%, 650px);
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+
+        &.register{
+            .auth-image-box{ order: 1; }
+            .hero{ order: 0; }
+        }
+    }
+}
+
+.auth-image-box,
+.hero-container,
+.pages-nav{
+    height: 100%;
+    width: 100%;
+   
+    padding: 1em;
+
+    border-radius: var(--radius-sm);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
+}
+
+.auth-image-box{
+    display: none;
+
+    background: var(--blue-850);
+
+    svg{ color: var(--blue-200); }
+
+    .brand-logo{ width: min(25dvw, 250px); }
+
+    .image-title, .dev-info{ width: 100%; }
+
+    .dev-info{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .image-title{
+        text-align: center;
+
+        h1{ color: var(--blue-200); }
+        p{ color: var(--blue-300); }
+    }
+    
+    @include m.respond(tablet){
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 1em;
+    }
+}
+
+.hero{
+    display: grid;
+    grid-template-rows: auto min-content;
+    gap: 0.5em;
+
+    .hero-container, .pages-nav{ background: var(--white); }
+
+    .hero-container{
+        display: flex;
+        flex-direction: column;
+
+        justify-content: center;
+        gap: 1em;
+
+        footer{
+            align-self: center;
+            a{ text-decoration: underline; }
+        }
+    }
+
+    .pages-nav{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5em;
+        align-items: center;
+
+        padding: 0.5em;
+        
+        .btn{
+            height: fit-content;
+            font-size: 0.8em;
+
+            box-shadow: none;
+        }
+    }
+}
+
+/* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
+.dark-mode{
+    background: var(--blue-900);
+    .hero{
+        .hero-container, .pages-nav{ background: var(--blue-850); }
+    }
+}
