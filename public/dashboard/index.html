@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1778030830/favicon_pywkaw.ico" type="image/x-icon">
+    
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    
+    <title>Dashboard - Dicionário de Estudos</title>
+</head>
+<body>
+    <div class="messages-box"></div>
+
+    <div class="overlay overlay-aside"></div>
+    <div class="overlay overlay-popup"></div>
+
+    <div class="popup-box">
+        <div id="settings" class="popup inactive">
+            <aside class="settings-aside">
+                <header>Opções</header>
+                <ul>
+                    <li data-id="general" class="btn-styled selected">
+                        <i data-icon="userLove"></i>
+                        <p>Geral</p>
+                    </li>
+                    <li data-id="editor" class="btn-styled">
+                        <i data-icon="editPencil"></i>
+                        <p>Editor</p>
+                    </li>
+                    <li data-id="help" class="btn-styled">
+                        <i data-icon="help"></i>
+                        <p>Ajuda</p>
+                    </li>
+                </ul>
+
+                <footer>
+                    <span class="icon-hold logout-btn secondary" title="Clique aqui para fazer logout">
+                        <i data-icon="logout"></i>
+                    </span>
+
+                    <div class="toggle-theme-box icon-hold secondary">
+                        <i data-icon="moon"></i>
+                        <i data-icon="sun" class="inactive"></i>
+                    </div>
+                </footer>
+            </aside>
+
+            <div class="settings-hero">
+                <span class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></span>
+
+                <ul class="section-content" data-id="general">
+                    <li class="item">
+                        <h2>Credenciais</h2>
+                        <ul>
+                            <li>
+                                <label for="iusername" title="Nome de Usuário">Nome de Usuário</label>
+                                <input type="text" name="username" id="iusername" class="just-input secondary" placeholder="usuario_0001">
+                            </li>
+
+                            <li>
+                                <label for="iemail" title="Endereço de E-mail">Email</label>
+                                <input type="email" name="email" id="iemail" class="just-input secondary" placeholder="exemplo@dominio.com">
+                            </li>
+                            <small>Para alterar sua senha faça o logout e clique em "Esqueci minha senha"</small>
+                        </ul>
+                    </li>
+
+                    <li class="item">
+                        <h2>Outros</h2>
+                        <ul>
+                            <li>
+                                <label for="ilanguage" title="Linguagem">Linguagem</label>
+                                <select name="language" id="ilanguage" class="just-input secondary">
+                                    <option value="PTBR">Português - BR</option>
+                                    <option value="EN">English</option>
+                                </select>
+                            </li>
+
+                            <li>
+                                <label for="iprivacy" title="Termos de Privacidade">Termos de Privacidade</label>
+                                <a href="#" class="btn">Clique para saber mais</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="section-content inactive" data-id="editor">
+
+                </div>
+
+                <div class="section-content inactive" data-id="help">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="add-term" class="inactive popup"></div>
+
+        <div id="add-folder" class="inactive popup"></div>
+
+    </div>
+
+    <header class="page-header">
+        <div class="title">
+            <i data-icon="brandLogo"></i>
+            <h1>Dicionário de Estudos</h1>
+        </div>
+        <nav class="header-nav">
+            <span class="icon-hold">
+                <i data-icon="help"></i>
+            </span>
+            <span class="aside-toggle-icon icon-hold">
+                <i data-icon="aside"></i>
+            </span>
+        </nav>
+    </header>
+
+    <main>
+        <aside class="main-aside">
+            <div class="aside-hero">
+                <nav class="aside-nav">
+                    <span class="nav-item btn-styled selected">Pastas</span>
+                    <span class="nav-item btn-styled">Pesquisa</span>
+                </nav>
+
+                <div id="folders">
+                    <nav class="folders-nav">
+                        <button class="btn">
+                            <i data-icon="new_folder"></i>
+                            <span>Nova Pasta</span>
+                        </button>
+                        
+                        <button class="btn btn--outline">
+                            <i data-icon="new_term"></i>
+                            <span>Novo Termo</span>
+                        </button>
+                    </nav>
+
+                    <ul class="folders-list">
+                        <li class="selected" style="--color: cyan">
+                            <div class="highlight-clr-bar"></div>
+                            <i data-icon="folder"></i>
+                            <span>Pasta 1</span>
+                        </li>
+                        <li>
+                            <div class="highlight-clr-bar"></div>
+                            <i data-icon="folder"></i>
+                            <span>Pasta 2</span>
+                        </li>
+                        <li style="--color: orange">
+                            <div class="highlight-clr-bar"></div>
+                            <i data-icon="folder"></i>
+                            <span>Pasta 3</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="search-folders inactive"></div>
+
+                <button class="btn btn--secondary show-all-terms">
+                    <i data-icon="term"></i>
+                    <span>Todos os Termos</span>
+                </button>
+            </div>
+
+            <div class="user-info">
+                <span class="username-box">
+                    <i data-icon="userLove"></i>
+                    <p id="username">Nome_usuário</p>
+                </span>
+                <span class="icon-hold secondary toggle-popup-icon" data-id="settings"><i data-icon="cog"></i></span>
+            </div>
+        </aside>
+
+        <section class="hero">
+            <header class="hero-header">
+                <span class="header-text">
+                    <i data-icon="folder"></i>
+                    <h1>Pasta 1</h1>
+                </span>
+                <span class="icon-hold secondary" title="Clique aqui para editar informações da pasta"><i data-icon="edit"></i></span>
+            </header>
+
+            <div class="hero-main">
+                <div class="search-area">
+                    <div class="form-input-box form--w-icon search-input term-search">
+                        <label for="isearch-term"><i data-icon="search"></i></label>
+                        <input type="text" name="search-term" id="isearch-term" placeholder="Pesquise um termo pelo seu nome">
+                    </div>
+
+                    <div class="form-input-box select-input letter-filter-select term-filter">
+                        <select name="letter-filter" id="iletter-filter">
+                            <option value="">(A-Z)</option>
+                            <option value="">A</option>
+                            <option value="">B</option>
+                        </select>
+                    </div>
+                </div>
+
+                <ul class="filters-selected">
+                    <li>
+                        <span>Termo: "Lorem Ipsum</span>
+                        <i data-icon="deleteLeft"></i>
+                    </li>
+                    
+                    <li>
+                        <span>Letra: A</span>
+                        <i data-icon="deleteLeft"></i>
+                    </li>
+                </ul>
+
+                <div class="terms-area">
+                    <details class="term item term-name" data-id="1">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 1</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
+                        </ul>
+                    </details>
+
+                    <details class="term item term-name" data-id="2">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 2</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="2"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                        </ul>
+                    </details>
+
+                    <details class="term item term-name" data-id="1">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 1</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
+                        </ul>
+                    </details>
+
+                    <details class="term item term-name" data-id="1">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 1</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
+                        </ul>
+                    </details>
+
+                    <details class="term item term-name" data-id="1">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 1</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
+                        </ul>
+                    </details>
+
+                    <details class="term item term-name" data-id="1">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 1</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
+                        </ul>
+                    </details>
+
+                    <details class="term item term-name" data-id="1">
+                        <summary>
+                            <span class="term-title">
+                                <i data-icon="chevronRight"></i>
+                                <span class="text">Termo 1</span>
+                            </span>
+                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
+                        </summary>
+                        <ul class="meanings">
+                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
+                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="/assets/js/baseController.js"></script>
+    <script type="module" src="/assets/js/dashboard/dashboardGeneral.js"></script>
+    <script type="module" src="/assets/js/dashboard/userInfo.js"></script>
+    <script type="module" src="/assets/js/dashboard/settings.js"></script>
+    
+
+    <script src="/assets/js/toggleTheme.js"></script>
+</body>
+</html>

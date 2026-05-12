@@ -76,7 +76,16 @@ export function fillWarning(message, type){
 
 
 // verify user session
-export async function checkAuth(){
+let authPromise = null
+
+export function getAuth(){
+    if(!authPromise){
+        authPromise = checkAuth()
+    }
+    return authPromise
+}
+
+async function checkAuth(){
     const response = await fetch("/users/auth", {
         credentials: "include"
     })
@@ -85,9 +94,12 @@ export async function checkAuth(){
         return null
     }
 
-    return await response.json()
+    const data = await response.json()
+    
+    return (data?.authenticated) ? true : false
 }
 
+// logout
 export async function logout(){
     const response = await fetch("/users/logout", {
         credentials: "include"

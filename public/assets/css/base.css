@@ -41,35 +41,51 @@
   background: var(--blue-200);
 }
 
+input, select, textarea {
+  padding: 1em;
+  background: none;
+  border: none;
+}
+
 .form-input-box {
   display: flex;
 }
 .form-input-box label small {
   color: var(--blue-700);
 }
-.form-input-box input, .form-input-box select, .form-input-box textarea {
-  padding: 1em;
-  background: none;
-  border: none;
-}
 
-.form-input-box.form--w-label {
-  flex-direction: column;
-  gap: 0.2em;
-}
-.form-input-box.form--w-label .input {
+.just-input {
   border: 1px solid var(--blue-600);
   border-radius: var(--radius);
+  color: var(--blue-750);
 }
-.form-input-box.form--w-label .input::placeholder {
+.just-input::placeholder {
   color: var(--blue-600);
   font-weight: bold;
 }
-.form-input-box.form--w-label:hover .input, .form-input-box.form--w-label:focus-within .input {
+.just-input:hover, .just-input:focus-within {
   background: var(--blue-200);
   border-color: transparent;
 }
-.form-input-box.form--w-label.--secondary .input {
+.just-input.secondary {
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid var(--blue-600);
+}
+
+.form-input.box .input {
+  border: 1px solid var(--blue-600);
+  border-radius: var(--radius);
+}
+.form-input.box .input::placeholder {
+  color: var(--blue-600);
+  font-weight: bold;
+}
+.form-input.box:hover .input, .form-input.box:focus-within .input {
+  background: var(--blue-200);
+  border-color: transparent;
+}
+.form-input.box.--secondary .input {
   border-radius: 0;
   border: none;
   border-bottom: 1px solid var(--blue-600);
@@ -211,6 +227,21 @@
 }
 .dark-mode .form-input-box label small {
   color: var(--blue-500);
+}
+.dark-mode .just-input {
+  border-color: var(--blue-700);
+  color: var(--blue-300);
+}
+.dark-mode .just-input::placeholder {
+  color: var(--blue-700);
+}
+.dark-mode .just-input:hover, .dark-mode .just-input:focus-within {
+  background: var(--blue-900);
+  border-color: transparent;
+}
+.dark-mode .just-input.secondary {
+  border: none;
+  border-bottom: 1px solid var(--blue-700);
 }
 .dark-mode .form-input-box.form--w-label .input {
   border-color: var(--blue-700);

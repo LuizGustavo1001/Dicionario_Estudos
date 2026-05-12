@@ -15,4 +15,7 @@ router.get("/auth", userController.auth)
 // logout user
 router.get("/logout", userController.logout)
 
+// get user info 
+router.get("/me", userController.me)
+
 module.exports = router;

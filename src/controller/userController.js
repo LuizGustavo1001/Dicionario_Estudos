@@ -90,3 +90,23 @@ exports.logout = (req, res) => {
 
     return res.json({ success: true })
 }
+
+exports.me = async (req, res) => {
+    const token = req.cookies.token
+
+    if(!token){
+        return res.status(401).json({ erorr: "notAuthenticated" })
+    }
+
+    try{
+        const decoded = JWT.verify(token, process.env.JWT_SECRET)
+
+        const idUser = decoded.idUser
+
+        const user = await User.getById(idUser)
+
+        return res.json(user)
+    }catch(err){
+        return res.status(401).json({ error: 'invalidToken' })
+    }
+}

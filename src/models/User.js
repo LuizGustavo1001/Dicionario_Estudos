@@ -1,6 +1,19 @@
 const db = require("../database/connection")
 
 class User{
+    static async getById(id){
+        const [rows] = await db.execute(`
+            SELECT idUser, username, userMail, password
+            FROM user_data
+            WHERE idUser = ?
+        `, [id])
+
+        if(rows.length === 0){
+            return false
+        }
+        return rows[0] || null
+    }
+
     static async getByName(name){
         const [rows] = await db.execute(`
             SELECT idUser, username, password
@@ -52,7 +65,6 @@ class User{
 
         return true
     }
-
 }
 
 module.exports = User

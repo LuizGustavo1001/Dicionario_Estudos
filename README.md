@@ -46,3 +46,10 @@ docker compose up
 JWT_SECRET=<TOKEN_HERE>
 ```
 
+#C785EE (purple)
+#EA7B7B (red)
+#C5D89D (green)
+#AAC4F5 (lightblue)
+#EDA35A (orange)
+#ef8cb9 (pink)
+
