@@ -1,6 +1,7 @@
 const db = require("../database/connection")
 
 class Term{
+    /*
     static async getAll(order = 'date'){
         const orderBy = order
 
@@ -10,16 +11,40 @@ class Term{
 
         return rows
     }
+    */
 
-    static async create(term, meaning){
-        await db.execute(
-            "INSERT INTO terms (term, meaning, created_at) VALUES (?, ?, NOW())",
-            [term, meaning]
-        );
+    static async create(conn, idFolder, term = null){
+        const executor = conn || db
+        
+        if(term == null){
+            term = "Termo exemplo #1"
+        }
+        
+        const [result] = await executor.execute(`
+            INSERT INTO term_data (content, idFolder) VALUES (?, ?)
+        `, [term, idFolder])
+
+        if(result.affectedRows === 0){
+            throw new Error("error trying to add new term")
+        }
+        return result.insertId
     }
 
-    static async test(term, meaning){
-        return `teste de criação de rota (termo: ${term}, Significado: ${meaning})`
+    static async insertMeaning(conn, idTerm, content = null, type = 'text'){
+        const executor = conn || db
+
+        if(content == null){
+            content = "Significados podem ser tanto <strong>imagens</strong> quanto <strong>textos</strong>"
+        }
+
+        const [result] = await executor.execute(`
+            INSERT INTO meaning_data (content, type, idTerm) VALUES (?, ?, ?)    
+        `, [content, type, idTerm])
+
+        if(result.affectedRows === 0){
+            throw new Error("error trying to add new meaning")
+        }
+        return result.insertId
     }
 }
 

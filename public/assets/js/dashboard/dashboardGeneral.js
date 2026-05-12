@@ -1,10 +1,10 @@
 import { setWarningCookie, fillWarning, logout, getAuth } from "../baseController.js"
 
 // Async functions
-const auth = getAuth()
+const auth = await getAuth()
 
 if(!auth){
-    window.localStorage.href = '/auth/login'
+    window.location.href = '/auth/login'
 }
 
 async function initLogout(){ // logout

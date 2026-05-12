@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: May 03, 2026 at 01:25 AM
+-- Generation Time: May 12, 2026 at 09:07 PM
 -- Server version: 8.0.45
 -- PHP Version: 8.3.26
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `folder_data` (
   `idFolder` int NOT NULL,
-  `nameFolder` varchar(40) NOT NULL,
-  `colorFolder` enum('beige','blue','red','orange','purple','green','pink','cyan','yellow') NOT NULL DEFAULT 'red',
+  `nameFolder` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `colorFolder` varchar(7) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '#EF8CB9',
   `idUser` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -68,6 +68,7 @@ CREATE TABLE `term_data` (
 
 CREATE TABLE `user_data` (
   `idUser` int NOT NULL,
+  `userMail` varchar(60) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -103,6 +104,7 @@ ALTER TABLE `term_data`
 --
 ALTER TABLE `user_data`
   ADD PRIMARY KEY (`idUser`),
+  ADD UNIQUE KEY `userMail` (`userMail`) USING BTREE,
   ADD UNIQUE KEY `username` (`username`);
 
 --
@@ -113,25 +115,25 @@ ALTER TABLE `user_data`
 -- AUTO_INCREMENT for table `folder_data`
 --
 ALTER TABLE `folder_data`
-  MODIFY `idFolder` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idFolder` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `meaning_data`
 --
 ALTER TABLE `meaning_data`
-  MODIFY `idMeaning` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idMeaning` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `term_data`
 --
 ALTER TABLE `term_data`
-  MODIFY `idTerm` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idTerm` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT for table `user_data`
 --
 ALTER TABLE `user_data`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT;
+  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables

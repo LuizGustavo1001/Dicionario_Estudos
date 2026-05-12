@@ -1,10 +1,10 @@
-import { setWarningCookie, fillWarning, checkAuth } from "../baseController.js"
+import { setWarningCookie, fillWarning, getAuth } from "../baseController.js"
 
 // verify session
-const auth = getAuth()
+const auth = await getAuth()
 
 if(auth){
-    window.localStorage.href = "/dashboard"
+    window.location.href = "/dashboard"
 }
 
 const form = document.querySelector("form")

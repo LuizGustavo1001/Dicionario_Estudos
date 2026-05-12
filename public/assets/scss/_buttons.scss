@@ -52,7 +52,7 @@ input, select, textarea{
     }
 }
 
-.form-input.box{
+.form-input-box{
     .input{
         border: 1px solid var(--blue-600);
         border-radius: var(--radius);
@@ -80,6 +80,10 @@ input, select, textarea{
     }
 }
 
+.form-input-box.input-box-w-label{
+    flex-direction: column;
+    gap: 0.3em;
+}
 
 
 .form-input-box.form--w-icon{
@@ -236,6 +240,30 @@ input, select, textarea{
 
     .form-input-box{
         label{ small{ color: var(--blue-500); } }
+
+        .input{
+            border-color: var(--blue-700);
+
+            &::placeholder{
+                color: var(--blue-700);
+            }
+        }
+
+        &:hover,
+        &:focus-within{
+            .input{
+                background: var(--blue-200);
+                border-color: transparent;
+            }
+        }
+
+        &.--secondary{
+            .input{
+                border-radius: 0;
+                border: none;
+                border-bottom: 1px solid var(--blue-600);
+            }
+        }
     }
 
     .just-input{
@@ -256,7 +284,8 @@ input, select, textarea{
         }
     }
 
-    .form-input-box.form--w-label{
+    .form-input-box{
+        label{ small{ color: var(--blue-500); } }
         .input{
             border-color: var(--blue-700);
             color: var(--blue-300);

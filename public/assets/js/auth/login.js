@@ -1,11 +1,12 @@
 import { setWarningCookie, fillWarning, getAuth } from "../baseController.js"
 
 // verify session
-const auth = getAuth()
+const auth = await getAuth()
 
 if(auth){
-    window.localStorage.href = "/dashboard"
+    window.location.href = "/dashboard"
 }
+
 
 const form = document.querySelector("form")
 const submitBtn = document.querySelector(".btn.submit")

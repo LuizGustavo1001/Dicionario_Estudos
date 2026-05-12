@@ -28,16 +28,18 @@ class User{
         return rows[0] || null
     }
 
-    static async create(name, email, password){
-        const query = await db.execute(`
+    static async create(conn, name, email, password){
+        const executor = conn || db // db -> regular pool
+
+        const [result] = await executor.execute(`
             INSERT INTO user_data (username, userMail, password) VALUES (?, ?, ?)
         `, [name, email, password])
 
-        if(! query){
-            return false
+        if(result.affectedRows === 0){
+            throw new Error("error trying to add new user")
         }
 
-        return true
+        return result.insertId
     }
 
     static async getByEmail(email){

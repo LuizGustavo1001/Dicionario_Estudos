@@ -1,6 +1,9 @@
-const bcrypt = require("bcrypt")
-const User = require("../models/User")
-const JWT = require("jsonwebtoken")
+const bcrypt    = require("bcrypt")
+const User      = require("../models/User")
+const Folder    = require("../models/Folder")
+const Term      = require("../models/Term")
+const JWT       = require("jsonwebtoken")
+const db        = require("../database/connection")
 
 exports.login = async (req, res) => {
     const { username, password } = req.body
@@ -41,27 +44,36 @@ exports.register = async (req, res) => {
     const { username, email, password } = req.body
 
     const user = await User.getByName(username)
-
-    if(user){
-        return res.status(409).json({ error: "userExists" })
-    }
+    if(user){ return res.status(409).json({ error: "userExists" }) }
 
     const emailExists = await User.verifyEmail(email)
-
-    if(emailExists){
-        return res.status(409).json({ error: "emailExists" })
-    }
+    if(emailExists){ return res.status(409).json({ error: "emailExists" }) }
     
-    // hash password
-    const hashed = await bcrypt.hash(password, 10)
+    const connection = await db.getConnection() // execute db queries only when every query can be executed => using transactions
 
-    const addUser = await User.create(username, email, hashed)
+    try{
+        await connection.beginTransaction() 
 
-    if(! addUser){
+        const hashed = await bcrypt.hash(password, 10)
+
+        const addUser = await User.create(connection, username, email, hashed)
+
+        const exampleFolder = await Folder.create(connection, addUser)
+
+        const exampleTerm = await Term.create(connection, exampleFolder)
+
+        const exampleMeaning = await Term.insertMeaning(connection, exampleTerm)
+
+        await connection.commit()
+
+        return res.status(201).json({ error: "userCreated" })
+    }catch(err){
+        await connection.rollback()
+
         return res.status(400).json({ error: "dberror" })
+    }finally{
+        connection.release()
     }
-
-    return res.status(201).json({ error: "userCreated" })
 }
 
 

@@ -4,12 +4,7 @@ const router = express.Router()
 const Term = require('../models/Term')
 
 // creating routes
-router.post("/test", async (req, res) => {
-    const { term } = req.body
-    const response = await Term.test(term)
 
-    res.json(response)
-})
 
 // Get /terms
 /*
