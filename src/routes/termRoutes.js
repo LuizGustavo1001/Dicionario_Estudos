@@ -1,11 +1,6 @@
 const express = require("express")
 const router = express.Router()
 
-const Term = require('../models/Term')
-
-// creating routes
-
-
 // Get /terms
 /*
 router.get("/", async (req, res) => {

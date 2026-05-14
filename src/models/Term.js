@@ -1,7 +1,6 @@
 const db = require("../database/connection")
-
+ 
 class Term{
-    /*
     static async getAll(order = 'date'){
         const orderBy = order
 
@@ -11,7 +10,17 @@ class Term{
 
         return rows
     }
-    */
+
+    static async getAllByFolder(idFolders){
+        if(!idFolders || idFolders.length === 0) return []
+
+        const [rows] = await db.query(
+            `SELECT * FROM term_data WHERE idFolder IN (?)`,
+            [idFolders] 
+        )
+
+        return rows
+    }
 
     static async create(conn, idFolder, term = null){
         const executor = conn || db

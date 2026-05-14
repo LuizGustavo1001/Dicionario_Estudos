@@ -111,3 +111,30 @@ export async function logout(){
 
     return await response.json()
 }
+
+
+
+// details tag event
+function detailsEvent(){
+    const details = document.querySelectorAll("details.term")
+
+    details.forEach(tag => {
+        tag.addEventListener("click", (e) => {
+            e.preventDefault()
+            
+            if(tag.getAttribute("open")){
+                tag.removeAttribute("open")
+                tag.classList.remove("fade-in-up")
+            }else{
+                tag.setAttribute("open", true)
+                tag.classList.add("fade-in-up")
+            }
+
+  
+            
+        })
+    })
+
+}
+
+detailsEvent()

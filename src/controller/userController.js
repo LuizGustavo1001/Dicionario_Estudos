@@ -1,8 +1,8 @@
 const bcrypt    = require("bcrypt")
+const JWT       = require("jsonwebtoken")
 const User      = require("../models/User")
 const Folder    = require("../models/Folder")
 const Term      = require("../models/Term")
-const JWT       = require("jsonwebtoken")
 const db        = require("../database/connection")
 
 exports.login = async (req, res) => {
@@ -104,21 +104,17 @@ exports.logout = (req, res) => {
 }
 
 exports.me = async (req, res) => {
-    const token = req.cookies.token
-
-    if(!token){
-        return res.status(401).json({ erorr: "notAuthenticated" })
-    }
-
     try{
-        const decoded = JWT.verify(token, process.env.JWT_SECRET)
-
-        const idUser = decoded.idUser
+        const idUser = req.userId
 
         const user = await User.getById(idUser)
 
+        if(!user){
+            return res.status(404).json({ error: "userNotFound" })
+        }
+
         return res.json(user)
     }catch(err){
-        return res.status(401).json({ error: 'invalidToken' })
+        return res.status(500).json({ error: 'internalServerError' })
     }
 }

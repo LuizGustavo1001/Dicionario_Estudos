@@ -434,6 +434,23 @@ main .hero {
   flex-direction: column;
   gap: 0.5em;
 }
+.hero .hero-main .terms-area .errorMessage {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-align: center;
+}
+.hero .hero-main .terms-area .errorMessage svg {
+  width: min(70vw, 200px);
+}
+.hero .hero-main .terms-area .errorMessage, .hero .hero-main .terms-area .errorMessage svg {
+  color: var(--blue-600);
+}
 .hero .hero-main .terms-area .term {
   padding: 0.5em;
   background: var(--blue-200);
@@ -526,6 +543,9 @@ main .hero {
 }
 .dark-mode .hero .hero-main .filters-selected li:hover {
   background: var(--blue-700);
+}
+.dark-mode .hero .hero-main .terms-area .errorMessage, .dark-mode .hero .hero-main .terms-area .errorMessage svg {
+  color: var(--blue-750);
 }
 .dark-mode .hero .hero-main .terms-area .term {
   background: var(--blue-900);

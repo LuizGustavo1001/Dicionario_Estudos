@@ -4,7 +4,7 @@ const path          = require("path");
 const cookieParser  = require("cookie-parser")
 require("dotenv").config()
 
-const termRoutes = require("./routes/termRoutes")
+//const termRoutes = require("./routes/termRoutes")
 const userRoutes = require("./routes/userRoutes")
 
 const app = express()
@@ -20,7 +20,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 // API routes
-app.use("/terms", termRoutes)
+//app.use("/terms", termRoutes)
 app.use("/users", userRoutes)
 
 // frontend
