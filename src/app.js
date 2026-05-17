@@ -1,6 +1,6 @@
 const express       = require("express")
 const cors          = require("cors") // prevent unauthorized access to resources on web page from different origins
-const path          = require("path");
+const path          = require("path")
 const cookieParser  = require("cookie-parser")
 require("dotenv").config()
 
@@ -24,7 +24,7 @@ app.use(express.json())
 app.use("/users", userRoutes)
 
 // frontend
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../public")))
 
 app.listen(8080, () => {
     console.log("Server running on port 8080")

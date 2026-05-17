@@ -1,9 +1,10 @@
 const bcrypt    = require("bcrypt")
 const JWT       = require("jsonwebtoken")
+const db        = require("../database/connection")
+
 const User      = require("../models/User")
 const Folder    = require("../models/Folder")
 const Term      = require("../models/Term")
-const db        = require("../database/connection")
 
 exports.login = async (req, res) => {
     const { username, password } = req.body
@@ -38,7 +39,6 @@ exports.login = async (req, res) => {
 
     return res.json({ success: true })
 }
-
 
 exports.register = async (req, res) => {
     const { username, email, password } = req.body
@@ -75,7 +75,6 @@ exports.register = async (req, res) => {
         connection.release()
     }
 }
-
 
 exports.auth = async (req, res) => {
     const token = req.cookies.token

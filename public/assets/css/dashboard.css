@@ -86,6 +86,21 @@ body {
 .popup.inactive {
   display: none;
 }
+@media (min-width: 768px) {
+  .popup.mini {
+    width: clamp(300px, 35dvw, 500px);
+  }
+}
+.popup .pop-up-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+.popup .pop-up-title h2 {
+  font-size: 0.9em;
+  color: var(--blue-700);
+}
 
 #settings .settings-aside {
   display: flex;
@@ -204,6 +219,12 @@ body {
   color: var(--blue-600);
 }
 
+#add-folder,
+#add-term {
+  flex-direction: column;
+  height: fit-content;
+}
+
 .page-header {
   display: flex;
   justify-content: center;
@@ -282,6 +303,9 @@ main .hero {
   display: flex;
   flex-direction: column;
 }
+.main-aside .aside-hero #folders.inactive {
+  display: none;
+}
 .main-aside .aside-hero #folders .folders-nav {
   display: flex;
   justify-content: space-between;
@@ -331,6 +355,9 @@ main .hero {
 }
 .main-aside .aside-hero #folders .folders-list li span {
   font-size: 0.9em;
+}
+.main-aside .aside-hero #search-folders {
+  flex: 1;
 }
 .main-aside .aside-hero .show-all-terms {
   padding: 0.5em;
@@ -506,6 +533,9 @@ main .hero {
 }
 .dark-mode .popup {
   background: var(--blue-850);
+}
+.dark-mode .popup .pop-up-title h2 {
+  color: var(--blue-600);
 }
 .dark-mode #settings .settings-aside header {
   color: var(--blue-300);

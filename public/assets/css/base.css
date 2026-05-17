@@ -220,6 +220,19 @@ input, select, textarea {
   width: calc(var(--size) - 0.8em);
 }
 
+.clr-circle {
+  --size: 25px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: var(--radius-m);
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: var(--clr, black);
+}
+.clr-circle.selected, .clr-circle:hover {
+  border-color: var(--blue-750);
+}
+
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
 .dark-mode .icon-hold:hover {
   background: var(--blue-850);
@@ -423,6 +436,18 @@ form {
 .messages-box .warning-item.success {
   background: rgba(76, 143, 231, 0.498);
   color: rgb(0, 110, 255);
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.input-clr {
+  border-radius: var(--radius);
+  padding: 0;
+  cursor: pointer;
 }
 
 /* -=-=-=-=-=-=-=-=- Animations -=-=-=-=-=-=-=-=- */

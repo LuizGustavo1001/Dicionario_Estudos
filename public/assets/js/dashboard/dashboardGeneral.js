@@ -1,6 +1,5 @@
-import { setWarningCookie, fillWarning, logout, getAuth } from "../baseController.js"
+import { setWarningCookie, fillWarning, logout, getAuth } from "../base.js"
 
-// Async functions
 const auth = await getAuth()
 
 if(!auth){
@@ -25,6 +24,7 @@ let overlayState = { // control wich element is using overlay
     aside: false,
     popup: false
 }
+
 const mainAside         = document.querySelector(".main-aside")
 const asideIcons        = document.querySelectorAll(".aside-toggle-icon")
 const overlayAside      = document.querySelector(".overlay-aside")
@@ -58,7 +58,7 @@ document.addEventListener("click", (e) => { // Mobile aside toggle
     }
 })
 
-openPopupIcons.forEach(icon => { // Settings popup open
+openPopupIcons.forEach(icon => {
     icon.addEventListener("click", () => {
         changePopupVisibility(icon.dataset.id)
     })
@@ -69,7 +69,6 @@ popupCloseIcons.forEach(icon => { // Settings popup close
 })
 
 
-//initCheckAuth()
 handleResize2Aside()
 
 
@@ -126,3 +125,35 @@ function closePopup(){
     overlayState.popup = false
     updateOverlay()
 }
+
+
+
+
+
+// toggle input color value
+function addFolderEvent(){
+    const circles = document.querySelectorAll(".clr-circle")
+    const colorInput = document.querySelector("#iclr")
+    circles.forEach(circle => {
+        circle.addEventListener("click", () => {changeColor(circle.dataset.color)})
+    })
+
+    // match input with the clr-circle
+    colorInput.addEventListener("input", (e) => {
+        const chosenColor = e.target.value.toUpperCase()
+
+        circles.forEach(circle => {
+            circle.classList.toggle("selected", circle.dataset.color.toUpperCase() === chosenColor)
+        })
+    })
+
+    function changeColor(color){
+        circles.forEach(circle => {
+            circle.classList.toggle("selected", circle.dataset.color === color)
+        })
+        colorInput.value = color
+    }
+}
+
+
+addFolderEvent()

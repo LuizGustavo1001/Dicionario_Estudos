@@ -84,6 +84,18 @@ form{
     }
 }
 
+.input-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.input-clr{
+    border-radius: var(--radius);
+    padding: 0;
+
+    cursor: pointer;
+}
 
 /* -=-=-=-=-=-=-=-=- Animations -=-=-=-=-=-=-=-=- */
 .fade-in-up{

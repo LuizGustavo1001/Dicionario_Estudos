@@ -37,14 +37,14 @@
                 </ul>
 
                 <footer>
-                    <span class="icon-hold logout-btn secondary" title="Clique aqui para fazer logout">
-                        <i data-icon="logout"></i>
-                    </span>
-
                     <div class="toggle-theme-box icon-hold secondary">
                         <i data-icon="moon"></i>
                         <i data-icon="sun" class="inactive"></i>
                     </div>
+
+                    <span class="icon-hold logout-btn secondary" title="Clique aqui para fazer logout">
+                        <i data-icon="logout"></i>
+                    </span>
                 </footer>
             </aside>
 
@@ -97,9 +97,55 @@
             </div>
         </div>
 
-        <div id="add-term" class="inactive popup"></div>
+        <div id="add-term" class="popup mini inactive">
+            <div class="pop-up-title">
+                <h2>Adicionar Termo</h2>
+                <span class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></span>
+            </div>
 
-        <div id="add-folder" class="inactive popup"></div>
+            <form action="#" method="post">
+                <div class="form-input-box input-box-w-label">
+                    <label for="iterm">Termo</label>
+                    <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres">
+                </div>
+
+                <div class="form-input-box input-box-w-label">
+                    <label for="imeaning">Significados</label>
+                    <div class="input-wrapper">
+                        <input type="text" name="meaning" id="imeaning" class="input" placeholder="Máximo 300 caracteres">
+                        <input type="file" name="" id="">
+                    </div>
+                </div>
+                <div class="btn">Adicionar Termo</div>
+            </form>
+        </div>
+
+        <div id="add-folder" class="popup mini inactive">
+            <div class="pop-up-title">
+                <h2>Adicionar Pasta</h2>
+                <span class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></span>
+            </div>
+
+            <form action="#" method="post">
+                <div class="form-input-box input-box-w-label">
+                    <label for="ifolder">Nome da Pasta</label>
+                    <input type="text" name="folder" id="ifolder" class="input" placeholder="Máximo 50 caracteres">
+                </div>
+                <div class="form-input-box input-box-w-label">
+                    <label for="iclr">Cor Destaque</label>
+                    <span class="input-wrapper">
+                        <div class="clr-circle" data-color="#C785EE" style="--clr: #C785EE"></div>
+                        <div class="clr-circle" data-color="#EA7B7B" style="--clr: #EA7B7B"></div>
+                        <div class="clr-circle" data-color="#C5D89D" style="--clr: #C5D89D"></div>
+                        <div class="clr-circle" data-color="#AAC4F5" style="--clr: #AAC4F5"></div>
+                        <div class="clr-circle" data-color="#EDA35A" style="--clr: #EDA35A"></div>
+                        <div class="clr-circle" data-color="#EF8CB9" style="--clr: #EF8CB9"></div>
+                        <input type="color" name="clr" id="iclr" class="input-clr" value="#C785EE">
+                    </span>
+                </div>
+                <div class="btn">Adicionar Pasta</div>
+            </form>
+        </div>
 
     </div>
 
@@ -126,14 +172,14 @@
                     <span class="nav-item btn-styled">Pesquisa</span>
                 </nav>
 
-                <div id="folders">
+                <div id="folders" class="">
                     <nav class="folders-nav">
-                        <button class="btn">
+                        <button class="btn toggle-popup-icon" data-id="add-folder">
                             <i data-icon="new_folder"></i>
                             <span>Nova Pasta</span>
                         </button>
                         
-                        <button class="btn btn--outline">
+                        <button class="btn btn--outline toggle-popup-icon" data-id="add-term">
                             <i data-icon="new_term"></i>
                             <span>Novo Termo</span>
                         </button>
@@ -142,7 +188,16 @@
                     <ul class="folders-list"></ul>
                 </div>
 
-                <div id="search-folders inactive"></div>
+                <div id="search-folders" class="inactive">
+                    <div class="form-input-box form--w-icon search-input term-search">
+                        <label for="isearch-term"><i data-icon="search"></i></label>
+                        <input type="text" name="search-term" id="isearch-term" placeholder="Pesquisar pastas">
+                    </div>
+
+                    <div class="folder-list">
+
+                    </div>
+                </div>
 
                 <button class="btn btn--secondary show-all-terms">
                     <i data-icon="term"></i>
@@ -161,9 +216,9 @@
 
         <section class="hero">
             <header class="hero-header">
-                <span class="header-text">
+                <span class="header-text" id="folder-name">
                     <i data-icon="folder"></i>
-                    <h1>Pasta 1</h1>
+                    <h1>Bem-vindo de volta</h1>
                 </span>
                 <span class="icon-hold secondary" title="Clique aqui para editar informações da pasta"><i data-icon="edit"></i></span>
             </header>
@@ -217,12 +272,11 @@
         </section>
     </main>
 
-    <script type="module" src="/assets/js/baseController.js"></script>
+    <script type="module" src="/assets/js/base.js"></script>
     <script type="module" src="/assets/js/dashboard/dashboardGeneral.js"></script>
     <script type="module" src="/assets/js/dashboard/userInfo.js"></script>
     <script type="module" src="/assets/js/dashboard/settings.js"></script>
     
-
     <script src="/assets/js/toggleTheme.js"></script>
 </body>
 </html>

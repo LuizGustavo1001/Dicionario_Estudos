@@ -1,6 +1,5 @@
 const Term = require("../models/Term")
 
-
 exports.getFolderTerms = async (req, res) => {
     const { folders } = req.body
 

@@ -12,12 +12,14 @@
 1. At project root, run at a terminal:
 ```shell
 npm init -y
-npm install express mysql2 cors dotenv
-npm install bcrypt jsonwebtoken
+npm install express
+npm install mysql2
+npm install cors
+npm install dotenv
+npm install bcrypt
 npm install sass
 npm install cookie-parser
-npm install jsonwebtoken cookie-parser
-npm install dotenv
+npm install jsonwebtoken
 ```
 #### Docker Compose
 1. After installing *NPM dependencies*, at project root again:
@@ -46,10 +48,10 @@ docker compose up
 JWT_SECRET=<TOKEN_HERE>
 ```
 
-#C785EE (purple)
-#EA7B7B (red)
-#C5D89D (green)
-#AAC4F5 (lightblue)
-#EDA35A (orange)
-#ef8cb9 (pink)
+2. If you want to change database user or password, go to `.env` and overwrite `<DB_USER>` or `<DB_PASSWORD>`
+```env
+DB_USER=root
+DB_PASSWORD=root
+```
+
 

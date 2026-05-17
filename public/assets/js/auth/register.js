@@ -1,4 +1,4 @@
-import { setWarningCookie, fillWarning, getAuth } from "../baseController.js"
+import { setWarningCookie, fillWarning, getAuth } from "../base.js"
 
 // verify session
 const auth = await getAuth()
@@ -20,7 +20,7 @@ form.addEventListener("submit", (e) => {
 
     const usernameValue = document.querySelector("#iuserName").value
     const passwordValue = document.querySelector("#ipassword").value
-    const mailValue     = document.querySelector("#iuserMail").value;
+    const mailValue     = document.querySelector("#iuserMail").value
 
     register(usernameValue, mailValue, passwordValue)
 })

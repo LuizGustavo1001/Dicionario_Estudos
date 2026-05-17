@@ -9,7 +9,6 @@ exports.protect = async(req, res, next) => {
 
     try{
         const decoded = JWT.verify(token, process.env.JWT_SECRET)
-
         req.userId = decoded.idUser
         next()
     }catch(err){

@@ -1,4 +1,4 @@
-import { setWarningCookie, fillWarning, getAuth } from "../baseController.js"
+import { setWarningCookie, fillWarning, getAuth } from "../base.js"
 
 // verify session
 const auth = await getAuth()

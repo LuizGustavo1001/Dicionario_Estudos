@@ -1,1 +1,1 @@
-import { setWarningCookie, fillWarning, logout } from "../baseController.js"
+import { setWarningCookie, fillWarning, logout } from "../base.js"

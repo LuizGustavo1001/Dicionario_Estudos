@@ -223,6 +223,23 @@ input, select, textarea{
     .icon{ width: calc(var(--size) - 0.8em); }
 }
 
+.clr-circle{
+    --size: 25px;
+
+    width: var(--size);
+    height: var(--size);
+
+    border-radius: var(--radius-m);
+    border: 2px solid transparent;
+    cursor: pointer;
+
+    background: var(--clr, black);
+
+    &.selected,
+    &:hover{
+        border-color: var(--blue-750);
+    }
+}
 
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
 .dark-mode{

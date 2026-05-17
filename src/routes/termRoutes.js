@@ -1,24 +1,10 @@
+// routes to change folders, terms or meanings data
 const express = require("express")
 const router = express.Router()
 
-// Get /terms
-/*
-router.get("/", async (req, res) => {
-    const order = req.query.order || "date"
-
-    const terms = await Term.getAll(order)
-
-    res.json(terms)
-})
-
-// POST /terms
-router.post("/", async (req, res) => {
-    const { term, meaning } = req.body
-
-    await Term.create(term, meaning)
-
-    res.json({ status: "ok" })
-})
-*/
+const auth              = require("../middleware/auth")
+const folderController  = require("../controller/folderController")
+const termController    = require("../controller/termController")
+const meaningController = require("../controller/meaningController")
 
 module.exports = router

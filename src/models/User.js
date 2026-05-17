@@ -29,7 +29,7 @@ class User{
     }
 
     static async create(conn, name, email, password){
-        const executor = conn || db // db -> regular pool
+        const executor = conn || db
 
         const [result] = await executor.execute(`
             INSERT INTO user_data (username, userMail, password) VALUES (?, ?, ?)
