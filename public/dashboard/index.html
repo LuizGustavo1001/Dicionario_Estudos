@@ -12,7 +12,8 @@
     <title>Dashboard - Dicionário de Estudos</title>
 </head>
 <body>
-    <div class="messages-box"></div>
+
+    <div class="snackbars-box"></div>
 
     <div class="overlay overlay-aside"></div>
     <div class="overlay overlay-popup"></div>
@@ -49,7 +50,7 @@
             </aside>
 
             <div class="settings-hero">
-                <span class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></span>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
 
                 <ul class="section-content" data-id="general">
                     <li class="item">
@@ -80,27 +81,23 @@
                             </li>
 
                             <li>
-                                <label for="iprivacy" title="Termos de Privacidade">Termos de Privacidade</label>
-                                <a href="#" class="btn">Clique para saber mais</a>
+                                <label title="Termos de Privacidade">Termos de Privacidade</label>
+                                <a href="#" class="btn" >Clique para saber mais</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
 
-                <div class="section-content inactive" data-id="editor">
+                <div class="section-content inactive" data-id="editor"> </div>
 
-                </div>
-
-                <div class="section-content inactive" data-id="help">
-
-                </div>
+                <div class="section-content inactive" data-id="help"> </div>
             </div>
         </div>
 
         <div id="add-term" class="popup mini inactive">
             <div class="pop-up-title">
                 <h2>Adicionar Termo</h2>
-                <span class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></span>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -123,7 +120,7 @@
         <div id="add-folder" class="popup mini inactive">
             <div class="pop-up-title">
                 <h2>Adicionar Pasta</h2>
-                <span class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></span>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -134,19 +131,18 @@
                 <div class="form-input-box input-box-w-label">
                     <label for="iclr">Cor Destaque</label>
                     <span class="input-wrapper">
-                        <div class="clr-circle" data-color="#C785EE" style="--clr: #C785EE"></div>
-                        <div class="clr-circle" data-color="#EA7B7B" style="--clr: #EA7B7B"></div>
-                        <div class="clr-circle" data-color="#C5D89D" style="--clr: #C5D89D"></div>
-                        <div class="clr-circle" data-color="#AAC4F5" style="--clr: #AAC4F5"></div>
-                        <div class="clr-circle" data-color="#EDA35A" style="--clr: #EDA35A"></div>
-                        <div class="clr-circle" data-color="#EF8CB9" style="--clr: #EF8CB9"></div>
+                        <div class="clr-circle" data-color="#C785EE" style="--clr: #C785EE" aria-label="purple default folder color"></div>
+                        <div class="clr-circle" data-color="#EA7B7B" style="--clr: #EA7B7B" aria-label="orange default folder color"></div>
+                        <div class="clr-circle" data-color="#C5D89D" style="--clr: #C5D89D" aria-label="green default folder color"></div>
+                        <div class="clr-circle" data-color="#AAC4F5" style="--clr: #AAC4F5" aria-label="lightblue default folder color"></div>
+                        <div class="clr-circle" data-color="#EDA35A" style="--clr: #EDA35A" aria-label="yellow default folder color"></div>
+                        <div class="clr-circle" data-color="#EF8CB9" style="--clr: #EF8CB9" aria-label="lightpink default folder color"></div>
                         <input type="color" name="clr" id="iclr" class="input-clr" value="#C785EE">
                     </span>
                 </div>
                 <div class="btn">Adicionar Pasta</div>
             </form>
         </div>
-
     </div>
 
     <header class="page-header">
@@ -155,12 +151,12 @@
             <h1>Dicionário de Estudos</h1>
         </div>
         <nav class="header-nav">
-            <span class="icon-hold">
+            <button class="icon-hold">
                 <i data-icon="help"></i>
-            </span>
-            <span class="aside-toggle-icon icon-hold">
+            </button>
+            <button class="aside-toggle-icon icon-hold">
                 <i data-icon="aside"></i>
-            </span>
+            </button>
         </nav>
     </header>
 
@@ -168,8 +164,8 @@
         <aside class="main-aside">
             <div class="aside-hero">
                 <nav class="aside-nav">
-                    <span class="nav-item btn-styled selected">Pastas</span>
-                    <span class="nav-item btn-styled">Pesquisa</span>
+                    <button class="nav-item btn-styled selected">Pastas</button>
+                    <button class="nav-item btn-styled">Pesquisa</button>
                 </nav>
 
                 <div id="folders" class="">
@@ -185,7 +181,7 @@
                         </button>
                     </nav>
 
-                    <ul class="folders-list"></ul>
+                    <ul class="folders-list" aria-label="current user folder list here"></ul>
                 </div>
 
                 <div id="search-folders" class="inactive">
@@ -194,9 +190,7 @@
                         <input type="text" name="search-term" id="isearch-term" placeholder="Pesquisar pastas">
                     </div>
 
-                    <div class="folder-list">
-
-                    </div>
+                    <div class="folder-list" aria-label="current user folder list here + search input filter"></div>
                 </div>
 
                 <button class="btn btn--secondary show-all-terms">
@@ -208,9 +202,9 @@
             <div class="user-info">
                 <span class="username-box">
                     <i data-icon="userLove"></i>
-                    <p id="username">Nome_usuário</p>
+                    <p id="username" aria-label="username here"></p>
                 </span>
-                <span class="icon-hold secondary toggle-popup-icon" data-id="settings"><i data-icon="cog"></i></span>
+                <button class="icon-hold secondary toggle-popup-icon" data-id="settings"><i data-icon="cog"></i></button>
             </div>
         </aside>
 
@@ -218,9 +212,11 @@
             <header class="hero-header">
                 <span class="header-text" id="folder-name">
                     <i data-icon="folder"></i>
-                    <h1>Bem-vindo de volta</h1>
+                    <h1 aria-label="current folder name here"></h1>
                 </span>
-                <span class="icon-hold secondary" title="Clique aqui para editar informações da pasta"><i data-icon="edit"></i></span>
+                <button class="icon-hold secondary" title="Clique aqui para editar informações da pasta">
+                    <i data-icon="edit"></i>
+                </button>
             </header>
 
             <div class="hero-main">
@@ -251,23 +247,34 @@
                     </li>
                 </ul>
 
-                <div class="terms-area">
-                    <!--
-                    <details class="term item term-name" data-id="1">
-                        <summary>
-                            <span class="term-title">
-                                <i data-icon="chevronRight"></i>
-                                <span class="text">Termo 1</span>
-                            </span>
-                            <span title="Clique aqui para editar informações do termo"><i data-icon="edit" data-id="1"></i></span>
-                        </summary>
-                        <ul class="meanings">
-                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing el ducimus sit. Doloribus, dolor!</li>
-                            <li><img src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="<Termo 1> image meaning"></li>
-                        </ul>
-                    </details>
-                    -->
-                </div>
+                <ul class="terms-area" aria-label="current folder terms list here">
+                    <li class="term">
+                        <button class="collapsible" aria-expanded="false" data-id="1">
+                            <span class="term-name">Termo #1</span>
+                            <span class="icon-hold"><i data-icon="edit"></i></span>
+                        </button>
+
+                        <div class="content" data-id="1">
+                            <div class="content-inner">
+                                <p class="meaning">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, amet? Accusamus rem, nihil omnis pariatur, doloribus ducimus sunt modi necessitatibus iure harum excepturi sed porro, id accusantium blanditiis distinctio odio!</p>
+                                <img class="meaning" src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="meaning">
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="term">
+                        <button class="collapsible" aria-expanded="false" data-id="1">
+                            <span class="term-name">Termo #1</span>
+                            <span class="icon-hold"><i data-icon="edit"></i></span>
+                        </button>
+
+                        <div class="content">
+                            <div class="content-inner">
+                                <p class="meaning">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, amet? Accusamus rem, nihil omnis pariatur, doloribus ducimus sunt modi necessitatibus iure harum excepturi sed porro, id accusantium blanditiis distinctio odio!</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </section>
     </main>

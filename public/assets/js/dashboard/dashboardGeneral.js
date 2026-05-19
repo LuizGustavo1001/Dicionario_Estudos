@@ -157,3 +157,30 @@ function addFolderEvent(){
 
 
 addFolderEvent()
+
+
+
+
+// collapsible object event listener
+export function toggleCollpsedEvent(){
+    const toggles = document.querySelectorAll(".collapsible")
+
+    toggles.forEach(toggle => {
+        toggle.addEventListener("click", function() {
+            const content = this.nextElementSibling
+            const isOpen = content.classList.contains("open")
+
+            this.classList.toggle("active")
+            this.setAttribute("aria-expanded", !isOpen)
+
+            // animation logic
+            if(isOpen){
+                content.style.maxHeight = null
+                content.classList.remove("open")
+            }else{
+                content.style.maxHeight = content.scrollHeight + "px"
+                content.classList.add("open")
+            }
+        })
+    })
+}

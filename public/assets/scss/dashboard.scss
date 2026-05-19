@@ -39,6 +39,8 @@ body{
     border-radius: var(--radius-sm);
     cursor: pointer;
 
+    color: var(--blue-750);
+
     &:hover, &.selected{ background: var(--blue-200); }
 }
 
@@ -221,9 +223,15 @@ body{
     .header-nav{
         @include m.flex-center;
         gap: 0.5em;
+        
     }
 
-    .title{ h1{ font-size: clamp(0.9em, 3vw, 1.2em); } }
+    .title{ 
+        h1{ 
+            font-size: clamp(0.9em, 3vw, 1.2em); 
+            font-weight: normal;
+        } 
+    }
 
     .header-nav{ svg{ width: 20px; } }
 }
@@ -231,7 +239,7 @@ body{
 main{
     flex: 1;
     display: flex;
-    gap: 1em;
+    gap: 0.5em;
 
     .aside-hero,
     .user-info,
@@ -239,6 +247,8 @@ main{
         padding: 0.5em;
         background: var(--white);
         border-radius: var(--radius-sm);
+
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.062);
     }
 }
 
@@ -278,6 +288,10 @@ main{
         .aside-nav{
             @include m.flex-center-between;
             gap: 0.3em;
+
+            padding-bottom: 0.5em;
+
+            border-bottom: 2px solid var(--blue-200);
         }
         
         #folders{
@@ -285,19 +299,14 @@ main{
             display: flex;
             flex-direction: column;
 
-            &.inactive{
-                display: none;
-            }
+            &.inactive{ display: none; }
 
             .folders-nav{
                 display: flex;
                 justify-content: space-between;
                 gap: 0.5em;
 
-                padding-bottom: 1em;
                 margin-bottom: 1em;
-
-                border-bottom: 2px solid var(--blue-500);
 
                 .btn{
                     padding: 0.5em;
@@ -324,7 +333,7 @@ main{
                     cursor: pointer;
 
                     &:hover, &.selected{ 
-                        background: var(--blue-200);
+                        background: var(--blue-100);
                         &{ color: var(--blue-700); }
                     }
 
@@ -372,8 +381,6 @@ main{
 
             #username{
                 font-size: clamp(0.7em, 3vw, 0.8em);
-                font-weight: bold;
-
                 @include m.line-text-overflow;
             }
         }
@@ -392,7 +399,7 @@ main{
         gap: 0.5em;
 
         min-width: 0;
-        border-bottom: 2px solid var(--blue-500);
+        border-bottom: 2px solid var(--blue-200);
 
         .header-text{
             max-width: 80%;
@@ -400,10 +407,15 @@ main{
             display: flex;
             align-items: center;
             gap: 0.5em;
+            
+            &, svg{ color: var(--blue-700); }
+
+            svg{ width: 20px; }
 
             h1{ 
-                font-size: clamp(1em, 2vw, 1.3em);
+                font-size: clamp(0.9em, 2vw, 1.1em);
                 @include m.line-text-overflow;
+                font-weight: normal;
             }
         }
     }
@@ -467,56 +479,63 @@ main{
                 font-weight: bold;
                 text-align: center;
 
-                svg{
-                    width: min(70vw, 200px);
-                }
+                svg{ width: min(70vw, 200px); }
 
-                &, svg{
-                    color: var(--blue-600);
-                }
-
+                &, svg{ color: var(--blue-600); }
             }
 
             .term{
-                padding: 0.5em;
                 background: var(--blue-200);
-                border-radius: var(--radius);
+                border-radius: var(--radius-sm);
 
-                &:open{
-                    .term-title{ svg{ rotate: 90deg; } }
-                }
-                    
-                summary{
+                padding: 0.5em;
+
+                .collapsible{
                     @include m.flex-center-between;
                     gap: 0.5em;
-
                     cursor: pointer;
+                    width: 100%;
 
-                    svg{ width: 20px; }
+                    .term-name::before{ content: "+ "; }
 
-                    .term-title{
-                        display: flex;
-                        align-items: center;
-                        gap: 0.3em;
+                    &.active .term-name::before{ content: "- "; }
+
+                    .term-name{
+                        width: 100%;
+                        text-align: left;
+
+                        font-size: clamp(0.9em, 2vw, 1em);
+                        font-weight: bold;
+
+                        color: var(--blue-750);
                     }
+
+                    .icon-hold svg{ width: 20px; }
                 }
 
-                .meanings{
-                    margin-top: 0.5em;
-                    padding: 0.5em;
+                .content{
+                    max-height: 0;
+                    opacity: 0;
+                    overflow: hidden;
 
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1em;
+                    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
 
-                    background: var(--white);
-                    border-radius: var(--radius);
-
-                    img{ width: 100%; }
-
-                    @include m.respond(tablet){
-                        img { max-width: 600px; }
+                    .content-inner{ // allows padding with scrollHeight
+                        @include m.flex-collumn-05;
+                        border-radius: var(--radius-sm);
+                        background: var(--blue-100);
+                        padding: 0.5em;
                     }
+
+                    img{
+                        max-width: 85%;
+                        margin: 0 auto;
+                        border-radius: var(--radius);
+
+                        @include m.respond(tablet){ max-width: 500px; }
+                    }
+
+                    &.open{ opacity: 1; }
                 }
             }
         }
@@ -533,6 +552,7 @@ main{
         }
     }
     .btn-styled{
+        color: var(--blue-200);
         &:hover, &.selected{ background: var(--blue-900); }
     }
 
@@ -575,8 +595,10 @@ main{
 
     .main-aside{
         .aside-hero{
+            .aside-nav{
+                border-color: var(--blue-800); 
+            }
             #folders{
-                .folders-nav{ border-color: var(--blue-750); }
 
                 .folders-list{
                     & li{
@@ -597,7 +619,12 @@ main{
     }
 
     .hero{
-        .hero-header{ border-color: var(--blue-750); }
+        .hero-header{ 
+            border-color: var(--blue-800); 
+            .header-text{
+                &, svg{ color: var(--blue-300); }
+            }
+        }
 
         .hero-main{
             .filters-selected{
@@ -608,17 +635,18 @@ main{
             }
 
             .terms-area{
-                .errorMessage{
-                    &, svg{
-                        color: var(--blue-750);
-                    }
-
-                }
+                .errorMessage{ &, svg{ color: var(--blue-750); } }
 
                 .term{
                     background: var(--blue-900);
 
-                    .meanings{ background: var(--blue-850); }
+                    .collapsible{
+                        .term-name{ color: var(--blue-300); }
+                    }
+
+                    .content{
+                        .content-inner{ background: var(--blue-850); }
+                    }
                 }
             }
         }

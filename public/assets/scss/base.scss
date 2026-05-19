@@ -57,30 +57,61 @@ form{
     gap: 1em;
 }
 
-.messages-box{
-    position: absolute;
-    top: 1em;
-    right: 1em;
+.vertical-line{
+    width: 5px;
+    height: auto;
+
+    background: var(--blue-500); /* default */
+    border-radius: var(--radius);
+}
+
+.snackbars-box{
+    position: fixed;
+    bottom: 0.5em;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    @include m.flex-collumn-05;
+
+    width: min(90dvw, 500px);
 
     font-size: 0.8em;
 
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    
-    width: min(90dvw, 500px);
+    z-index: 6;
 
-    .warning-item{
-        background: rgba(255, 103, 103, 0.454);
-        color: rgb(255, 0, 0);
+    .snackbar{
+        display: flex;
+        gap: 0.35em;
+
+        border-radius: var(--radius);
+
+        background: #FFB4B4;
+        color: #A34949;
         padding: 0.5em;
 
         cursor: pointer;
 
-        &.success{
-            background: rgba(76, 143, 231, 0.498);
-            color: rgb(0, 110, 255);
+        &::after{
+            content: "✕";
+
+            float: right;
+            margin-left: 0.5em;
+            margin-block: auto;
         }
+
+        .snackbar-text{
+            width: 100%;
+            font-weight: bold;
+        }
+
+        &.success{
+            background: #B4CFFF;
+            color: #4961A3;
+
+            .vertical-line{ background: #4961A3; }
+        }
+
+        .vertical-line{ background: #A34949; }
     }
 }
 

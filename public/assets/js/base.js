@@ -49,22 +49,30 @@ export function fillWarning(message, type){
     }
 
     if(messages_map[message]){
-        const warningBox = document.createElement("div")
-        warningBox.classList.add("warning-item", "fade-in-up", warningClass)
+        const messagesBox = document.querySelector(".snackbars-box")
+        if(!messagesBox) return
 
-        warningBox.innerHTML = `<strong>${messages_map[message]}</strong>. <em>Clique aqui para fechar esta mensagem.</em>`
+        // snackbar elements
+        const snackbarItem = document.createElement("div")
+        snackbarItem.classList.add("snackbar", "fade-in-up", warningClass)
 
-        const messagesBox = document.querySelector(".messages-box")
+        const verticalLine = document.createElement("span")
+        verticalLine.classList.add("vertical-line")
 
-        messagesBox.insertAdjacentElement("beforeend", warningBox)
+        const snackbarText = document.createElement("span")
+        snackbarText.classList.add("snackbar-text")
+        snackbarText.textContent = `${messages_map[message]}.`
 
-        // remove message when click or after 10 sec
+        snackbarItem.append(verticalLine, snackbarText)
+        messagesBox.insertAdjacentElement("beforeend", snackbarItem)
+
+        // remove message logic
         const removeBox = () => {
-            warningBox.classList.add("fade-out")
-            setTimeout(() => warningBox.remove(), 500)
+            snackbarItem.classList.add("fade-out")
+            setTimeout(() => snackbarItem.remove(), 500)
         }
 
-        warningBox.addEventListener("click", removeBox)
+        snackbarItem.addEventListener("click", removeBox)
 
         setTimeout(removeBox, 10000)
 

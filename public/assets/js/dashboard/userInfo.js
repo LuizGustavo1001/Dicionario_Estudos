@@ -1,5 +1,6 @@
 import { setWarningCookie, fillWarning, logout } from "../base.js"
 import { renderIcon } from "../iconController.js"
+import { toggleCollpsedEvent } from "./dashboardGeneral.js"
 
 // fetch functions
 async function getUserInfo(){
@@ -130,61 +131,63 @@ async function fillTermsArea(idFolder, nameFolder){
                 const selectedTermMeanings = termMeanings.filter(m => m.idTerm === term.idTerm)
 
                 // creating meaning element
-                const details = document.createElement("details")
-                details.classList.add("term", "item", "term-name")
-                details.dataset.id = term.idTerm
+                const termBox = document.createElement("li")
+                termBox.classList.add("term")
+                termBox.dataset.id = term.idTerm
 
-                const summary = document.createElement("summary")
-
-                const termTitle = document.createElement("span")
-                termTitle.classList.add("term-title")
-
-                const arrowIcon = document.createElement("i")
-                arrowIcon.dataset.icon = "chevronRight"
-
-                const termTitleText = document.createElement("span")
-                termTitleText.classList.add("text")
-                termTitleText.innerHTML = term.content
+                const collapsible = document.createElement("button")
+                collapsible.classList.add("collapsible")
+                collapsible.ariaExpanded = false
+                
+                const termName = document.createElement("span")
+                termName.classList.add("term-name")
+                termName.textContent = term.content
 
                 const editIconBox = document.createElement("span")
-                editIconBox.setAttribute("title", "Clique aqui para editar informações do termo")
+                editIconBox.classList.add("icon-hold")
 
                 const editIcon = document.createElement("i")
                 editIcon.dataset.icon = "edit"
                 editIcon.dataset.id = term.idTerm
 
-                const meaningsBox = document.createElement("ul")
-                meaningsBox.classList.add("meanings")
+                editIconBox.append(editIcon)
+                collapsible.append(termName, editIconBox)
+
+                const content = document.createElement("div")
+                content.classList.add("content")
+
+                const contentInner = document.createElement("div")
+                contentInner.classList.add("content-inner")
 
                 selectedTermMeanings.forEach(meaning => {
-                    const itemBox = document.createElement("li")
-
                     if(meaning.type == "image"){
                         const image = document.createElement("img")
+                        image.classList.add("meaning")
                         image.src = meaning.content
                         image.alt = `${term.content} image meaning`
 
-                        itemBox.append(image)
+                        contentInner.append(image)
                     }else{
-                        itemBox.innerHTML = meaning.content
+                        const meaningText = document.createElement("p")
+                        meaningText.classList.add("meaning")
+                        meaningText.innerHTML = meaning.content
+
+                        contentInner.append(meaningText)
                     }
-                    
-                    meaningsBox.append(itemBox)
                 })
 
-                editIconBox.append(editIcon)
-                termTitle.append(arrowIcon, termTitleText)
-                summary.append(termTitle, editIconBox)
+                content.append(contentInner)
 
-                details.insertAdjacentElement("beforeend", summary)
-                details.insertAdjacentElement("beforeend", meaningsBox)
+                termBox.insertAdjacentElement("beforeend", collapsible)
+                termBox.insertAdjacentElement("beforeend", content)
 
-                termsArea.insertAdjacentElement("beforeend", details)
+                termsArea.insertAdjacentElement("beforeend", termBox)
             })
         }
 
         // render icons
         document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
+        toggleCollpsedEvent()
     }catch(error){
         console.error("Failed to load folder terms: ", error)
         termsArea.innerHTML = "<p>Error loading data.</p>"

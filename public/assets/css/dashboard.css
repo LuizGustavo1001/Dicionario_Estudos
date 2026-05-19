@@ -54,6 +54,7 @@ body {
   font-size: 0.9em;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  color: var(--blue-750);
 }
 .btn-styled:hover, .btn-styled.selected {
   background: var(--blue-200);
@@ -241,6 +242,7 @@ body {
 }
 .page-header .title h1 {
   font-size: clamp(0.9em, 3vw, 1.2em);
+  font-weight: normal;
 }
 .page-header .header-nav svg {
   width: 20px;
@@ -249,7 +251,7 @@ body {
 main {
   flex: 1;
   display: flex;
-  gap: 1em;
+  gap: 0.5em;
 }
 main .aside-hero,
 main .user-info,
@@ -257,6 +259,7 @@ main .hero {
   padding: 0.5em;
   background: var(--white);
   border-radius: var(--radius-sm);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.062);
 }
 
 .main-aside {
@@ -297,6 +300,8 @@ main .hero {
   align-items: center;
   justify-content: space-between;
   gap: 0.3em;
+  padding-bottom: 0.5em;
+  border-bottom: 2px solid var(--blue-200);
 }
 .main-aside .aside-hero #folders {
   flex: 1;
@@ -310,9 +315,7 @@ main .hero {
   display: flex;
   justify-content: space-between;
   gap: 0.5em;
-  padding-bottom: 1em;
   margin-bottom: 1em;
-  border-bottom: 2px solid var(--blue-500);
 }
 .main-aside .aside-hero #folders .folders-nav .btn {
   padding: 0.5em;
@@ -339,7 +342,7 @@ main .hero {
   cursor: pointer;
 }
 .main-aside .aside-hero #folders .folders-list li:hover, .main-aside .aside-hero #folders .folders-list li.selected {
-  background: var(--blue-200);
+  background: var(--blue-100);
 }
 .main-aside .aside-hero #folders .folders-list li:hover, .main-aside .aside-hero #folders .folders-list li.selected {
   color: var(--blue-700);
@@ -383,7 +386,6 @@ main .hero {
 }
 .main-aside .user-info .username-box #username {
   font-size: clamp(0.7em, 3vw, 0.8em);
-  font-weight: bold;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -403,7 +405,7 @@ main .hero {
   justify-content: space-between;
   gap: 0.5em;
   min-width: 0;
-  border-bottom: 2px solid var(--blue-500);
+  border-bottom: 2px solid var(--blue-200);
 }
 .hero .hero-header .header-text {
   max-width: 80%;
@@ -411,11 +413,18 @@ main .hero {
   align-items: center;
   gap: 0.5em;
 }
+.hero .hero-header .header-text, .hero .hero-header .header-text svg {
+  color: var(--blue-700);
+}
+.hero .hero-header .header-text svg {
+  width: 20px;
+}
 .hero .hero-header .header-text h1 {
-  font-size: clamp(1em, 2vw, 1.3em);
+  font-size: clamp(0.9em, 2vw, 1.1em);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: normal;
 }
 .hero .hero-main {
   flex: 1;
@@ -479,44 +488,60 @@ main .hero {
   color: var(--blue-600);
 }
 .hero .hero-main .terms-area .term {
-  padding: 0.5em;
   background: var(--blue-200);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
+  padding: 0.5em;
 }
-.hero .hero-main .terms-area .term:open .term-title svg {
-  rotate: 90deg;
-}
-.hero .hero-main .terms-area .term summary {
+.hero .hero-main .terms-area .term .collapsible {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5em;
   cursor: pointer;
-}
-.hero .hero-main .terms-area .term summary svg {
-  width: 20px;
-}
-.hero .hero-main .terms-area .term summary .term-title {
-  display: flex;
-  align-items: center;
-  gap: 0.3em;
-}
-.hero .hero-main .terms-area .term .meanings {
-  margin-top: 0.5em;
-  padding: 0.5em;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  background: var(--white);
-  border-radius: var(--radius);
-}
-.hero .hero-main .terms-area .term .meanings img {
   width: 100%;
 }
+.hero .hero-main .terms-area .term .collapsible .term-name::before {
+  content: "+ ";
+}
+.hero .hero-main .terms-area .term .collapsible.active .term-name::before {
+  content: "- ";
+}
+.hero .hero-main .terms-area .term .collapsible .term-name {
+  width: 100%;
+  text-align: left;
+  font-size: clamp(0.9em, 2vw, 1em);
+  font-weight: bold;
+  color: var(--blue-750);
+}
+.hero .hero-main .terms-area .term .collapsible .icon-hold svg {
+  width: 20px;
+}
+.hero .hero-main .terms-area .term .content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+}
+.hero .hero-main .terms-area .term .content .content-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  border-radius: var(--radius-sm);
+  background: var(--blue-100);
+  padding: 0.5em;
+}
+.hero .hero-main .terms-area .term .content img {
+  max-width: 85%;
+  margin: 0 auto;
+  border-radius: var(--radius);
+}
 @media (min-width: 768px) {
-  .hero .hero-main .terms-area .term .meanings img {
-    max-width: 600px;
+  .hero .hero-main .terms-area .term .content img {
+    max-width: 500px;
   }
+}
+.hero .hero-main .terms-area .term .content.open {
+  opacity: 1;
 }
 
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
@@ -524,6 +549,9 @@ main .hero {
 .dark-mode main .user-info,
 .dark-mode main .hero {
   background: var(--blue-850);
+}
+.dark-mode .btn-styled {
+  color: var(--blue-200);
 }
 .dark-mode .btn-styled:hover, .dark-mode .btn-styled.selected {
   background: var(--blue-900);
@@ -550,8 +578,8 @@ main .hero {
 .dark-mode #settings .settings-hero .section-content .item ul small {
   color: var(--blue-500);
 }
-.dark-mode .main-aside .aside-hero #folders .folders-nav {
-  border-color: var(--blue-750);
+.dark-mode .main-aside .aside-hero .aside-nav {
+  border-color: var(--blue-800);
 }
 .dark-mode .main-aside .aside-hero #folders .folders-list li {
   color: var(--blue-100);
@@ -566,7 +594,10 @@ main .hero {
   color: var(--blue-300);
 }
 .dark-mode .hero .hero-header {
-  border-color: var(--blue-750);
+  border-color: var(--blue-800);
+}
+.dark-mode .hero .hero-header .header-text, .dark-mode .hero .hero-header .header-text svg {
+  color: var(--blue-300);
 }
 .dark-mode .hero .hero-main .filters-selected li {
   background: var(--blue-750);
@@ -580,7 +611,10 @@ main .hero {
 .dark-mode .hero .hero-main .terms-area .term {
   background: var(--blue-900);
 }
-.dark-mode .hero .hero-main .terms-area .term .meanings {
+.dark-mode .hero .hero-main .terms-area .term .collapsible .term-name {
+  color: var(--blue-300);
+}
+.dark-mode .hero .hero-main .terms-area .term .content .content-inner {
   background: var(--blue-850);
 }
 
