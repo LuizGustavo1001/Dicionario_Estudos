@@ -152,6 +152,8 @@ body{
         .section-content{
             @include m.flex-collumn-05;
             gap: 1em;
+
+            &.inactive{ display: none }
             
             .item{
                 @include m.flex-collumn-05;

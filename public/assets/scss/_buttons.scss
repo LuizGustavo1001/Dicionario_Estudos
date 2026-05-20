@@ -24,9 +24,7 @@ button{
 
     svg.inactive{ display: none; }
 
-    &.secondary:hover{
-        background: var(--blue-200);
-    }
+    &.secondary:hover{ background: var(--blue-200); }
 }
 
 input, select, textarea{

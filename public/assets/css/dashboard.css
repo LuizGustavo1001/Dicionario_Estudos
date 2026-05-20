@@ -178,6 +178,9 @@ body {
   gap: 0.5em;
   gap: 1em;
 }
+#settings .settings-hero .section-content.inactive {
+  display: none;
+}
 #settings .settings-hero .section-content .item {
   display: flex;
   flex-direction: column;

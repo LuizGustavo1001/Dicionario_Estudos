@@ -1,41 +1,35 @@
 
-const toggleThemeBtn    = document.querySelectorAll(".toggle-theme-box")
-const savedTheme        = localStorage.getItem("theme")
+const toggleThemeBoxes    = document.querySelectorAll(".toggle-theme-box")
 
-toggleThemeBtn.forEach(button => {
-    button.addEventListener("click", toggleTheme)
+initializeTheme()
+
+toggleThemeBoxes.forEach(select => {
+    select.addEventListener("change", (e) => {
+        const themeOption = e.target.value
+        const actualTheme = (themeOption === "system") ? verifyBrowserPrefers() : themeOption
+
+        applyTheme(actualTheme, true, themeOption)
+    })
 })
 
-if(localStorage.getItem("theme") === "dark"){
-    toggleTheme()
+function initializeTheme(){
+    const savedTheme = localStorage.getItem("theme") || "system"
+    const themeToApply = (savedTheme === "system") ? verifyBrowserPrefers() : savedTheme
+
+    // update selected option
+    toggleThemeBoxes.forEach(box => {box.value = savedTheme})
+
+    applyTheme(themeToApply, false, savedTheme) // avoid overwrite, just initializing
 }
 
-// initializing
-if(savedTheme){
-    applyTheme(savedTheme)
-}else{ // verify browser prefer theme
-    const prefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-    ).matches
+function applyTheme(theme, saveToStorage = true, valueToSave = null){
+    document.body.classList.toggle("dark-mode", theme === "dark")
 
-    applyTheme(prefersDark ? "dark" : "light")
+    if(saveToStorage){
+        localStorage.setItem("theme", valueToSave)
+    }
 }
 
-// Functions
-function applyTheme(theme){
-    const isDark = theme === "dark"
-
-    document.body.classList.toggle("dark-mode", isDark)
-
-    document.querySelectorAll(".toggle-theme-box svg").forEach(icon => {
-        icon.classList.toggle("inactive")
-    })
-
-    localStorage.setItem("theme", theme)
-}
-
-function toggleTheme(){
-    const isDark = document.body.classList.contains("dark-mode")
-
-    applyTheme(isDark ? "light" : "dark")
+function verifyBrowserPrefers(){
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
 }

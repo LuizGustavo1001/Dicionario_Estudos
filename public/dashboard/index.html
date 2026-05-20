@@ -22,11 +22,11 @@
         <div id="settings" class="popup inactive">
             <aside class="settings-aside">
                 <ul>
-                    <li data-id="general" class="btn-styled selected">
+                    <li data-id="general" class="btn-styled">
                         <i data-icon="userLove"></i>
                         <p>Geral</p>
                     </li>
-                    <li data-id="editor" class="btn-styled">
+                    <li data-id="editor" class="btn-styled selected">
                         <i data-icon="editPencil"></i>
                         <p>Editor</p>
                     </li>
@@ -37,21 +37,16 @@
                 </ul>
 
                 <footer>
-                    <div class="toggle-theme-box icon-hold secondary">
-                        <i data-icon="moon"></i>
-                        <i data-icon="sun" class="inactive"></i>
-                    </div>
-
-                    <span class="icon-hold logout-btn secondary" title="Clique aqui para fazer logout">
+                    <button class="icon-hold logout-btn secondary" title="Clique aqui para fazer logout">
                         <i data-icon="logout"></i>
-                    </span>
+                    </button>
                 </footer>
             </aside>
 
             <div class="settings-hero">
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
 
-                <ul class="section-content" data-id="general">
+                <ul class="section-content inactive" data-id="general">
                     <li class="item">
                         <h2>Credenciais</h2>
                         <ul>
@@ -87,7 +82,21 @@
                     </li>
                 </ul>
 
-                <div class="section-content inactive" data-id="editor"> </div>
+                <ul class="section-content" data-id="editor"> 
+                    <li class="item">
+                        <h2>Tema</h2>
+                        <ul>
+                            <li>
+                                <label for="isysTheme">Tema do Sistema</label>
+                                <select name="sysTheme" id="isysTheme" class="just-input secondary toggle-theme-box">
+                                    <option value="light">Claro</option>
+                                    <option value="dark">Escuro</option>
+                                    <option value="system">Seguir Sistema</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
 
                 <div class="section-content inactive" data-id="help"> </div>
             </div>
