@@ -38,6 +38,20 @@ class Folder{
         return result.insertId
     }
 
+    static async getByName(conn, nameFolder){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
+            SELECT * 
+            FROM folder_data
+            WHERE nameFolder = ?    
+        `, [nameFolder])
+
+        if(rows.length === 0){
+            return false
+        }
+        return rows[0] || null
+    }
 }
 
 module.exports = Folder

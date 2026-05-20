@@ -26,27 +26,33 @@ form.addEventListener("submit", (e) => {
 })
 
 async function login(username, password){
-    const response = await fetch("/users/login", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include", // accept cookies
-        body: JSON.stringify({ 
-            username: username,
-            password: password
+    try{
+        const response = await fetch("/users/login", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include", // accept cookies
+            body: JSON.stringify({ 
+                username: username,
+                password: password
+            })
         })
-    })
 
-    const data = await response.json()
-    
-    if(!response.ok){
+        if (!response.ok) {
+            const errorData = await response.json()
+            fillWarning(errorData.error, 0)
+            return
+        }
+
+        const data = await response.json()
+
+        // redirect to dashboard
+        setWarningCookie(data.message, 1)
+        window.location.href = "/dashboard"
+    }catch(err){
         fillWarning(data.error, 0)
-        return
+        console.error("Server error", err)
     }
-
-    // redirect to dashboard
-    setWarningCookie("loginSuccess", 1)
-    window.location.href = "/dashboard"
 }
 

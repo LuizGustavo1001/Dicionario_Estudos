@@ -23,13 +23,9 @@ body{
         pointer-events: all;
     }
 
-    &.overlay-aside{
-        z-index: 1;
-    }
+    &.overlay-aside{ z-index: 1;  }
 
-    &.overlay-popup{
-        z-index: 3;
-    }
+    &.overlay-popup{  z-index: 3; }
 }
 
 .btn-styled{
@@ -98,16 +94,6 @@ body{
 
         width: clamp(30px, 10dvw, 200px);
 
-        header{
-            padding-bottom: 0.5em;
-
-            font-weight: bold;
-            font-size: clamp(0.8em, 2vw, 1.3em);
-
-            color: var(--blue-700);
-            border-bottom: 2px solid var(--blue-500);
-        }
-
         ul{
             flex: 1;
 
@@ -116,9 +102,8 @@ body{
             gap: 0.5em;
 
             .btn-styled{
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                @include m.flex-center;
+                gap: 0.5em;
 
                 p{
                     @include m.line-text-overflow;
@@ -126,11 +111,12 @@ body{
                     display: none;
                 }
 
+                svg{ width: 25px; }
+
                 @include m.respond(tablet){
                     p{ display: inline; }
+                    svg{ width: 20px;}
                 }
-
-                svg{ min-width: 25px; }
             }
 
             @include m.respond(tablet){
@@ -569,13 +555,6 @@ main{
     }
 
     #settings{
-        .settings-aside{
-            header{
-                color: var(--blue-300);
-                border-color: var(--blue-750);
-            }
-        }
-
         .settings-hero{
             .section-content{
                 .item{

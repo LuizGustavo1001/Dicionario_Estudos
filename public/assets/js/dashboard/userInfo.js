@@ -2,87 +2,106 @@ import { setWarningCookie, fillWarning, logout } from "../base.js"
 import { renderIcon } from "../iconController.js"
 import { toggleCollpsedEvent } from "./dashboardGeneral.js"
 
-// fetch functions
-async function getUserInfo(){
-    const response = await fetch(`/users/me`, {
-        method: "GET",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include"
-    })
-
-    const data = await response.json()
-
-    return (response.ok) ? data : null
-}
-
-async function getFolders(){
-    const response = await fetch("/users/me/folders", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-            "Content-type": "application/json"
-        }
-    })
-
-    const data = await response.json()
-
-    return (response.ok) ? data : null
-}
-
-async function getFolderTerms(){
-    const userFolders = await getFolders()
-
-    const folders = userFolders.map(f => f.idFolder)
-
-    const response = await fetch("/users/me/folders/terms", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({ 
-            folders: folders
-        })
-    })
-
-    const data = await response.json()
-
-    return (response.ok) ? data : null
-}
-
-async function getTermMeanings(){
-    const folderTerms   = await getFolderTerms()
-
-    const terms = folderTerms.map(t => t.idTerm)
-
-    const response = await fetch("/users/me/folders/terms/meanings", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({
-            terms: terms
-        })
-    })
-
-    const data = await response.json()
-
-    return (response.ok) ? data : null
-}
-
 const folderList        = document.querySelector(".folders-list")
 const termsArea         = document.querySelector(".terms-area")
 const folderNameBox     = document.querySelector("#folder-name h1")
 
-// fill user info
-async function fillUsernameBox(){
-    const user = await getUserInfo()
+async function getUserInfo(){
+    try{
+        const response = await fetch(`/users/me`, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include"
+        })
 
-    const usernameBox = document.querySelector("#username")
-    usernameBox.innerHTML = user.username
+        const data = await response.json()
+        return data
+    }catch(err){
+        console.error("Failure trying to return user data: ", err)
+        return null
+    }
+}
+
+async function getFolders(){
+    try{
+        const response = await fetch("/users/me/folders", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-type": "application/json"
+            }
+        })
+
+        const data = await response.json()
+        return data
+    }catch(err){
+        console.error("Failure trying to fetch folders: ", err)
+        return null
+    }
+}
+
+async function getFolderTerms(){
+    try{
+        const userFolders = await getFolders()
+
+        const folders = userFolders.map(f => f.idFolder)
+
+        const response = await fetch("/users/me/folders/terms", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({ 
+                folders: folders
+            })
+        })
+
+        const data = await response.json()
+        return data
+    }catch(err){
+        console.error("Failure to fetch folder terms: ", err)
+        return null
+    }
+}
+
+async function getTermMeanings(){
+    try{
+        const folderTerms   = await getFolderTerms()
+
+        const terms = folderTerms.map(t => t.idTerm)
+
+        const response = await fetch("/users/me/folders/terms/meanings", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                terms: terms
+            })
+        })
+
+        const data = await response.json()
+        return data
+    }catch(err){
+        console.error("Failure to fetch term meanings: ", err)
+        return null
+    }
+}
+
+async function fillUsernameBox(){
+    try{
+        const user = await getUserInfo()
+
+        const usernameBox = document.querySelector("#username")
+        usernameBox.innerHTML = user.username
+    }catch(err){
+        console.error("Failure to fill username: ", err)
+        return null
+    }
 }
 
 async function fillTermsArea(idFolder, nameFolder){
@@ -189,49 +208,58 @@ async function fillTermsArea(idFolder, nameFolder){
         document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
         toggleCollpsedEvent()
     }catch(error){
-        console.error("Failed to load folder terms: ", error)
-        termsArea.innerHTML = "<p>Error loading data.</p>"
+        fillWarning("dberror", 0)
+        console.error("Failure to load folder terms: ", error)
     }
 }
 
-fillUsernameBox()
-
-async function fillFolderList(){
+export async function fillFolderList(){
     // clear folders at folderlist
     folderList.innerHTML = ""
 
-    const userFolders = await getFolders()
+    try{
+        const userFolders = await getFolders()
 
-    userFolders.forEach(folder => {
-        const item = document.createElement("li")
-        item.setAttribute("style", `--color: ${folder.colorFolder}`)
-        item.dataset.id = folder.idFolder
-        item.addEventListener("click", () => { fillTermsArea(folder.idFolder, folder.nameFolder) })
+        userFolders.forEach(folder => {
+            const item = document.createElement("li")
+            item.setAttribute("style", `--color: ${folder.colorFolder}`)
+            item.dataset.id = folder.idFolder
+            item.addEventListener("click", () => { fillTermsArea(folder.idFolder, folder.nameFolder) })
 
-        const highlightBar = document.createElement("div")
-        highlightBar.classList.add("highlight-clr-bar")
+            const highlightBar = document.createElement("div")
+            highlightBar.classList.add("highlight-clr-bar")
 
-        const folderSVG = document.createElement("i")
-        folderSVG.dataset.icon = "folder"
+            const folderSVG = document.createElement("i")
+            folderSVG.dataset.icon = "folder"
 
-        const folderName = document.createElement("span")
-        folderName.innerHTML = folder.nameFolder
+            const folderName = document.createElement("span")
+            folderName.innerHTML = folder.nameFolder
 
-        item.append(highlightBar, folderSVG, folderName)
+            item.append(highlightBar, folderSVG, folderName)
 
-        folderList.insertAdjacentElement("beforeend", item)
-    })
+            folderList.insertAdjacentElement("beforeend", item)
+        })
 
-    // render icons
-    document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
+        // render icons
+        document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
 
-    // select first folder at folderList
-    const firstFolder = userFolders[0]
-    const firstFolderAttr = folderList.querySelectorAll("li")[0]
-    firstFolderAttr.classList.add("selected")
-    fillTermsArea(firstFolder.idFolder, firstFolder.nameFolder)
+        // select first folder at folderList
+        const firstFolder       = userFolders[0]
+        const firstFolderAttr   = folderList.querySelectorAll("li")[0]
+        firstFolderAttr.classList.add("selected")
+
+        fillTermsArea(firstFolder.idFolder, firstFolder.nameFolder)
+    }catch(err){
+        fillWarning("dberror", 0)
+        console.err("Failure to load user folders: ", err)
+    }
 }
 
+// verify last folder opened...
+
+
+// startup function calls
+fillUsernameBox()
 fillFolderList()
 
-// verify last folder opened
+

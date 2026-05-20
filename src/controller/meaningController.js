@@ -7,6 +7,7 @@ exports.getTermMeaning = async (req, res) => {
         const meanings = await Meaning.getAllByTerm(terms)
         return res.json(meanings)
     }catch(err){
+        console.log(err)
         return res.status(500).json({ error: "serverError" })
     }
 }

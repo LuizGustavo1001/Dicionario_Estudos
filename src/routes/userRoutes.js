@@ -15,7 +15,7 @@ router.post("/login", userController.login)
 
 router.post("/register", userController.register)
 
-router.get("/logout", userController.logout)
+router.post("/logout", userController.logout)
 
 router.get("/me", auth.protect, userController.me)
 
@@ -24,5 +24,7 @@ router.get("/me/folders", auth.protect, folderController.getUserFolders)
 router.post("/me/folders/terms", auth.protect, termController.getFolderTerms)
 
 router.post("/me/folders/terms/meanings", auth.protect, meaningController.getTermMeaning)
+
+router.post("/me/add/folder", auth.protect, folderController.createFolder)
 
 module.exports = router

@@ -45,6 +45,12 @@ button {
 .icon-hold:hover svg {
   color: var(--blue-700);
 }
+.icon-hold svg {
+  display: block;
+}
+.icon-hold svg.inactive {
+  display: none;
+}
 .icon-hold.secondary:hover {
   background: var(--blue-200);
 }

@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
         maxAge: 1000 * 60 * 60 * 24 * 30
     })
 
-    return res.json({ success: true })
+    return res.status(201).json({ message: "loginSuccess" })
 }
 
 exports.register = async (req, res) => {
@@ -66,10 +66,10 @@ exports.register = async (req, res) => {
 
         await connection.commit()
 
-        return res.status(201).json({ error: "userCreated" })
+        return res.status(201).json({ message: "userCreated" })
     }catch(err){
         await connection.rollback()
-
+        console.log(err)
         return res.status(400).json({ error: "dberror" })
     }finally{
         connection.release()
@@ -92,6 +92,7 @@ exports.auth = async (req, res) => {
         })
 
     }catch(err){
+        console.log('err')
         return res.status(401).json({ error: "invalidToken" })
     }
 }
@@ -114,6 +115,7 @@ exports.me = async (req, res) => {
 
         return res.json(user)
     }catch(err){
+        console.log(err)
         return res.status(500).json({ error: 'internalServerError' })
     }
 }

@@ -21,7 +21,6 @@
     <div class="popup-box">
         <div id="settings" class="popup inactive">
             <aside class="settings-aside">
-                <header>Opções</header>
                 <ul>
                     <li data-id="general" class="btn-styled selected">
                         <i data-icon="userLove"></i>
@@ -113,7 +112,7 @@
                         <input type="file" name="" id="">
                     </div>
                 </div>
-                <div class="btn">Adicionar Termo</div>
+                <button class="btn submit-popup-form" data-id="add-term">Adicionar Termo</button>
             </form>
         </div>
 
@@ -140,7 +139,7 @@
                         <input type="color" name="clr" id="iclr" class="input-clr" value="#C785EE">
                     </span>
                 </div>
-                <div class="btn">Adicionar Pasta</div>
+                <button class="btn submit-popup-form" data-id="add-folder">Adicionar Pasta</button>
             </form>
         </div>
     </div>
@@ -283,6 +282,7 @@
     <script type="module" src="/assets/js/dashboard/dashboardGeneral.js"></script>
     <script type="module" src="/assets/js/dashboard/userInfo.js"></script>
     <script type="module" src="/assets/js/dashboard/settings.js"></script>
+    <script type="module" src="/assets/js/dashboard/addObject.js"></script>
     
     <script src="/assets/js/toggleTheme.js"></script>
 </body>

@@ -116,7 +116,7 @@ function changePopupVisibility(page){
     updateOverlay()
 }
 
-function closePopup(){
+export function closePopup(){
     const popupSections = popupBox.querySelectorAll(".popup")
     popupSections.forEach(section => {
         section.classList.add("inactive")
@@ -155,11 +155,7 @@ function addFolderEvent(){
     }
 }
 
-
 addFolderEvent()
-
-
-
 
 // collapsible object event listener
 export function toggleCollpsedEvent(){
@@ -184,3 +180,4 @@ export function toggleCollpsedEvent(){
         })
     })
 }
+

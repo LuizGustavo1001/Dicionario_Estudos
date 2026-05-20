@@ -55,6 +55,24 @@ class Term{
         }
         return result.insertId
     }
+
+    static async getByName(conn, nameTerm){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
+            SELECT * 
+            FROM term_data
+            WHERE content = ?
+        `, [nameTerm])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return rows[0] || null
+    }
+
+
 }
 
 module.exports = Term

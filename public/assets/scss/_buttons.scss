@@ -20,6 +20,10 @@ button{
         svg{ color: var(--blue-700); }
     }
 
+    svg{ display: block; }
+
+    svg.inactive{ display: none; }
+
     &.secondary:hover{
         background: var(--blue-200);
     }

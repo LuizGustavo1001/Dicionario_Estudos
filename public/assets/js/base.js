@@ -44,6 +44,8 @@ export function fillWarning(message, type){
         invalidPassword : "Senha digitado está incorreta. Tente novamente",
         loginSuccess    : "Login efeutado com sucesso",
         logoutSuccess   : "Logout efetuado com sucesso",
+        folderCreated   : "Pasta criada com sucesso",
+        folderExists    : "Nome de pasta digitado já cadastrado. Tente novamente",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"
     }
@@ -79,6 +81,8 @@ export function fillWarning(message, type){
         // clear warning cookies
         document.cookie = "warning_message=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
         document.cookie = "warning_type=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    }else{
+        console.log("message not registered: ", message)
     }
 }
 
@@ -94,55 +98,41 @@ export function getAuth(){
 }
 
 async function checkAuth(){
-    const response = await fetch("/users/auth", {
-        credentials: "include"
-    })
+    try{
+        const response = await fetch("/users/auth", {
+            method: "GET",
+            credentials: "include"
+        })
 
-    if(! response.ok){
-        return null
+        if(!response.ok){
+            if(response.status >= 500){
+                console.error("Failure trying to check user auth: ", err)
+            }
+            return false
+        }
+
+        const data = await response.json()
+        return data?.authenticated ? true : false
+    }catch(err){
+        console.error("Failure trying to check user auth: ", err)
+        return false
     }
-
-    const data = await response.json()
-    
-    return (data?.authenticated) ? true : false
 }
 
 // logout
 export async function logout(){
-    const response = await fetch("/users/logout", {
-        credentials: "include"
-    })
+    try{
+        const response = await fetch("/users/logout", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include"
+        })
 
-    if(! response.ok){
+        return await response.json()
+    }catch(err){
+        console.error("Failure trying to logout: ", err)
         return null
     }
-
-    return await response.json()
 }
-
-
-
-// details tag event
-function detailsEvent(){
-    const details = document.querySelectorAll("details.term")
-
-    details.forEach(tag => {
-        tag.addEventListener("click", (e) => {
-            e.preventDefault()
-            
-            if(tag.getAttribute("open")){
-                tag.removeAttribute("open")
-                tag.classList.remove("fade-in-up")
-            }else{
-                tag.setAttribute("open", true)
-                tag.classList.add("fade-in-up")
-            }
-
-  
-            
-        })
-    })
-
-}
-
-detailsEvent()

@@ -26,26 +26,32 @@ form.addEventListener("submit", (e) => {
 })
 
 async function register(username, email, password){
-    const response = await fetch("/users/register", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        body: JSON.stringify({ 
-            username: username,
-            email:    email,
-            password: password
+    try{
+        const response = await fetch("/users/register", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({ 
+                username: username,
+                email:    email,
+                password: password
+            })
         })
-    })
 
-    const data = await response.json()
-    
-    if(!response.ok){
+        if (!response.ok) {
+            const errorData = await response.json()
+            fillWarning(errorData.error, 0)
+            return
+        }
+
+        const data = await response.json()
+
+        // redirect to login + message
+        setWarningCookie(data.message, 1)
+        window.location.href = "/auth/login/"
+    }catch(err){
         fillWarning(data.error, 0)
-        return
+        console.error("Server error", err)
     }
-
-    // redirect to login + message
-    setWarningCookie("userCreated", 1)
-    window.location.href = "/auth/login/"
 }
