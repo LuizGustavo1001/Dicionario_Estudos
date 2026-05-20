@@ -12,7 +12,6 @@
     <title>Dashboard - Dicionário de Estudos</title>
 </head>
 <body>
-
     <div class="snackbars-box"></div>
 
     <div class="overlay overlay-aside"></div>
@@ -46,7 +45,7 @@
             <div class="settings-hero">
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
 
-                <ul class="section-content inactive" data-id="general">
+                <ul class="section-content inactive" id="general">
                     <li class="item">
                         <h2>Credenciais</h2>
                         <ul>
@@ -82,7 +81,7 @@
                     </li>
                 </ul>
 
-                <ul class="section-content" data-id="editor"> 
+                <ul class="section-content" id="editor"> 
                     <li class="item">
                         <h2>Tema</h2>
                         <ul>
@@ -98,7 +97,7 @@
                     </li>
                 </ul>
 
-                <div class="section-content inactive" data-id="help"> </div>
+                <div class="section-content inactive" id="help"> </div>
             </div>
         </div>
 
@@ -145,10 +144,39 @@
                         <div class="clr-circle" data-color="#AAC4F5" style="--clr: #AAC4F5" aria-label="lightblue default folder color"></div>
                         <div class="clr-circle" data-color="#EDA35A" style="--clr: #EDA35A" aria-label="yellow default folder color"></div>
                         <div class="clr-circle" data-color="#EF8CB9" style="--clr: #EF8CB9" aria-label="lightpink default folder color"></div>
-                        <input type="color" name="clr" id="iclr" class="input-clr" value="#C785EE">
+                        <input type="color" name="colorFolder" id="iclr" class="input-clr" value="#C785EE">
                     </span>
                 </div>
                 <button class="btn submit-popup-form" data-id="add-folder">Adicionar Pasta</button>
+            </form>
+        </div>
+
+        <div id="edit-folder" class="popup mini inactive">
+            <div class="pop-up-title">
+                <h2>Editar Pasta</h2>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+            </div>
+
+            <form action="#" method="post">
+                <div class="form-input-box input-box-w-label regular">
+                    <label for="inameFolder">Nome da Pasta <small>(máximo 50 caracteres)</small></label>
+                    <input type="text" name="nameFolder" id="inameFolder" class="input">
+                </div>
+
+                <div class="form-input-box input-box-w-label select">
+                    <label for="inewClr">Cor Destaque</label>
+                    <span class="input-wrapper">
+                        <div class="clr-circle" data-color="#C785EE" style="--clr: #C785EE" aria-label="purple default folder color"></div>
+                        <div class="clr-circle" data-color="#EA7B7B" style="--clr: #EA7B7B" aria-label="orange default folder color"></div>
+                        <div class="clr-circle" data-color="#C5D89D" style="--clr: #C5D89D" aria-label="green default folder color"></div>
+                        <div class="clr-circle" data-color="#AAC4F5" style="--clr: #AAC4F5" aria-label="lightblue default folder color"></div>
+                        <div class="clr-circle" data-color="#EDA35A" style="--clr: #EDA35A" aria-label="yellow default folder color"></div>
+                        <div class="clr-circle" data-color="#EF8CB9" style="--clr: #EF8CB9" aria-label="lightpink default folder color"></div>
+                        <input type="color" name="colorFolder" id="inewClr" class="input-clr">
+                    </span>
+                </div>
+
+                <button class="btn submit-popup-form" data-id="edit-folder">Adicionar Pasta</button>
             </form>
         </div>
     </div>
@@ -222,7 +250,7 @@
                     <i data-icon="folder"></i>
                     <h1 aria-label="current folder name here"></h1>
                 </span>
-                <button class="icon-hold secondary" title="Clique aqui para editar informações da pasta">
+                <button class="icon-hold secondary toggle-popup-icon" data-id="edit-folder" data-folder="" id="edit-folder-info" title="Clique aqui para editar informações da pasta">
                     <i data-icon="edit"></i>
                 </button>
             </header>
@@ -256,6 +284,7 @@
                 </ul>
 
                 <ul class="terms-area" aria-label="current folder terms list here">
+                    <!--
                     <li class="term">
                         <button class="collapsible" aria-expanded="false" data-id="1">
                             <span class="term-name">Termo #1</span>
@@ -269,20 +298,7 @@
                             </div>
                         </div>
                     </li>
-
-                    <li class="term">
-                        <button class="collapsible" aria-expanded="false" data-id="1">
-                            <span class="term-name">Termo #1</span>
-                            <span class="icon-hold"><i data-icon="edit"></i></span>
-                        </button>
-
-                        <div class="content">
-                            <div class="content-inner">
-                                <p class="meaning">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, amet? Accusamus rem, nihil omnis pariatur, doloribus ducimus sunt modi necessitatibus iure harum excepturi sed porro, id accusantium blanditiis distinctio odio!</p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                    -->
             </div>
         </section>
     </main>

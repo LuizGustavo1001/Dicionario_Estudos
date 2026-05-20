@@ -38,6 +38,19 @@ class Folder{
         return result.insertId
     }
 
+    static async getByName(idFolder){
+        const [rows] = await db.execute(`
+            SELECT *
+            FROM folder_data
+            WHERE idFolder = ?    
+        `. idFolder)
+
+        if(rows.length === 0){
+            return false
+        }
+        return rows[0] || null
+    }
+
     static async getByName(conn, nameFolder){
         const executor = conn || db
 
@@ -51,6 +64,29 @@ class Folder{
             return false
         }
         return rows[0] || null
+    }
+
+    static async editData(folderId, data){
+        const entries = Object.entries(data).filter(([_, value]) => value !== undefined)
+
+        if(entries.length === 0) throw new Error("No data provided to update")
+
+        const setClause = entries.map(([key]) => `${key} = ?`).join(", ")
+
+        const values = entries.map(([_, value]) => value)
+
+        values.push(folderId)
+        try{
+            const [result] = await db.execute(`
+                UPDATE folder_data
+                SET ${setClause}
+                WHERE idFolder = ?
+            `, values)
+
+            return result
+        }catch(err){
+            console.error("Database update error: ", err)
+        }
     }
 }
 

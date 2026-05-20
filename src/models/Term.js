@@ -71,8 +71,6 @@ class Term{
 
         return rows[0] || null
     }
-
-
 }
 
 module.exports = Term

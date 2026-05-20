@@ -46,6 +46,9 @@ export function fillWarning(message, type){
         logoutSuccess   : "Logout efetuado com sucesso",
         folderCreated   : "Pasta criada com sucesso",
         folderExists    : "Nome de pasta digitado já cadastrado. Tente novamente",
+        emptyFolderName : "Nome de pasta está vazio. Tente novamente",
+        sameFolderName  : "Nome de pasta digitado está igual ao anterior. Tente novamente",
+        folderModified  : "Informações da pasta alteradas com sucesso!",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"
     }

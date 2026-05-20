@@ -5,6 +5,7 @@ import { toggleCollpsedEvent } from "./dashboardGeneral.js"
 const folderList        = document.querySelector(".folders-list")
 const termsArea         = document.querySelector(".terms-area")
 const folderNameBox     = document.querySelector("#folder-name h1")
+const editFolderIcon    = document.querySelector("#edit-folder-info")
 
 async function getUserInfo(){
     try{
@@ -24,7 +25,7 @@ async function getUserInfo(){
     }
 }
 
-async function getFolders(){
+export async function getFolders(){
     try{
         const response = await fetch("/users/me/folders", {
             method: "GET",
@@ -213,18 +214,33 @@ async function fillTermsArea(idFolder, nameFolder){
     }
 }
 
-export async function fillFolderList(){
+
+
+export async function fillFolderList(selectedFolderId){
     // clear folders at folderlist
     folderList.innerHTML = ""
 
     try{
         const userFolders = await getFolders()
 
+        if(!userFolders || userFolders.length === 0) return
+        
         userFolders.forEach(folder => {
             const item = document.createElement("li")
             item.setAttribute("style", `--color: ${folder.colorFolder}`)
             item.dataset.id = folder.idFolder
-            item.addEventListener("click", () => { fillTermsArea(folder.idFolder, folder.nameFolder) })
+
+            item.addEventListener("click", () => { 
+                fillTermsArea(folder.idFolder, folder.nameFolder) 
+                editFolderIcon.dataset.folder = folder.idFolder
+
+                updateFormValues("edit-folder", folder)
+
+                localStorage.setItem("lastFolder", folder.idFolder)
+
+                folderList.querySelectorAll("li").forEach(li => li.classList.remove("selected"))
+                item.classList.add("selected")
+            })
 
             const highlightBar = document.createElement("div")
             highlightBar.classList.add("highlight-clr-bar")
@@ -244,22 +260,41 @@ export async function fillFolderList(){
         document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
 
         // select first folder at folderList
-        const firstFolder       = userFolders[0]
-        const firstFolderAttr   = folderList.querySelectorAll("li")[0]
-        firstFolderAttr.classList.add("selected")
+        let selectedFolder = userFolders.find(f => f.idFolder == selectedFolderId)
 
-        fillTermsArea(firstFolder.idFolder, firstFolder.nameFolder)
+        if(selectedFolderId === -1 || !selectedFolder){
+            selectedFolder = userFolders[0]
+        }
+
+        updateFormValues("edit-folder", selectedFolder)
+
+        if(selectedFolderId !== null){
+            editFolderIcon.dataset.folder = selectedFolder.idFolder
+            fillTermsArea(selectedFolder.idFolder, selectedFolder.nameFolder)
+        }
     }catch(err){
         fillWarning("dberror", 0)
-        console.err("Failure to load user folders: ", err)
+        console.error("Failure to load user folders: ", err)
     }
 }
 
-// verify last folder opened...
-
-
 // startup function calls
 fillUsernameBox()
-fillFolderList()
+fillFolderList(localStorage.getItem("lastFolder") || -1)
 
 
+function updateFormValues(currentSection, data){
+    const sectionForm = document.querySelector(`#${currentSection} form`)
+    if (!sectionForm) {
+        console.error(`Form not found in section: ${currentSection}`);
+        return;
+    }
+
+    Object.entries(data).forEach(([key, value]) => {
+        const field = sectionForm.querySelector(`[name="${key}"]`)
+            
+        if(field){
+            field.value = value
+        }
+    })
+}

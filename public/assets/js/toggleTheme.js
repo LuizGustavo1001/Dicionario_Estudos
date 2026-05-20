@@ -3,14 +3,16 @@ const toggleThemeBoxes    = document.querySelectorAll(".toggle-theme-box")
 
 initializeTheme()
 
-toggleThemeBoxes.forEach(select => {
-    select.addEventListener("change", (e) => {
-        const themeOption = e.target.value
-        const actualTheme = (themeOption === "system") ? verifyBrowserPrefers() : themeOption
+if(toggleThemeBoxes){
+    toggleThemeBoxes.forEach(select => {
+        select.addEventListener("change", (e) => {
+            const themeOption = e.target.value
+            const actualTheme = (themeOption === "system") ? verifyBrowserPrefers() : themeOption
 
-        applyTheme(actualTheme, true, themeOption)
+            applyTheme(actualTheme, true, themeOption)
+        })
     })
-})
+}
 
 function initializeTheme(){
     const savedTheme = localStorage.getItem("theme") || "system"

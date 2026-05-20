@@ -71,12 +71,17 @@ popupCloseIcons.forEach(icon => { // Settings popup close
 
 handleResize2Aside()
 
+const addFolderForm = document.querySelector("#add-folder form")
+const editFolderForm = document.querySelector("#edit-folder form")
+
+if(addFolderForm) addFolderEvent(addFolderForm)
+
+if(editFolderForm) addFolderEvent(editFolderForm)
 
 // Functions
 function updateOverlay(){
     const isActive = overlayState.aside || overlayState.popup
     overlayAside.classList.toggle("active", isActive)
-    overlayAside.classList.toString("active", !isActive)
 }
 
 function toggleAside(){
@@ -111,7 +116,7 @@ function changePopupVisibility(page){
         mainAside.classList.remove("open")
         overlayState.aside = false
     }
-
+    
     overlayState.popup = true
     updateOverlay()
 }
@@ -126,14 +131,13 @@ export function closePopup(){
     updateOverlay()
 }
 
-
-
-
-
 // toggle input color value
-function addFolderEvent(){
-    const circles = document.querySelectorAll(".clr-circle")
-    const colorInput = document.querySelector("#iclr")
+function addFolderEvent(formContainer){
+    const circles = formContainer.querySelectorAll(".clr-circle")
+    const colorInput = formContainer.querySelector("#iclr") || formContainer.querySelector("#inewClr")
+
+    if (!colorInput) return
+
     circles.forEach(circle => {
         circle.addEventListener("click", () => {changeColor(circle.dataset.color)})
     })
@@ -154,8 +158,6 @@ function addFolderEvent(){
         colorInput.value = color
     }
 }
-
-addFolderEvent()
 
 // collapsible object event listener
 export function toggleCollpsedEvent(){
@@ -180,4 +182,5 @@ export function toggleCollpsedEvent(){
         })
     })
 }
+
 

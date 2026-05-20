@@ -8,7 +8,6 @@ const folderController  = require("../controller/folderController")
 const termController    = require("../controller/termController")
 const meaningController = require("../controller/meaningController")
 
-// auth user (JWT)
 router.get("/auth", userController.auth)
 
 router.post("/login", userController.login)
@@ -26,5 +25,7 @@ router.post("/me/folders/terms", auth.protect, termController.getFolderTerms)
 router.post("/me/folders/terms/meanings", auth.protect, meaningController.getTermMeaning)
 
 router.post("/me/add/folder", auth.protect, folderController.createFolder)
+
+router.post("/me/edit/folder", auth.protect, folderController.editFolder)
 
 module.exports = router

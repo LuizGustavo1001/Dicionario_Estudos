@@ -36,3 +36,21 @@ exports.createFolder = async (req, res) => {
         connection.release()
     }
 }
+
+exports.editFolder = async (req, res) => {
+    const { idFolder, folderName, color } = req.body
+
+    try{
+        const map = {
+            nameFolder: folderName,
+            colorFolder: color
+        }
+
+        await Folder.editData(idFolder, map)
+
+        return res.status(201).json({ message: "folderModified" })
+    }catch(err){
+        console.error(err)
+        return res.status(500).json({ error: "serverError" })
+    }
+}
