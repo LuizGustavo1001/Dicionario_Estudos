@@ -1,4 +1,4 @@
-import { renderIcon } from "./iconController.js"
+import { renderIcon } from "/assets/js/iconController.js"
 
 // render icons
 document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
@@ -26,8 +26,8 @@ export function getCookie(name){
     return null
 }
 
-const cookie_message = getCookie("warning_message")
-const cookie_type = getCookie("warning_type")
+const cookie_message    = getCookie("warning_message")
+const cookie_type       = getCookie("warning_type")
 if(cookie_message && cookie_type){
     fillWarning(cookie_message, Number(cookie_type))
 }
@@ -38,7 +38,6 @@ export function fillWarning(message, type){
     const messages_map = {
         formNotFilled   : "Formulário precisa ser preenchido para avançar",
         userExists      : "Nome de usuário já encontra-se cadastrado no sistema",
-        emailExists     : "E-mail digitado já encontra-se cadastrado no sistema",
         userCreated     : "Registro efetuado. Faça seu login para ter acesso ao seu dicionário",
         userNotExists   : "Nome de usuário digitado não existe no sistema. Tente novamente",
         invalidPassword : "Senha digitado está incorreta. Tente novamente",
@@ -48,7 +47,7 @@ export function fillWarning(message, type){
         folderExists    : "Nome de pasta digitado já cadastrado. Tente novamente",
         emptyFolderName : "Nome de pasta está vazio. Tente novamente",
         sameFolderName  : "Nome de pasta digitado está igual ao anterior. Tente novamente",
-        folderModified  : "Informações da pasta alteradas com sucesso!",
+        folderModified  : "Informações da pasta alteradas com sucesso",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"
     }
@@ -93,7 +92,11 @@ export function fillWarning(message, type){
 // verify user session
 let authPromise = null
 
-export function getAuth(){
+export function getAuth(forceRefresh = false){
+    if(forceRefresh){
+        authPromise = null
+    }
+
     if(!authPromise){
         authPromise = checkAuth()
     }
@@ -109,13 +112,18 @@ async function checkAuth(){
 
         if(!response.ok){
             if(response.status >= 500){
-                console.error("Failure trying to check user auth: ", err)
+                console.error("Failure trying to check user auth: ", response.status)
             }
             return false
         }
 
         const data = await response.json()
-        return data?.authenticated ? true : false
+
+        if(data?.authenticated){
+            return data.status
+        }
+
+        return false
     }catch(err){
         console.error("Failure trying to check user auth: ", err)
         return false
@@ -138,4 +146,27 @@ export async function logout(){
         console.error("Failure trying to logout: ", err)
         return null
     }
+}
+
+// copy to clipboard event
+const clipboardIcons = document.querySelectorAll(".clipboard-btn")
+
+if(clipboardIcons.length > 0){
+    clipboardIcons.forEach(icon => {
+        icon.addEventListener("click", () => { copyText(icon) })
+    })
+}
+
+function copyText(icon){
+    const copyTarget = document.querySelector(`.copyValue[data-copy="${icon.dataset.copy}"]`)
+
+    if(copyTarget){
+        const textToCopy = copyTarget.value || copyTarget.textContent;
+        navigator.clipboard.writeText(textToCopy)
+    }
+
+    // icon animation
+    icon.classList.add("clicked")
+    setTimeout(() => icon.classList.remove("clicked"), 1000)
+
 }

@@ -1,12 +1,23 @@
-import { setWarningCookie, fillWarning, getAuth } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, getAuth, getCookie } from "/assets/js/base.js"
 
-// verify session
 const authStatus = await getAuth()
 
 if(authStatus === "confirmed"){
     window.location.href = "/dashboard"
-}else if(authStatus === "pending_confirmation"){
-    window.location.href = "/auth/confirmToken"
+}else if(!authStatus){
+    window.location.href = '/auth/login'
+}
+
+// retrieve backend token
+const rawToken = getCookie('display_token')
+
+if(rawToken){
+    const tokenDisplay = document.querySelector("#token")
+    if(tokenDisplay){
+        tokenDisplay.innerHTML = rawToken
+    }
+    
+    document.cookie = "display_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
 }
 
 const form      = document.querySelector("form")
@@ -21,34 +32,33 @@ if(form && submitBtn){
             return
         }
 
-        const usernameValue = document.querySelector("#iuserName").value
-        const passwordValue = document.querySelector("#ipassword").value
+        const typedToken = document.querySelector("#iuserToken").value
 
-        login(usernameValue, passwordValue)
+        verifyToken(typedToken)
     })
 }
 
-async function login(username, password){
+async function verifyToken(typedToken){
     try{
-        const response = await fetch("/users/login", {
+        const response = await fetch("/users/auth/confirmToken", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
             },
             credentials: "include", // accept cookies
             body: JSON.stringify({ 
-                username: username,
-                password: password
+                typedToken: typedToken
             })
         })
 
-        if (!response.ok) {
+        if (!response.ok) { 
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
         }
 
         const data = await response.json()
+        await getAuth(true)
 
         // redirect to dashboard
         setWarningCookie(data.message, 1)
@@ -58,4 +68,3 @@ async function login(username, password){
         console.error("Server error", err)
     }
 }
-

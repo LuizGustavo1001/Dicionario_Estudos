@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
 
 $default-time: 0.2s;
 
@@ -8,8 +8,9 @@ $desktop: 1024px;
 $desktop_outer: 1500px;
 
 :root{
-    --font-style: "Kanit", sans-serif;
+    --font-style: "Zain", sans-serif;
     --font-sans: "Google Sans Flex", sans-serif;
+    --font-mono: "Ubuntu Sans Mono";
 
     --radius: 0.25em;
     --radius-sm: calc(var(--radius) + 0.25em);

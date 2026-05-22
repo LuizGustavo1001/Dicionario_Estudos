@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: May 12, 2026 at 09:07 PM
--- Server version: 8.0.45
+-- Generation Time: May 22, 2026 at 06:25 PM
+-- Server version: 8.0.46
 -- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -34,6 +34,10 @@ CREATE TABLE `folder_data` (
   `idUser` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `folder_data`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -46,6 +50,10 @@ CREATE TABLE `meaning_data` (
   `type` enum('text','image') NOT NULL DEFAULT 'text',
   `idTerm` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `meaning_data`
+--
 
 -- --------------------------------------------------------
 
@@ -60,6 +68,10 @@ CREATE TABLE `term_data` (
   `idFolder` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- Dumping data for table `term_data`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -68,10 +80,15 @@ CREATE TABLE `term_data` (
 
 CREATE TABLE `user_data` (
   `idUser` int NOT NULL,
-  `userMail` varchar(60) NOT NULL,
   `username` varchar(30) NOT NULL,
-  `password` varchar(250) NOT NULL
+  `password` varchar(250) NOT NULL,
+  `recoveryToken` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `tokenConfirmed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `user_data`
+--
 
 --
 -- Indexes for dumped tables
@@ -104,7 +121,6 @@ ALTER TABLE `term_data`
 --
 ALTER TABLE `user_data`
   ADD PRIMARY KEY (`idUser`),
-  ADD UNIQUE KEY `userMail` (`userMail`) USING BTREE,
   ADD UNIQUE KEY `username` (`username`);
 
 --
@@ -133,7 +149,7 @@ ALTER TABLE `term_data`
 -- AUTO_INCREMENT for table `user_data`
 --
 ALTER TABLE `user_data`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

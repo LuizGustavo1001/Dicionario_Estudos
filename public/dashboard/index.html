@@ -45,20 +45,21 @@
             <div class="settings-hero">
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
 
-                <ul class="section-content inactive" id="general">
+                <ul class="section-content" id="general">
                     <li class="item">
                         <h2>Credenciais</h2>
                         <ul>
                             <li>
                                 <label for="iusername" title="Nome de Usuário">Nome de Usuário</label>
-                                <input type="text" name="username" id="iusername" class="just-input secondary" placeholder="usuario_0001">
+                                <input type="text" name="username" id="iusername" class="just-input secondary" placeholder="máximo 30 caracteres" autocapitalize="words" autocomplete="name">
                             </li>
 
                             <li>
-                                <label for="iemail" title="Endereço de E-mail">Email</label>
-                                <input type="email" name="email" id="iemail" class="just-input secondary" placeholder="exemplo@dominio.com">
+                                <label title="Token de usuário">Token de Usuário</label>
+                                <a href="#" class="btn" >Clique aqui para gerar novo token</a>
                             </li>
-                            <small>Para alterar sua senha faça o logout e clique em "Esqueci minha senha"</small>
+
+                            <small>Para alterar sua senha faça o logout e clique em "Esqueci minha senha" (Indisponível)</small>
                         </ul>
                     </li>
 
@@ -81,7 +82,7 @@
                     </li>
                 </ul>
 
-                <ul class="section-content" id="editor"> 
+                <ul class="section-content inactive" id="editor"> 
                     <li class="item">
                         <h2>Tema</h2>
                         <ul>
@@ -110,13 +111,13 @@
             <form action="#" method="post">
                 <div class="form-input-box input-box-w-label">
                     <label for="iterm">Termo</label>
-                    <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres">
+                    <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres" autocapitalize="on">
                 </div>
 
                 <div class="form-input-box input-box-w-label">
                     <label for="imeaning">Significados</label>
                     <div class="input-wrapper">
-                        <input type="text" name="meaning" id="imeaning" class="input" placeholder="Máximo 300 caracteres">
+                        <input type="text" name="meaning" id="imeaning" class="input" placeholder="Máximo 300 caracteres" autocapitalize="on">
                         <input type="file" name="" id="">
                     </div>
                 </div>
@@ -133,7 +134,7 @@
             <form action="#" method="post">
                 <div class="form-input-box input-box-w-label">
                     <label for="ifolder">Nome da Pasta</label>
-                    <input type="text" name="folder" id="ifolder" class="input" placeholder="Máximo 50 caracteres">
+                    <input type="text" name="folder" id="ifolder" class="input" placeholder="Máximo 50 caracteres" autocapitalize="words">
                 </div>
                 <div class="form-input-box input-box-w-label">
                     <label for="iclr">Cor Destaque</label>
@@ -222,8 +223,8 @@
 
                 <div id="search-folders" class="inactive">
                     <div class="form-input-box form--w-icon search-input term-search">
-                        <label for="isearch-term"><i data-icon="search"></i></label>
-                        <input type="text" name="search-term" id="isearch-term" placeholder="Pesquisar pastas">
+                        <label for="isearch-folder-terms"><i data-icon="search"></i></label>
+                        <input type="text" name="search-folder-terms" id="isearch-folder-terms" placeholder="Pesquisar pastas">
                     </div>
 
                     <div class="folder-list" aria-label="current user folder list here + search input filter"></div>

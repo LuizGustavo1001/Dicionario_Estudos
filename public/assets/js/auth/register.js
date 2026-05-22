@@ -1,31 +1,34 @@
-import { setWarningCookie, fillWarning, getAuth } from "../base.js"
+import { setWarningCookie, fillWarning, getAuth } from "/assets/js/base.js"
 
 // verify session
-const auth = await getAuth()
+const authStatus = await getAuth()
 
-if(auth){
+if(authStatus){
     window.location.href = "/dashboard"
+}else if(authStatus === "pending_confirmation"){
+    window.location.href = "/auth/confirmToken"
 }
 
-const form = document.querySelector("form")
+const form      = document.querySelector("form")
 const submitBtn = document.querySelector(".btn.submit")
 
-form.addEventListener("submit", (e) => {
-    e.preventDefault()
+if(form && submitBtn){
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
 
-    if(! form.checkValidity()){
-        fillWarning("formNotFilled", 0)
-        return
-    }
+        if(! form.checkValidity()){
+            fillWarning("formNotFilled", 0)
+            return
+        }
 
-    const usernameValue = document.querySelector("#iuserName").value
-    const passwordValue = document.querySelector("#ipassword").value
-    const mailValue     = document.querySelector("#iuserMail").value
+        const usernameValue = document.querySelector("#iuserName").value
+        const passwordValue = document.querySelector("#ipassword").value
 
-    register(usernameValue, mailValue, passwordValue)
-})
+        register(usernameValue, passwordValue)
+    })
+}
 
-async function register(username, email, password){
+ async function register(username, password){
     try{
         const response = await fetch("/users/register", {
             method: "POST",
@@ -34,7 +37,6 @@ async function register(username, email, password){
             },
             body: JSON.stringify({ 
                 username: username,
-                email:    email,
                 password: password
             })
         })

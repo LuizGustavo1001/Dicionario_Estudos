@@ -8,13 +8,17 @@ const folderController  = require("../controller/folderController")
 const termController    = require("../controller/termController")
 const meaningController = require("../controller/meaningController")
 
-router.get("/auth", userController.auth)
+// router.post("/changePassword", userController.changePassword)
 
 router.post("/login", userController.login)
 
 router.post("/register", userController.register)
 
 router.post("/logout", userController.logout)
+
+router.get("/auth", auth.protect, userController.auth)
+
+router.post("/auth/confirmToken", auth.protect, userController.verifyToken)
 
 router.get("/me", auth.protect, userController.me)
 

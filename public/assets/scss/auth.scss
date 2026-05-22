@@ -20,8 +20,15 @@ main{
         gap: 1em;
 
         &.register{
-            .auth-image-box{ order: 1; }
+            .auth-image-box{ 
+                order: 1; 
+                background: linear-gradient(90deg, var(--blue-750), var(--blue-900));
+            }
             .hero{ order: 0; }
+        }
+
+        &.login{
+            .auth-image-box{ background: linear-gradient(-90deg, var(--blue-750), var(--blue-900)); }
         }
     }
 }
@@ -40,8 +47,6 @@ main{
 
 .auth-image-box{
     display: none;
-
-    background: var(--blue-850);
 
     svg{ color: var(--blue-200); }
 

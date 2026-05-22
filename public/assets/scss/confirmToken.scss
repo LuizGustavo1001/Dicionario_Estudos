@@ -1,0 +1,82 @@
+@use "mixins" as m;
+
+body{ @include m.flex-center; }
+
+main{
+    width: 100%;
+    height: fit-content;
+
+    padding: 1em;
+    margin-bottom: 0.5em;
+
+    @include m.respond(tablet){ width: clamp(300px, 100%, 750px); }
+
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
+
+    .main-title{
+        border-bottom: 2px solid var(--blue-200);
+        margin-bottom: 0.5em;
+
+        h1{
+            font-size: 1.2em;
+            color: var(--blue-700);
+        }
+    }
+
+    .hero{
+        @include m.flex-collumn-05;
+        gap: 1em;
+    }
+}
+
+.hero{
+    .top{ @include m.flex-collumn-05; }
+
+    .middle{
+        @include m.flex-center;
+        gap: 1em;
+
+        width: fit-content;
+        margin: 1em auto;
+
+        color: var(--blue-700);
+        font-size: clamp(1.2em, 3vw, 1.3em);
+
+        #token{
+            padding: 0.5em;
+            letter-spacing: 0.2em;
+
+            background: var(--blue-200);
+            font-family: var(--font-mono);
+            border-radius: var(--radius);
+            font-weight: bold;
+        }
+    }
+
+    .bottom{
+        .warning-btn{ padding: 0.3em; }
+    }
+}
+
+/* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
+.dark-mode{
+    main{
+        background: var(--blue-850);
+
+        .main-title{
+            border-color: var(--blue-800);
+
+            h1{ color: var(--blue-500); }
+        }
+    }
+
+    .hero{
+        .middle{
+            color: var(--blue-400);
+
+            #token{ background: var(--blue-900); }
+        }
+    }
+}

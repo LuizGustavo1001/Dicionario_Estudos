@@ -141,6 +141,20 @@ input, select, textarea{
     }
 }
 
+.clipboard-btn{
+    @include m.flex-center;
+
+    padding: 0.5em;
+
+    background: var(--blue-200);
+    border-radius: var(--radius-sm);
+
+    cursor: pointer;
+
+    &.clicked{
+        animation: clipboard-bg 1s ease-in-out;
+    }
+}
 
 .btn{
     display: flex;
@@ -166,6 +180,15 @@ input, select, textarea{
 
     &:hover{
         background: var(--blue-750);
+    }
+
+    &.warning-btn{
+        background: #D4275B;
+        color: var(--white);
+
+        &:hover{
+            background: #9c1941;
+        }
     }
 }
 
@@ -262,6 +285,13 @@ input, select, textarea{
 
         &.secondary:hover{
             background: var(--blue-900);
+        }
+    }
+
+    .clipboard-btn{
+        background: var(--blue-900);
+        &.clicked{
+            animation: clipboard-bg-dm 1s ease-in-out;
         }
     }
 
@@ -363,6 +393,15 @@ input, select, textarea{
         svg{ color: var(--blue-850); }
 
         &:hover{ background: var(--blue-400); }
+
+        &.warning-btn{
+            background: #D4275B;
+            color: var(--white);
+
+            &:hover{
+                background: #9c1941;
+            }
+        }
     }
 
     .btn--secondary{
@@ -408,5 +447,32 @@ input, select, textarea{
 
     .icon-wrapper{
         .icon-bg{ color: var(--blue-850); }
+    }
+}
+
+/* -=-=-=-=-=-=-=-=- Animations -=-=-=-=-=-=-=-=- */
+@keyframes clipboard-bg{
+    0%{
+        background: var(--blue-200);
+    }
+    50%{
+        background: var(--blue-300);
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.158);
+    }
+    100%{
+        background: var(--blue-200);
+    }
+}
+
+@keyframes clipboard-bg-dm{
+    0%{
+        background: var(--blue-900);
+    }
+    50%{
+        background: var(--blue-850);
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.158);
+    }
+    100%{
+        background: var(--blue-900);
     }
 }

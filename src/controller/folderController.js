@@ -20,7 +20,10 @@ exports.createFolder = async (req, res) => {
     try{
         // verify if folder name already exists
         const folder = await Folder.getByName(connection, folderName)
-        if(folder) return res.status(409).json({ error: "folderExists"})
+        if(folder){
+            await connection.rollback()
+            return res.status(409).json({ error: "folderExists"})
+        }
         
         // add folder
         await Folder.create(connection, req.userId, folderName, color)

@@ -1,9 +1,11 @@
-import { setWarningCookie, fillWarning, logout, getAuth } from "../base.js"
+import { setWarningCookie, fillWarning, logout, getAuth } from "/assets/js/base.js"
 
-const auth = await getAuth()
+const authStatus = await getAuth()
 
-if(!auth){
-    window.location.href = '/auth/login'
+if(!authStatus){
+    window.location.href = "/auth/login"
+}else if(authStatus === "pending_confirmation"){
+    window.location.href = "/auth/confirmToken"
 }
 
 async function initLogout(){ // logout
@@ -34,6 +36,8 @@ const logoutBtn         = document.querySelector(".logout-btn")
 const popupBox          = document.querySelector(".popup-box")
 const openPopupIcons    = document.querySelectorAll(".toggle-popup-icon")
 const popupCloseIcons   = document.querySelectorAll(".close-popup-icon")
+const addFolderForm     = document.querySelector("#add-folder form")
+const editFolderForm    = document.querySelector("#edit-folder form")
 
 desktopMedia.addEventListener("change", handleResize2Aside)
 
@@ -41,21 +45,6 @@ logoutBtn.addEventListener("click", initLogout)
 
 asideIcons.forEach(icon => { // Main aside visibility event
     icon.addEventListener('click', toggleAside)
-})
-
-document.addEventListener("click", (e) => { // Mobile aside toggle
-    if(!isDesktop()){
-        const clickedPopup = e.target.closest(".popup-box")
-        const clickedInside = e.target.closest(".main-aside")
-        const clickedToggle = e.target.closest(".aside-toggle-icon")
-        
-        if(!clickedInside && !clickedToggle && !clickedPopup){ // avoid event when popup are open
-            mainAside.classList.remove("open")
-
-            overlayState.aside = false
-            updateOverlay()
-        }
-    }
 })
 
 openPopupIcons.forEach(icon => {
@@ -68,14 +57,23 @@ popupCloseIcons.forEach(icon => { // Settings popup close
     icon.addEventListener("click", closePopup)
 })
 
+document.addEventListener("click", (e) => { // Mobile aside toggle
+    if(!isDesktop()){
+        const clickedPopup = e.target.closest(".popup-box")
+        const clickedInside = e.target.closest(".main-aside")
+        const clickedToggle = e.target.closest(".aside-toggle-icon")
+        
+        if(!clickedInside && !clickedToggle && !clickedPopup){ // avoid event when popup is opened
+            mainAside.classList.remove("open")
+
+            overlayState.aside = false
+            updateOverlay()
+        }
+    }
+})
 
 handleResize2Aside()
-
-const addFolderForm = document.querySelector("#add-folder form")
-const editFolderForm = document.querySelector("#edit-folder form")
-
 if(addFolderForm) addFolderEvent(addFolderForm)
-
 if(editFolderForm) addFolderEvent(editFolderForm)
 
 // Functions

@@ -1,13 +1,12 @@
-
-const toggleThemeBoxes    = document.querySelectorAll(".toggle-theme-box")
+const toggleThemeBoxes = document.querySelectorAll(".toggle-theme-box")
 
 initializeTheme()
 
 if(toggleThemeBoxes){
     toggleThemeBoxes.forEach(select => {
         select.addEventListener("change", (e) => {
-            const themeOption = e.target.value
-            const actualTheme = (themeOption === "system") ? verifyBrowserPrefers() : themeOption
+            const themeOption = e.target.value || "light"
+            const actualTheme = (themeOption == "system") ? verifyBrowserPrefers() : themeOption
 
             applyTheme(actualTheme, true, themeOption)
         })
@@ -16,7 +15,8 @@ if(toggleThemeBoxes){
 
 function initializeTheme(){
     const savedTheme = localStorage.getItem("theme") || "system"
-    const themeToApply = (savedTheme === "system") ? verifyBrowserPrefers() : savedTheme
+
+    const themeToApply = (savedTheme == "system") ? verifyBrowserPrefers() : savedTheme
 
     // update selected option
     toggleThemeBoxes.forEach(box => {box.value = savedTheme})
@@ -33,5 +33,5 @@ function applyTheme(theme, saveToStorage = true, valueToSave = null){
 }
 
 function verifyBrowserPrefers(){
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
+    return (window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light"
 }

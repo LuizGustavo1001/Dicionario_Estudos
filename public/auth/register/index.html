@@ -29,10 +29,10 @@
     <main class="fade-in-up register">
         <section class="auth-image-box tablet">
             <nav class="dev-info">
-                <a href="https://github.com/LuizGustavo1001" class="icon-hold icon-hold--secondary" rel="external" target="_blank">
+                <a href="https://github.com/LuizGustavo1001" class="icon-hold secondary" rel="external" target="_blank">
                     <i data-icon="github"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/luizgustavo1001/" class="icon-hold icon-hold--secondary" rel="external" target="_blank">
+                <a href="https://www.linkedin.com/in/luizgustavo1001/" class="icon-hold secondary" rel="external" target="_blank">
                     <i data-icon="linkedin"></i>
                 </a>
             </nav>
@@ -52,17 +52,12 @@
                 <form action="#" method="POST">
                     <div class="form-input-box input-box-w-label">
                         <label for="iuserName">Nome de Usuário</label>
-                        <input type="text" name="userName" id="iuserName" class="input" placeholder="Nome de usuário aqui" maxlength="30" minlength="8" required>
-                    </div>
-
-                    <div class="form-input-box input-box-w-label">
-                        <label for="iuserMail">Endereço de Email</label>
-                        <input type="email" name="userMail" id="iuserMail" class="input" placeholder="exemplo@dominio.com" maxlength="60" required>
+                        <input type="text" name="userName" id="iuserName" class="input" placeholder="Nome de usuário aqui" maxlength="30" minlength="8" autocomplete="username" autocapitalize="words" autofocus required>
                     </div>
 
                     <div class="form-input-box input-box-w-label">
                         <label for="ipassword">Senha</label>
-                        <input type="password" name="password" id="ipassword" class="input" placeholder="********" minlength="4" required>
+                        <input type="password" name="password" id="ipassword" class="input" placeholder="********" minlength="4" autocomplete="current-password" required>
                     </div>
                     <button type="submit" class="btn submit">Registrar</button>
                 </form>

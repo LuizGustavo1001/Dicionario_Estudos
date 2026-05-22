@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1778030830/favicon_pywkaw.ico" type="image/x-icon">
+    
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/confirmToken.css">
+
+    <title>Confirmar Token - Dicionário de Estudos</title>
+</head>
+<body>
+    <div class="snackbars-box"></div>
+
+    <main class="fade-in-up" id="confirmToken">
+        <div class="main-title">
+            <h1>Token de Recuperação de Conta</h1>
+        </div>
+
+        <div class="hero">
+            <div class="top">
+                <p>
+                    O token listado abaixo tem o propósito de verificar sua identidade ao tentar
+                    alterar algum dado sensível de sua conta.
+                    <strong>
+                        Tenha certeza de copiar o código abaixo,
+                        uma vez que você não poderá visualizá-lo posteriormente.
+                    </strong>
+                </p>
+                <p><strong>Salve ele em algum gerenciador de senhas ou local de preferência.</strong></p>
+            </div>
+
+            <div class="middle token-box">
+                <span id="token" class="copyValue" data-copy="copyToken">AAAA-BBBB-CCCC-DDDD</span>
+                <button class="clipboard-btn" data-copy="copyToken" title="Copie para a área de transferência"><i data-icon="copy"></i></button>
+            </div>
+
+            <form action="#" class="bottom">
+                <div class="form-input-box input-box-w-label">
+                    <label for="iuserToken">Digite o código para continuar para seu dicionário:</label>
+                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="XXXX-XXXX-XXXX-XXXX" minlength="16" maxlength="16" required autofocus>
+                </div>
+                <button type="submit" class="btn submit">Confirmar Código</button>
+                <button type="button" class="btn warning-btn" id="removeUser">Reverter Criação de Conta</button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="/assets/js/base.js"></script>
+    <script type="module" src="/assets/js/auth/confirmToken.js"></script>
+    <script src="/assets/js/toggleTheme.js"></script>
+</body>
+</html>

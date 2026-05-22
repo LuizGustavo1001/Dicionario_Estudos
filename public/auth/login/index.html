@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/assets/css/base.css">
     <link rel="stylesheet" href="/assets/css/auth.css">
 
-    <title>Login - Dicionário Estudos</title>
+    <title>Login - Dicionário de Estudos</title>
 </head>
 <body>
     <div class="snackbars-box"></div>
@@ -17,10 +17,10 @@
     <main class="fade-in-up login">
         <section class="auth-image-box tablet">
             <nav class="dev-info">
-                <a href="https://github.com/LuizGustavo1001" class="icon-hold icon-hold--secondary" rel="external" target="_blank">
+                <a href="https://github.com/LuizGustavo1001" class="icon-hold secondary" rel="external" target="_blank">
                     <i data-icon="github"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/luizgustavo1001/" class="icon-hold icon-hold--secondary" rel="external" target="_blank">
+                <a href="https://www.linkedin.com/in/luizgustavo1001/" class="icon-hold secondary" rel="external" target="_blank">
                     <i data-icon="linkedin"></i>
                 </a>
             </nav>
@@ -40,11 +40,11 @@
                 <form action="#" method="POST">
                     <div class="form-input-box input-box-w-label">
                         <label for="iuserName">Nome de Usuário</label>
-                        <input type="text" name="userName" id="iuserName" class="input" placeholder="Nome de usuário aqui" maxlength="30" minlength="8" required>
+                        <input type="text" name="userName" id="iuserName" class="input" placeholder="Nome de usuário aqui" maxlength="30" minlength="8" autocomplete="username" required  autofocus>
                     </div>
                     <div class="form-input-box input-box-w-label">
                         <label for="ipassword">Senha</label>
-                        <input type="password" name="password" id="ipassword" class="input" placeholder="********" minlength="4" required>
+                        <input type="password" name="password" id="ipassword" class="input" placeholder="********" minlength="4" autocomplete="current-password" required>
                     </div>
                     <button type="submit" class="btn submit">Entrar</button>
                 </form>
