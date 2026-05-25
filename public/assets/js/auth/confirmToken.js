@@ -27,11 +27,6 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        if(! form.checkValidity()){
-            fillWarning("formNotFilled", 0)
-            return
-        }
-
         const typedToken = document.querySelector("#iuserToken").value
 
         verifyToken(typedToken)
@@ -45,7 +40,7 @@ async function verifyToken(typedToken){
             headers: {
                 "Content-type": "application/json"
             },
-            credentials: "include", // accept cookies
+            credentials: "include",
             body: JSON.stringify({ 
                 typedToken: typedToken
             })
@@ -58,13 +53,12 @@ async function verifyToken(typedToken){
         }
 
         const data = await response.json()
-        await getAuth(true)
+        await getAuth(true) // refresh auth
 
-        // redirect to dashboard
         setWarningCookie(data.message, 1)
         window.location.href = "/dashboard"
     }catch(err){
         fillWarning(data.error, 0)
-        console.error("Server error", err)
+        console.error("Server error: ", err)
     }
 }

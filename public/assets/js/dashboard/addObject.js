@@ -75,7 +75,7 @@ async function addFolder(nameFolder, clr){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        fillFolderList()
+        fillFolderList(data.insertId)
     }catch(err){
         console.error("Server error", err)
     }
@@ -114,7 +114,7 @@ async function editFolderData(idFolder, newName, newClr){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        fillFolderList()
+        fillFolderList(idFolder)
     }catch(err){
         console.error("Server error", err)
     }

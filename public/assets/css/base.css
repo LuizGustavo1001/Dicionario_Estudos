@@ -56,6 +56,18 @@ button {
   background: var(--blue-200);
 }
 
+.back-button {
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+}
+.back-button svg {
+  width: 15px;
+}
+.back-button {
+  margin-bottom: 0.5em;
+}
+
 input, select, textarea {
   padding: 1em;
   background: none;
@@ -114,7 +126,7 @@ input, select, textarea {
 .form-input-box.form--w-icon {
   align-items: center;
   padding-left: 0.5em;
-  border: 2px solid var(--blue-300);
+  border: 1px solid var(--blue-300);
   border-radius: var(--radius-m);
 }
 .form-input-box.form--w-icon svg {
@@ -125,7 +137,7 @@ input, select, textarea {
   align-items: center;
   justify-content: center;
   padding-right: 0.5em;
-  border-right: 2px solid var(--blue-300);
+  border-right: 1px solid var(--blue-300);
   cursor: pointer;
 }
 .form-input-box.form--w-icon input {
@@ -202,7 +214,7 @@ input, select, textarea {
 }
 
 .btn--outline {
-  border: 2px solid var(--blue-300);
+  border: 1px solid var(--blue-300);
   background: transparent;
 }
 .btn--outline, .btn--outline svg {
@@ -580,10 +592,6 @@ form {
   }
 }
 /* -=-=-=-=-=-=-=-=- Others -=-=-=-=-=-=-=-=- */
-.inactive {
-  display: none;
-}
-
 @media (min-width: 1024px) {
   .mobile {
     display: none;

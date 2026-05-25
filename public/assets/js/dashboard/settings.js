@@ -20,10 +20,10 @@ function toggleSelectedOption(selectedOption){
 
     const sections = document.querySelectorAll(".section-content")
     sections.forEach(section => {
-        section.classList.add("inactive")
+        section.classList.remove("open")
 
         if(section.id === selectedOption){
-            section.classList.remove("inactive")
+            section.classList.add("open")
         }
     })
 }

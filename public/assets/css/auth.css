@@ -44,13 +44,9 @@ main {
   }
   main.register .auth-image-box {
     order: 1;
-    background: linear-gradient(90deg, var(--blue-750), var(--blue-900));
   }
   main.register .hero {
     order: 0;
-  }
-  main.login .auth-image-box {
-    background: linear-gradient(-90deg, var(--blue-750), var(--blue-900));
   }
 }
 
@@ -66,6 +62,7 @@ main {
 
 .auth-image-box {
   display: none;
+  background: linear-gradient(0deg, var(--blue-750), var(--blue-900));
 }
 .auth-image-box svg {
   color: var(--blue-200);
@@ -135,6 +132,16 @@ main {
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
 .dark-mode {
   background: var(--blue-900);
+}
+.dark-mode main.register .auth-image-box {
+  order: 1;
+  background: linear-gradient(0deg, var(--blue-800), var(--blue-850));
+}
+.dark-mode main.register .hero {
+  order: 0;
+}
+.dark-mode main.login .auth-image-box {
+  background: linear-gradient(0deg, var(--blue-800), var(--blue-850));
 }
 .dark-mode .hero .hero-container, .dark-mode .hero .pages-nav {
   background: var(--blue-850);

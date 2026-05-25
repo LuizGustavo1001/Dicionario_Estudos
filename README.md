@@ -21,6 +21,7 @@ npm install sass
 npm install cookie-parser
 npm install jsonwebtoken
 npm install crypto
+npm install cloudinary cloudinary
 ```
 #### Docker Compose
 1. After installing *NPM dependencies*, at project root again:

@@ -27,6 +27,14 @@
 body {
   padding: 0.5em;
   gap: 0.5em;
+  max-height: 100dvh;
+}
+
+.add-term-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  align-self: flex-end;
 }
 
 .overlay {
@@ -70,8 +78,7 @@ body {
 }
 
 .popup {
-  display: flex;
-  gap: 1em;
+  display: none;
   height: clamp(400px, 70dvh, 800px);
   width: 90dvw;
 }
@@ -84,9 +91,11 @@ body {
   padding: 1em;
   border-radius: var(--radius-sm);
   background: var(--white);
+  border: 1px solid var(--blue-700);
 }
-.popup.inactive {
-  display: none;
+.popup.open {
+  display: flex;
+  gap: 1em;
 }
 @media (min-width: 768px) {
   .popup.mini {
@@ -174,13 +183,13 @@ body {
   align-self: flex-end;
 }
 #settings .settings-hero .section-content {
+  display: none;
+  gap: 1em;
+}
+#settings .settings-hero .section-content.open {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  gap: 1em;
-}
-#settings .settings-hero .section-content.inactive {
-  display: none;
 }
 #settings .settings-hero .section-content .item {
   display: flex;
@@ -268,6 +277,8 @@ main .hero {
   position: fixed;
   top: 0;
   left: 0;
+  margin-left: 0.5em;
+  padding-block: 0.5em;
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -283,6 +294,8 @@ main .hero {
   .main-aside {
     position: initial;
     z-index: initial;
+    margin: 0;
+    padding: 0;
   }
 }
 .main-aside.open {
@@ -307,14 +320,16 @@ main .hero {
   border-bottom: 2px solid var(--blue-200);
   flex-shrink: 0;
 }
-.main-aside .aside-hero #folders {
-  flex: 1;
+.main-aside .aside-hero .aside-nav-tab {
+  display: none;
+}
+.main-aside .aside-hero .aside-nav-tab.open {
   display: flex;
   flex-direction: column;
-  min-height: 0;
 }
-.main-aside .aside-hero #folders.inactive {
-  display: none;
+.main-aside .aside-hero #folders {
+  flex: 1;
+  min-height: 0;
 }
 .main-aside .aside-hero #folders .folders-nav {
   flex-shrink: 0;
@@ -429,7 +444,7 @@ main .hero {
   width: 20px;
 }
 .hero .hero-header .header-text h1 {
-  font-size: clamp(0.9em, 2vw, 1.1em);
+  font-size: clamp(1em, 2vw, 1.1em);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -447,31 +462,6 @@ main .hero {
   grid-template-columns: minmax(auto, 400px) min-content;
   justify-content: space-between;
   gap: 0.5em;
-}
-.hero .hero-main .filters-selected {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  flex-wrap: wrap;
-}
-.hero .hero-main .filters-selected li {
-  display: flex;
-  align-items: center;
-  gap: 0.3em;
-  padding: 0.5em;
-  background: var(--blue-700);
-  border-radius: var(--radius-sm);
-  font-size: 0.8em;
-  cursor: pointer;
-}
-.hero .hero-main .filters-selected li, .hero .hero-main .filters-selected li svg {
-  color: var(--blue-200);
-}
-.hero .hero-main .filters-selected li svg {
-  width: 15px;
-}
-.hero .hero-main .filters-selected li:hover {
-  background: var(--blue-750);
 }
 .hero .hero-main .terms-area {
   flex: 1;
@@ -570,6 +560,7 @@ main .hero {
 }
 .dark-mode .popup {
   background: var(--blue-850);
+  border-color: var(--blue-300);
 }
 .dark-mode .popup .pop-up-title h2 {
   color: var(--blue-600);
@@ -603,12 +594,6 @@ main .hero {
 }
 .dark-mode .hero .hero-header .header-text, .dark-mode .hero .hero-header .header-text svg {
   color: var(--blue-300);
-}
-.dark-mode .hero .hero-main .filters-selected li {
-  background: var(--blue-750);
-}
-.dark-mode .hero .hero-main .filters-selected li:hover {
-  background: var(--blue-700);
 }
 .dark-mode .hero .hero-main .terms-area .errorMessage, .dark-mode .hero .hero-main .terms-area .errorMessage svg {
   color: var(--blue-750);

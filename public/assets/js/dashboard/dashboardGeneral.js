@@ -38,6 +38,10 @@ const openPopupIcons    = document.querySelectorAll(".toggle-popup-icon")
 const popupCloseIcons   = document.querySelectorAll(".close-popup-icon")
 const addFolderForm     = document.querySelector("#add-folder form")
 const editFolderForm    = document.querySelector("#edit-folder form")
+const searchTermInput   = document.querySelector("#isearch-term")
+const asideNavTabs      = document.querySelectorAll(".aside-nav-tab")
+const heroAsideNav      = document.querySelector(".aside-hero .aside-nav")
+const heroAsideNavItems = heroAsideNav.querySelectorAll(".nav-item")
 
 desktopMedia.addEventListener("change", handleResize2Aside)
 
@@ -70,6 +74,16 @@ document.addEventListener("click", (e) => { // Mobile aside toggle
             updateOverlay()
         }
     }
+})
+
+searchTermInput.addEventListener("input", () => {
+    console.log("not working yet")
+})
+
+heroAsideNavItems.forEach(el => {
+    el.addEventListener("click", () => {
+        toggleHeroAsideTab(el.dataset.id)
+    })
 })
 
 handleResize2Aside()
@@ -107,7 +121,7 @@ function changePopupVisibility(page){
     const popupSection = popupBox.querySelector(`#${page}`)
     if(!popupSection) return
 
-    popupSection.classList.remove("inactive")
+    popupSection.classList.add("open")
 
     // close mobile aside
     if(!isDesktop()){
@@ -122,7 +136,7 @@ function changePopupVisibility(page){
 export function closePopup(){
     const popupSections = popupBox.querySelectorAll(".popup")
     popupSections.forEach(section => {
-        section.classList.add("inactive")
+        section.classList.remove("open")
     })
 
     overlayState.popup = false
@@ -182,3 +196,68 @@ export function toggleCollpsedEvent(){
 }
 
 
+function toggleHeroAsideTab(tabId){
+    asideNavTabs.forEach(tab => {
+        tab.classList.remove("open")
+
+        if(tab.id == tabId){
+            tab.classList.add("open")
+        }
+    })
+
+    heroAsideNavItems.forEach(el => {
+        el.classList.remove("selected")
+
+        if(el.dataset.id == tabId){
+            el.classList.add("selected")
+        }
+    })
+}
+
+
+const addTermInputAreaBtns = document.querySelectorAll(".add-term-area button")
+addTermInputAreaBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        console.log(btn.id)
+        addInput(btn.id)
+    })
+})
+
+function addInput(type){
+    const textInputAmount   = document.querySelectorAll("#add-term .term-input").length
+    const imageInputAmount  = document.querySelectorAll("#add-term .image-input").length
+
+    const formInputBox = document.createElement("div")
+    formInputBox.classList.add("form-input-box", "input-box-w-label")
+
+    const label = document.createElement("label")
+
+    const input = document.createElement("input")
+    input.classList.add("input")
+
+    if(type == "add-text"){
+        label.setAttribute("for", `itext#${textInputAmount+ 1}`)
+        label.textContent = `Significado Texto #${textInputAmount+ 1}`
+
+        input.type = "text"
+        input.name = `text${textInputAmount+ 1}`
+        input.id = `itext#${textInputAmount+ 1}`
+        input.classList.add("term-input")
+        input.placeholder = "Máximo 300 caracteres"
+        input.autocapitalize = "on"
+    }else{
+        label.setAttribute("for", `iimage#${imageInputAmount+ 1}`)
+        label.textContent = `Significado Imagem #${imageInputAmount+ 1}`
+
+        input.type = "file"
+        input.accept = "image/*, .pdf"
+        input.name = `image#${imageInputAmount+ 1}`
+        input.id = `iimage#${imageInputAmount+ 1}`
+        input.classList.add("image-input")
+    }
+
+    formInputBox.append(label, input)
+
+    const inputBox = document.querySelector(".inputs-box")
+    inputBox.insertAdjacentElement("beforeend", formInputBox)
+}

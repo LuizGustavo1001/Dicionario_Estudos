@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1778030830/favicon_pywkaw.ico" type="image/x-icon">
+    
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/confirmToken.css">
+
+    <title>Alterar Senha - Dicionário de Estudos</title>
+</head>
+<body>
+    <div class="snackbars-box"></div>
+
+    <main class="fade-in-up" id="changePassword">
+        <a href="/auth/login" class="back-button">
+            <i data-icon="returnArrow"></i>
+            <span>Voltar</span>
+        </a>
+
+        <div class="main-title">
+            <h1>Alterar Senha</h1>
+        </div>
+
+        <div class="hero">
+            <div class="top">
+                <p>
+                    Código de verificação gerado na criação da conta ou na opção <em>“gerar novo código de verificação”</em> nas configurações de sua conta.
+                </p>
+                <p>Após alterar senha um <strong>novo código de verificação será gerado</strong>.</p>
+            </div>
+
+            <form action="#" class="bottom">
+                <div class="form-input-box input-box-w-label">
+                    <label for="iusername">Nome de usuário:</label>
+                    <input type="text" name="username" id="iusername" class="input" placeholder="Nome de usuário aqui" minlength="8" required autofocus>
+                </div>
+
+                <div class="form-input-box input-box-w-label">
+                    <label for="iuserToken">Nome de usuário:</label>
+                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="Código de 16 dígitos" minlength="16" maxlength="16" required>
+                </div>
+
+                <button type="submit" class="btn submit">Confirmar Código</button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="/assets/js/base.js"></script>
+    <script src="/assets/js/toggleTheme.js"></script>
+    
+</body>
+</html>

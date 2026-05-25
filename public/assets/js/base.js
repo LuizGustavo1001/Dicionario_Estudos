@@ -1,7 +1,19 @@
 import { renderIcon } from "/assets/js/iconController.js"
 
-// render icons
-document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
+const cookie_message    = getCookie("warning_message")
+const cookie_type       = getCookie("warning_type")
+
+let authPromise = null
+
+const clipboardIcons = document.querySelectorAll(".clipboard-btn")
+
+export function refreshIcons(){ // render icons
+    const dataIcons = document.querySelectorAll("[data-icon]")
+
+    if(dataIcons.length > 0){
+        dataIcons.forEach(el => renderIcon(el))
+    }
+}
 
 export function setWarningCookie(value, type){
     const d = new Date()
@@ -24,12 +36,6 @@ export function getCookie(name){
         }
     }
     return null
-}
-
-const cookie_message    = getCookie("warning_message")
-const cookie_type       = getCookie("warning_type")
-if(cookie_message && cookie_type){
-    fillWarning(cookie_message, Number(cookie_type))
 }
 
 export function fillWarning(message, type){
@@ -84,14 +90,11 @@ export function fillWarning(message, type){
         document.cookie = "warning_message=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
         document.cookie = "warning_type=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     }else{
-        console.log("message not registered: ", message)
+        console.log("message id NOT registered: ", message)
     }
 }
 
-
 // verify user session
-let authPromise = null
-
 export function getAuth(forceRefresh = false){
     if(forceRefresh){
         authPromise = null
@@ -130,7 +133,6 @@ async function checkAuth(){
     }
 }
 
-// logout
 export async function logout(){
     try{
         const response = await fetch("/users/logout", {
@@ -148,15 +150,6 @@ export async function logout(){
     }
 }
 
-// copy to clipboard event
-const clipboardIcons = document.querySelectorAll(".clipboard-btn")
-
-if(clipboardIcons.length > 0){
-    clipboardIcons.forEach(icon => {
-        icon.addEventListener("click", () => { copyText(icon) })
-    })
-}
-
 function copyText(icon){
     const copyTarget = document.querySelector(`.copyValue[data-copy="${icon.dataset.copy}"]`)
 
@@ -168,5 +161,18 @@ function copyText(icon){
     // icon animation
     icon.classList.add("clicked")
     setTimeout(() => icon.classList.remove("clicked"), 1000)
-
 }
+
+// copy to clipboard event
+if(clipboardIcons.length > 0){
+    clipboardIcons.forEach(icon => {
+        icon.addEventListener("click", () => { copyText(icon) })
+    })
+}
+
+// retrieve message cookies
+if(cookie_message && cookie_type){
+    fillWarning(cookie_message, Number(cookie_type))
+}
+
+refreshIcons()

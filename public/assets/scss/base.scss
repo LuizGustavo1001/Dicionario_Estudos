@@ -159,10 +159,6 @@ form{
 
 
 /* -=-=-=-=-=-=-=-=- Others -=-=-=-=-=-=-=-=- */
-.inactive{
-    display: none;
-}
-
 @include m.respond(desktop){
     .mobile{
         display: none;

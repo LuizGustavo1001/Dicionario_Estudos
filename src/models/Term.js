@@ -19,6 +19,10 @@ class Term{
             [idFolders] 
         )
 
+        if(rows.length === 0){
+            return null
+        }
+
         return rows
     }
 
@@ -69,7 +73,7 @@ class Term{
             return false
         }
 
-        return rows[0] || null
+        return rows[0]
     }
 }
 

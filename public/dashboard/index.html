@@ -18,14 +18,14 @@
     <div class="overlay overlay-popup"></div>
 
     <div class="popup-box">
-        <div id="settings" class="popup inactive">
+        <div id="settings" class="popup">
             <aside class="settings-aside">
                 <ul>
-                    <li data-id="general" class="btn-styled">
+                    <li data-id="general" class="btn-styled selected">
                         <i data-icon="userLove"></i>
                         <p>Geral</p>
                     </li>
-                    <li data-id="editor" class="btn-styled selected">
+                    <li data-id="editor" class="btn-styled">
                         <i data-icon="editPencil"></i>
                         <p>Editor</p>
                     </li>
@@ -45,7 +45,7 @@
             <div class="settings-hero">
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
 
-                <ul class="section-content" id="general">
+                <ul class="section-content open" id="general">
                     <li class="item">
                         <h2>Credenciais</h2>
                         <ul>
@@ -82,7 +82,7 @@
                     </li>
                 </ul>
 
-                <ul class="section-content inactive" id="editor"> 
+                <ul class="section-content" id="editor"> 
                     <li class="item">
                         <h2>Tema</h2>
                         <ul>
@@ -98,11 +98,11 @@
                     </li>
                 </ul>
 
-                <div class="section-content inactive" id="help"> </div>
+                <div class="section-content" id="help"> </div>
             </div>
         </div>
 
-        <div id="add-term" class="popup mini inactive">
+        <div id="add-term" class="popup mini">
             <div class="pop-up-title">
                 <h2>Adicionar Termo</h2>
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
@@ -114,18 +114,34 @@
                     <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres" autocapitalize="on">
                 </div>
 
-                <div class="form-input-box input-box-w-label">
-                    <label for="imeaning">Significados</label>
-                    <div class="input-wrapper">
-                        <input type="text" name="meaning" id="imeaning" class="input" placeholder="Máximo 300 caracteres" autocapitalize="on">
-                        <input type="file" name="" id="">
+                <div style="display: flex; justify-content: space-between; gap: 0.5em; align-items: center;">
+                    <p><strong>Significados</strong></p>
+                    <div class="add-term-area">
+                        <button type="button" id="add-text" class="icon-hold" title="Clique aqui para adicionar uma entrada de texto">
+                            <i data-icon="textboxplus"></i>
+                        </button>
+                        <button type="button" id="add-image" class="icon-hold" title="Clique aqui para adicionar uma entrada de imagem">
+                            <i data-icon="imageplus"></i>
+                        </button>
                     </div>
                 </div>
+
+                <div class="inputs-box" style="display: flex; flex-direction: column; gap: 0.5em; overflow: auto;">
+                    <div class="form-input-box input-box-w-label">
+                        <label for="itext#1">Siginificado Texto #1</label>
+                        <input type="text" name="text" id="itext#1" class="input term-input" placeholder="Máximo 300 caracteres" autocapitalize="on">
+                    </div>
+                    <div class="form-input-box input-box-w-label">
+                        <label for="iimage#1">Significado Imagem #1</label>
+                        <input type="file" name="image" id="iimage#1" class="input image-input" accept="image/*, .pdf">
+                    </div>
+                </div>
+
                 <button class="btn submit-popup-form" data-id="add-term">Adicionar Termo</button>
             </form>
         </div>
 
-        <div id="add-folder" class="popup mini inactive">
+        <div id="add-folder" class="popup mini">
             <div class="pop-up-title">
                 <h2>Adicionar Pasta</h2>
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
@@ -149,10 +165,11 @@
                     </span>
                 </div>
                 <button class="btn submit-popup-form" data-id="add-folder">Adicionar Pasta</button>
+                <button class="btn warning-btn">Remover Pasta</button>
             </form>
         </div>
 
-        <div id="edit-folder" class="popup mini inactive">
+        <div id="edit-folder" class="popup mini">
             <div class="pop-up-title">
                 <h2>Editar Pasta</h2>
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
@@ -201,11 +218,11 @@
         <aside class="main-aside">
             <div class="aside-hero">
                 <nav class="aside-nav">
-                    <button class="nav-item btn-styled selected">Pastas</button>
-                    <button class="nav-item btn-styled">Pesquisa</button>
+                    <button class="nav-item btn-styled selected" data-id="folders">Pastas</button>
+                    <button class="nav-item btn-styled" data-id="search-folders">Pesquisa</button>
                 </nav>
 
-                <div id="folders" class="">
+                <div id="folders" class="aside-nav-tab open">
                     <nav class="folders-nav">
                         <button class="btn toggle-popup-icon" data-id="add-folder">
                             <i data-icon="new_folder"></i>
@@ -221,7 +238,7 @@
                     <ul class="folders-list" aria-label="current user folder list here"></ul>
                 </div>
 
-                <div id="search-folders" class="inactive">
+                <div id="search-folders" class="aside-nav-tab">
                     <div class="form-input-box form--w-icon search-input term-search">
                         <label for="isearch-folder-terms"><i data-icon="search"></i></label>
                         <input type="text" name="search-folder-terms" id="isearch-folder-terms" placeholder="Pesquisar pastas">
@@ -229,11 +246,6 @@
 
                     <div class="folder-list" aria-label="current user folder list here + search input filter"></div>
                 </div>
-
-                <button class="btn btn--secondary show-all-terms">
-                    <i data-icon="term"></i>
-                    <span>Todos os Termos</span>
-                </button>
             </div>
 
             <div class="user-info">
@@ -263,26 +275,37 @@
                         <input type="text" name="search-term" id="isearch-term" placeholder="Pesquise um termo pelo seu nome">
                     </div>
 
-                    <div class="form-input-box select-input letter-filter-select term-filter">
+                    <div class="form-input-box select-input letter-term-filter">
                         <select name="letter-filter" id="iletter-filter">
-                            <option value="">(A-Z)</option>
-                            <option value="">A</option>
-                            <option value="">B</option>
+                            <option value="none">Todas</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                            <option value="G">G</option>
+                            <option value="H">H</option>
+                            <option value="I">I</option>
+                            <option value="K">K</option>
+                            <option value="L">L</option>
+                            <option value="M">M</option>
+                            <option value="N">N</option>
+                            <option value="O">O</option>
+                            <option value="P">P</option>
+                            <option value="Q">Q</option>
+                            <option value="R">R</option>
+                            <option value="S">S</option>
+                            <option value="T">T</option>
+                            <option value="U">U</option>
+                            <option value="V">V</option>
+                            <option value="W">W</option>
+                            <option value="X">X</option>
+                            <option value="Y">Y</option>
+                            <option value="Z">Z</option>
                         </select>
                     </div>
                 </div>
-
-                <ul class="filters-selected">
-                    <li>
-                        <span>Termo: "Lorem Ipsum</span>
-                        <i data-icon="deleteLeft"></i>
-                    </li>
-                    
-                    <li>
-                        <span>Letra: A</span>
-                        <i data-icon="deleteLeft"></i>
-                    </li>
-                </ul>
 
                 <ul class="terms-area" aria-label="current folder terms list here">
                     <!--

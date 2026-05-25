@@ -27,6 +27,16 @@ button{
     &.secondary:hover{ background: var(--blue-200); }
 }
 
+.back-button{
+    display: flex;
+    gap: 0.3em;
+    align-items: center;
+
+    svg{ width: 15px; }
+
+    margin-bottom: 0.5em;
+}
+
 input, select, textarea{
     padding: 1em;
     background: none;
@@ -100,7 +110,7 @@ input, select, textarea{
     align-items: center;
     padding-left: 0.5em;
 
-    border: 2px solid var(--blue-300);
+    border: 1px solid var(--blue-300);
     border-radius: var(--radius-m);
 
     svg{ color: var(--blue-300); }
@@ -111,7 +121,7 @@ input, select, textarea{
         justify-content: center;
 
         padding-right: 0.5em;
-        border-right: 2px solid var(--blue-300);
+        border-right: 1px solid var(--blue-300);
 
         cursor: pointer;
     }
@@ -199,7 +209,7 @@ input, select, textarea{
 }
 
 .btn--outline{
-    border: 2px solid var(--blue-300);
+    border: 1px solid var(--blue-300);
     background: transparent;
 
     &, svg{ color: var(--blue-850); }

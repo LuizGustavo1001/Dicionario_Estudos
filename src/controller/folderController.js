@@ -1,5 +1,5 @@
-const Folder = require("../models/Folder")
 const db     = require("../database/connection")
+const Folder = require("../models/Folder")
 
 exports.getUserFolders = async (req, res) => {
     try{
@@ -26,11 +26,14 @@ exports.createFolder = async (req, res) => {
         }
         
         // add folder
-        await Folder.create(connection, req.userId, folderName, color)
+        const newFolderId = await Folder.create(connection, req.userId, folderName, color)
 
         await connection.commit()
 
-        return res.status(201).json({ message: "folderCreated" })
+        return res.status(201).json({ 
+            insertId: newFolderId,
+            message: "folderCreated" 
+        })
     }catch(err){
         await connection.rollback()
         console.error(err)

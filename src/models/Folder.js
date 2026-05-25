@@ -35,6 +35,7 @@ class Folder{
         if(result.affectedRows === 0){
             throw new Error("error trying to add new folder")
         }
+
         return result.insertId
     }
 
@@ -76,17 +77,18 @@ class Folder{
         const values = entries.map(([_, value]) => value)
 
         values.push(folderId)
-        try{
-            const [result] = await db.execute(`
-                UPDATE folder_data
-                SET ${setClause}
-                WHERE idFolder = ?
-            `, values)
 
-            return result
-        }catch(err){
-            console.error("Database update error: ", err)
+        const [result] = await db.execute(`
+            UPDATE folder_data
+            SET ${setClause}
+            WHERE idFolder = ?    
+        `, values)
+
+        if(result.affectedRows === 0){
+            throw new Error("error trying to edit folder data")
         }
+
+        return result
     }
 }
 

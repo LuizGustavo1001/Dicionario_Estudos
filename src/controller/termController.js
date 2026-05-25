@@ -42,4 +42,4 @@ exports.createTerm = async (req, res) => {
         connection.release()
     }
 }
-    */
+*/

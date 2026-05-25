@@ -144,9 +144,9 @@ exports.logout = (req, res) => {
 }
 
 exports.me = async (req, res) => {
-    try{
-        const idUser = req.userId
+    const idUser = req.userId
 
+    try{
         const user = await User.getById(idUser)
 
         if(!user){
@@ -193,9 +193,9 @@ exports.changePassword = async (req, res) => {
         // update password and generate new token
         const newHashedPassword = await bcrypt.hash(newPassword, 10)
 
-        const newRawToken = crypto.randomBytes(8).toString('hex').toUpperCase()
-        const saltRounds = 10
-        const hashedToken = await bcrypt.hash(newRawToken, saltRounds)
+        const newRawToken   = crypto.randomBytes(8).toString('hex').toUpperCase()
+        const saltRounds    = 10
+        const hashedToken   = await bcrypt.hash(newRawToken, saltRounds)
 
         await User.updatePassword(connection, newHashedPassword, hashedToken, user.idUser)
 

@@ -83,8 +83,8 @@ class User{
             WHERE idUser = ?
         `, [newPassword, newToken, idUser])
 
-        if(!result){
-            return false
+        if(result.affectedRows === 0){
+            throw new Error("error trying to update password")
         }
 
         return true
@@ -99,8 +99,8 @@ class User{
             WHERE idUser = ?
         `, [idUser])
 
-        if(!result){
-            return false
+        if(result.affectedRows === 0){
+            throw new Error("error trying to update token status")
         }
 
         return true
@@ -132,8 +132,8 @@ class User{
             WHERE idUser = ?
         `, [hashedToken, idUser])
 
-        if(!result){
-            return false
+        if(result.affectedRows === 0){
+            throw new Error("error trying to update recovery token")
         }
 
         return true

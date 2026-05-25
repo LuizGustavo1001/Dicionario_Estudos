@@ -1,6 +1,5 @@
 import { setWarningCookie, fillWarning, getAuth } from "/assets/js/base.js"
 
-// verify session
 const authStatus = await getAuth()
 
 if(authStatus === "confirmed"){
@@ -16,11 +15,6 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        if(! form.checkValidity()){
-            fillWarning("formNotFilled", 0)
-            return
-        }
-
         const usernameValue = document.querySelector("#iuserName").value
         const passwordValue = document.querySelector("#ipassword").value
 
@@ -35,7 +29,7 @@ async function login(username, password){
             headers: {
                 "Content-type": "application/json"
             },
-            credentials: "include", // accept cookies
+            credentials: "include",
             body: JSON.stringify({ 
                 username: username,
                 password: password
@@ -50,12 +44,10 @@ async function login(username, password){
 
         const data = await response.json()
 
-        // redirect to dashboard
         setWarningCookie(data.message, 1)
         window.location.href = "/dashboard"
     }catch(err){
         fillWarning(data.error, 0)
-        console.error("Server error", err)
+        console.error("Server error: ", err)
     }
 }
-

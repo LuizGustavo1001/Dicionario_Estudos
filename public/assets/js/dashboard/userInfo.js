@@ -1,4 +1,4 @@
-import { setWarningCookie, fillWarning, logout } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, logout, refreshIcons } from "/assets/js/base.js"
 import { renderIcon } from "/assets/js/iconController.js"
 import { toggleCollpsedEvent } from "/assets/js/dashboard/dashboardGeneral.js"
 import { getFolderTerms, getFolders, getTermMeanings, getUserInfo } from "/assets/js/getData.js"
@@ -7,6 +7,8 @@ const folderList        = document.querySelector(".folders-list")
 const termsArea         = document.querySelector(".terms-area")
 const folderNameBox     = document.querySelector("#folder-name h1")
 const editFolderIcon    = document.querySelector("#edit-folder-info")
+const letterTermFilter  = document.querySelector(".letter-term-filter")
+
 
 async function fillUserFields(){
     try{
@@ -24,14 +26,14 @@ async function fillUserFields(){
     }
 }
 
-async function fillTermsArea(idFolder, nameFolder){
+async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
     if (!termsArea || !folderList) return
 
     // clear terms at termsArea
     termsArea.innerHTML = ""
 
     try{
-        const folderTerms = await getFolderTerms()
+        let folderTerms = await getFolderTerms()
         if(!folderTerms) return
 
         if((idFolder === -1 || nameFolder === "") && folderTerms.length > 0){
@@ -49,7 +51,30 @@ async function fillTermsArea(idFolder, nameFolder){
             }
         })
 
-        const currentFolderTerms = folderTerms.filter(t => t.idFolder === idFolder)
+        if(letterFilter != "none"){
+            folderTerms = folderTerms.filter(t => t.content[0] == letterFilter)
+        }
+
+        if(folderTerms.length == 0){
+            const errorMessage = document.createElement("div")
+            errorMessage.classList.add("errorMessage")
+
+            const emptyBoxIcon = document.createElement("i")
+            emptyBoxIcon.dataset.icon = "emptyBox"
+            emptyBoxIcon.classList.add("super-big-icon")
+
+            errorMessage.append(emptyBoxIcon)
+
+            errorMessage.innerHTML += "<span>Nenhum termo encontrado com a letra selecionada</span>"
+
+            termsArea.append(errorMessage)
+
+            refreshIcons()
+            toggleCollpsedEvent() // add collapse event
+            return
+        }
+
+        const currentFolderTerms = folderTerms.filter(t => t.idFolder == idFolder)
 
         if(currentFolderTerms.length == 0){
             const errorMessage = document.createElement("div")
@@ -125,9 +150,8 @@ async function fillTermsArea(idFolder, nameFolder){
                 termsArea.insertAdjacentElement("beforeend", termBox)
             })
         }
-
-        // render icons
-        document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
+       
+        refreshIcons()
         toggleCollpsedEvent() // add collapse event
     }catch(error){
         fillWarning("dberror", 0)
@@ -149,7 +173,7 @@ export async function fillFolderList(selectedFolderId){
             item.dataset.id = folder.idFolder
 
             item.addEventListener("click", () => { 
-                fillTermsArea(folder.idFolder, folder.nameFolder) 
+                fillTermsArea(folder.idFolder, folder.nameFolder)
                 editFolderIcon.dataset.folder = folder.idFolder
 
                 updateFormValues("edit-folder", folder)
@@ -175,7 +199,7 @@ export async function fillFolderList(selectedFolderId){
         })
 
         // render icons
-        document.querySelectorAll("[data-icon]").forEach(el => renderIcon(el))
+        refreshIcons()
 
         // mark current folder as selected
         let selectedFolder = userFolders.find(f => f.idFolder == selectedFolderId)
@@ -183,13 +207,14 @@ export async function fillFolderList(selectedFolderId){
         if(selectedFolderId === -1 || !selectedFolder){ // selected folder doesnt exists anymore -> try first from database
             selectedFolder = userFolders[0]
         }
-
+        
         updateFormValues("edit-folder", selectedFolder)
 
         if(selectedFolderId !== null){
             editFolderIcon.dataset.folder = selectedFolder.idFolder
             fillTermsArea(selectedFolder.idFolder, selectedFolder.nameFolder)
         }
+        letterFilterEvent()
     }catch(err){
         fillWarning("dberror", 0)
         console.error("Failure to load user folders: ", err)
@@ -215,3 +240,14 @@ function updateFormValues(currentSection, data){
 // startup function calls
 fillUserFields()
 fillFolderList(localStorage.getItem("lastFolder") || -1)
+
+
+async function letterFilterEvent(){
+    letterTermFilter.addEventListener("input", (e) => {
+        const chosenLetter = e.target.value
+
+        const selectedFolder = document.querySelector(".folders-list li.selected span")
+
+        fillTermsArea(localStorage.getItem("lastFolder") || -1, selectedFolder.textContent, chosenLetter) 
+    })
+}
