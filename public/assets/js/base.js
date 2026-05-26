@@ -1,4 +1,5 @@
 import { renderIcon } from "/assets/js/iconController.js"
+import * as htmlToImage from 'https://esm.sh/html-to-image@1.11.11'
 
 const cookie_message    = getCookie("warning_message")
 const cookie_type       = getCookie("warning_type")
@@ -162,6 +163,54 @@ function copyText(icon){
     icon.classList.add("clicked")
     setTimeout(() => icon.classList.remove("clicked"), 1000)
 }
+
+export function downloadEvent(){
+    const downloadIcons = document.querySelectorAll(".download-btn")
+
+    downloadIcons.forEach(icon => {
+        icon.addEventListener("click", async (e) => {
+            e.stopPropagation() // avoid collpsible event
+
+            let targetElement = null
+
+            if(icon.dataset.element){
+                targetElement = document.querySelector(icon.dataset.element)
+            }else{
+                targetElement = icon.closest(".downloadable")
+            }
+
+            if(targetElement){
+                await downloadObject(targetElement)
+            }else{
+                console.warn("No capturable object found for this button")
+            }
+        })
+    })
+}
+
+export async function downloadObject(element){
+    try{
+        const blob = await htmlToImage.toBlob(element)
+
+        // temp download link
+        const link = document.createElement("a")
+        link.download = 'copy-element.png'
+        link.href = URL.createObjectURL(blob)
+        link.click()
+        URL.revokeObjectURL(link.href)
+
+        try{
+            const data = [new ClipboardItem({ 'image/png': blob })]   
+            await navigator.clipboard.write(data)
+            console.log("Image copied to the clipboard with success!")
+        }catch(error){
+            console.warn("Browser does not support image copy to clipboard: ", error)
+        }
+    }catch(err){
+        console.error("Error trying to generate image: ", err)
+    }        
+}
+
 
 // copy to clipboard event
 if(clipboardIcons.length > 0){

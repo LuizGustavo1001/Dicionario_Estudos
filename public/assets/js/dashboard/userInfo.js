@@ -1,4 +1,4 @@
-import { setWarningCookie, fillWarning, logout, refreshIcons } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, logout, refreshIcons, downloadObject, downloadEvent } from "/assets/js/base.js"
 import { renderIcon } from "/assets/js/iconController.js"
 import { toggleCollpsedEvent } from "/assets/js/dashboard/dashboardGeneral.js"
 import { getFolderTerms, getFolders, getTermMeanings, getUserInfo } from "/assets/js/getData.js"
@@ -98,7 +98,7 @@ async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
 
                 // creating meaning element
                 const termBox = document.createElement("li")
-                termBox.classList.add("term")
+                termBox.classList.add("term", "downloadable")
                 termBox.dataset.id = term.idTerm
 
                 const collapsible = document.createElement("button")
@@ -109,15 +109,32 @@ async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
                 termName.classList.add("term-name")
                 termName.textContent = term.content
 
+                const iconsSpan = document.createElement("span")
+                iconsSpan.style.display = "flex"
+                iconsSpan.style.gap = "0.5em"
+                iconsSpan.style.alignItems = "center"
+
                 const editIconBox = document.createElement("span")
                 editIconBox.classList.add("icon-hold")
+                editIconBox.title = "Clique aqui para editar dados do termo"
 
                 const editIcon = document.createElement("i")
                 editIcon.dataset.icon = "edit"
                 editIcon.dataset.id = term.idTerm
 
+                const downloadIconBox = document.createElement("span")
+                downloadIconBox.classList.add("icon-hold", "download-btn")
+                downloadIconBox.title = "Clique aqui para fazer download do termo e seus significados"
+
+                const downloadIcon = document.createElement("i")
+                downloadIcon.dataset.icon = "download"
+
                 editIconBox.append(editIcon)
-                collapsible.append(termName, editIconBox)
+                downloadIconBox.append(downloadIcon)
+
+                iconsSpan.append(downloadIconBox, editIconBox)
+
+                collapsible.append(termName, iconsSpan)
 
                 const content = document.createElement("div")
                 content.classList.add("content")
@@ -150,7 +167,8 @@ async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
                 termsArea.insertAdjacentElement("beforeend", termBox)
             })
         }
-       
+        
+        downloadEvent()
         refreshIcons()
         toggleCollpsedEvent() // add collapse event
     }catch(error){

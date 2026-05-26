@@ -512,6 +512,12 @@ main .hero {
   font-weight: bold;
   color: var(--blue-750);
 }
+.hero .hero-main .terms-area .term .collapsible .download-btn {
+  display: none;
+}
+.hero .hero-main .terms-area .term .collapsible.active .download-btn {
+  display: inline-block;
+}
 .hero .hero-main .terms-area .term .collapsible .icon-hold svg {
   width: 20px;
 }

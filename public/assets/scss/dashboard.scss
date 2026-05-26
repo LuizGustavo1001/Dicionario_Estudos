@@ -500,6 +500,10 @@ main{
                         color: var(--blue-750);
                     }
 
+                    .download-btn{  display: none; }
+
+                    &.active .download-btn{ display: inline-block; }
+
                     .icon-hold svg{ width: 20px; }
                 }
 
