@@ -205,6 +205,12 @@ input, select, textarea {
 .btn.warning-btn:hover {
   background: #9c1941;
 }
+.btn.waiting {
+  cursor: no-drop;
+}
+.btn.waiting .spinning-wheel {
+  display: block;
+}
 
 .btn--secondary {
   background: var(--blue-700);
@@ -510,6 +516,16 @@ form {
   border-radius: var(--radius);
 }
 
+.spinning-wheel {
+  display: none;
+  border: 4px solid var(--blue-800);
+  border-top: 4px solid var(--blue-300);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+
 .snackbars-box {
   position: fixed;
   bottom: 0.5em;
@@ -589,6 +605,14 @@ form {
   }
   to {
     opacity: 0;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 /* -=-=-=-=-=-=-=-=- Others -=-=-=-=-=-=-=-=- */

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: May 22, 2026 at 06:25 PM
+-- Generation Time: May 28, 2026 at 03:34 AM
 -- Server version: 8.0.46
 -- PHP Version: 8.3.26
 
@@ -48,12 +48,10 @@ CREATE TABLE `meaning_data` (
   `idMeaning` int NOT NULL,
   `content` varchar(300) NOT NULL,
   `type` enum('text','image') NOT NULL DEFAULT 'text',
+  `public_id` varchar(100) DEFAULT NULL,
+  `secure_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `idTerm` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `meaning_data`
---
 
 -- --------------------------------------------------------
 
@@ -68,10 +66,6 @@ CREATE TABLE `term_data` (
   `idFolder` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `term_data`
---
-
 -- --------------------------------------------------------
 
 --
@@ -85,14 +79,6 @@ CREATE TABLE `user_data` (
   `recoveryToken` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `tokenConfirmed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `user_data`
---
-
---
--- Indexes for dumped tables
---
 
 --
 -- Indexes for table `folder_data`
@@ -149,7 +135,7 @@ ALTER TABLE `term_data`
 -- AUTO_INCREMENT for table `user_data`
 --
 ALTER TABLE `user_data`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- Constraints for dumped tables

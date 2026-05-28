@@ -1,6 +1,8 @@
 const Meaning = require("../models/Meaning")
 const Term = require("../models/Term")
 
+const db        = require("../database/connection")
+
 exports.getFolderTerms = async (req, res) => {
     const { folders } = req.body
 
@@ -13,33 +15,58 @@ exports.getFolderTerms = async (req, res) => {
     }
 }
 
-/*
 exports.createTerm = async (req, res) => {
-    const { idFolder, termName, meanings, type } = req.body
-    
+    let { idFolder, termName, meanings } = req.body
+    const idUser = req.userId
+    const files = req.files
+
+    try{
+        if(typeof meanings === "string"){
+            meanings = JSON.parse(meanings)
+        }
+    }catch(err){
+        return res.status(400).json({ error: "invalid_meanings_format" })
+    }
+
+    // mapping local files and image meanings
+    let imageIndex = 0
+    const updatedMeanings = meanings.map(meaning => {
+        if(meaning.type === "image"){
+            const currentFile = (files && files[imageIndex]) ? files[imageIndex] : null
+            imageIndex++
+
+            return{
+                type: "image",
+                content: (currentFile) ? currentFile.path : null
+            }
+        }
+        return meaning
+    })
+
     const connection = await db.getConnection()
 
     try{
-        // verify if term name already exists
-        const term = await Term.getByName(connection, termName)
-        if(term) return res.status(409).json({ error: "termExists"})
+        await connection.beginTransaction()
 
-        // try insert term
-        const newTerm = await Term.create(connection, idFolder, termName)
+        // insert term
+        const newTermId = await Term.create(connection, idFolder, termName)
+        if(!newTermId){
+            await connection.rollback()
+            return res.status(400).json({ error: "invalidTerm" })
+        }
 
-        // try insert meanings  
-        meanings.forEach(meaning => {
-            await Meaning.create(connection,newTerm, meaning, type)
-        })
+        // insert meanings
+        if(meanings && meanings.length > 0){
+            await Meaning.processAndCreateMeanings(connection, newTermId, updatedMeanings, idUser)
+        }
 
         await connection.commit()
-
-        return res.status(201).json({ error: "termCreated" })
+        return res.status(201).json({ message: "termCreated", termId: newTermId })
     }catch(err){
+        await connection.rollback()
         console.log(err)
         return res.status(500).json({ error: "serverError" })
     }finally{
         connection.release()
     }
 }
-*/

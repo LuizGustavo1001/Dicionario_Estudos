@@ -200,6 +200,14 @@ input, select, textarea{
             background: #9c1941;
         }
     }
+
+    &.waiting{
+        cursor: no-drop;
+
+        .spinning-wheel{
+            display: block;
+        }
+    }
 }
 
 .btn--secondary{

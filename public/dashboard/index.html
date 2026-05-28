@@ -104,7 +104,7 @@
 
         <div id="add-term" class="popup mini">
             <div class="pop-up-title">
-                <h2>Adicionar Termo</h2>
+                <h2>Adicionar Termo <small>(Pasta selecionada)</small></h2>
                 <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
             </div>
 
@@ -137,7 +137,10 @@
                     </div>
                 </div>
 
-                <button class="btn submit-popup-form" data-id="add-term">Adicionar Termo</button>
+                <button type="submit" class="btn submit-popup-form" data-id="add-term">
+                    <span>Adicionar Termo</span>
+                    <div class="spinning-wheel"></div>
+                </button>
             </form>
         </div>
 
@@ -164,8 +167,14 @@
                         <input type="color" name="colorFolder" id="iclr" class="input-clr" value="#C785EE">
                     </span>
                 </div>
-                <button class="btn submit-popup-form" data-id="add-folder">Adicionar Pasta</button>
-                <button class="btn warning-btn">Remover Pasta</button>
+                <button type="submit" class="btn submit-popup-form" data-id="add-folder">
+                    <div class="spinning-wheel"></div>
+                    <span>Adicionar Pasta</span>
+                </button>
+                <button class="btn warning-btn">
+                    <div class="spinning-wheel"></div>
+                    <span>Remover Pasta</span>
+                </button>
             </form>
         </div>
 
@@ -194,7 +203,10 @@
                     </span>
                 </div>
 
-                <button class="btn submit-popup-form" data-id="edit-folder">Adicionar Pasta</button>
+                <button class="btn submit-popup-form" data-id="edit-folder">
+                    <div class="spinning-wheel"></div>
+                    <span>Editar Pasta</span>
+                </button>
             </form>
         </div>
     </div>

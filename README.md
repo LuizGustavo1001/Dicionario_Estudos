@@ -23,6 +23,7 @@ npm install jsonwebtoken
 npm install crypto
 npm install cloudinary
 npm install html-to-image
+npm install multer
 ```
 #### Docker Compose
 1. After installing *NPM dependencies*, at project root again:

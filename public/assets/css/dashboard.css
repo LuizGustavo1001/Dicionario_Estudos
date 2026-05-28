@@ -91,7 +91,6 @@ body {
   padding: 1em;
   border-radius: var(--radius-sm);
   background: var(--white);
-  border: 1px solid var(--blue-700);
 }
 .popup.open {
   display: flex;
@@ -566,7 +565,6 @@ main .hero {
 }
 .dark-mode .popup {
   background: var(--blue-850);
-  border-color: var(--blue-300);
 }
 .dark-mode .popup .pop-up-title h2 {
   color: var(--blue-600);
