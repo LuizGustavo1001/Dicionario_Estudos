@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Sora:wght@100..800&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap");
 :root {
-  --font-style: "Zain", sans-serif;
+  --font-style: "Sora", sans-serif;
   --font-sans: "Google Sans Flex", sans-serif;
   --font-mono: "Ubuntu Sans Mono";
   --radius: 0.25em;
   --radius-sm: calc(var(--radius) + 0.25em);
-  --radius-m: calc(var(--radius-sm) + 1em);
+  --radius-m: calc(var(--radius-sm) + 0.5em);
+  --radius-l: calc(var(--radius-sm) + 1em);
   --radius-lg: calc(var(--radius-sm) + 3em);
   --radius-xg: calc(var(--radius-sm) + 5em);
   --blue-100: #F5F7FF;
@@ -43,7 +44,7 @@ main {
 }
 main {
   background: var(--white);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-m);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
 }
 main .main-title {

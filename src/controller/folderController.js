@@ -60,3 +60,16 @@ exports.editFolder = async (req, res) => {
         return res.status(500).json({ error: "serverError" })
     }
 }
+
+exports.removeFolder = async (req, res) => {
+    const { idFolder } = req.body
+
+    try{
+        const removeFolder = await Folder.delete(idFolder)
+
+        return res.status(201).json({ message: "folderDeleted" }) 
+    }catch(err){
+        console.error(err)
+        return res.status(500).json({ error: "serverError" })
+    }
+}

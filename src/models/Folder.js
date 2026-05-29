@@ -39,6 +39,19 @@ class Folder{
         return result.insertId
     }
 
+    static async delete(idFolder){
+        const [result] = await db.execute(`
+            DELETE FROM folder_data
+            WHERE idFolder = ?
+        `, [idFolder])
+
+        if(result.affectedRows === 0){
+            throw new Error("error trying to remove folder")
+        }
+
+        return true
+    }
+
     static async getByName(idFolder){
         const [rows] = await db.execute(`
             SELECT *

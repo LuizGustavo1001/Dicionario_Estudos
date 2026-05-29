@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Sora:wght@100..800&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap");
 :root {
-  --font-style: "Zain", sans-serif;
+  --font-style: "Sora", sans-serif;
   --font-sans: "Google Sans Flex", sans-serif;
   --font-mono: "Ubuntu Sans Mono";
   --radius: 0.25em;
   --radius-sm: calc(var(--radius) + 0.25em);
-  --radius-m: calc(var(--radius-sm) + 1em);
+  --radius-m: calc(var(--radius-sm) + 0.5em);
+  --radius-l: calc(var(--radius-sm) + 1em);
   --radius-lg: calc(var(--radius-sm) + 3em);
   --radius-xg: calc(var(--radius-sm) + 5em);
   --blue-100: #F5F7FF;
@@ -110,6 +111,7 @@ body {
 .popup .pop-up-title h2 {
   font-size: 0.9em;
   color: var(--blue-700);
+  font-family: var(--font-style);
 }
 
 #settings .settings-aside {
@@ -251,8 +253,8 @@ body {
   gap: 0.5em;
 }
 .page-header .title h1 {
-  font-size: clamp(0.9em, 3vw, 1.2em);
-  font-weight: normal;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 .page-header .header-nav svg {
   width: 20px;
@@ -443,11 +445,10 @@ main .hero {
   width: 20px;
 }
 .hero .hero-header .header-text h1 {
-  font-size: clamp(1em, 2vw, 1.1em);
+  font-size: 1.1em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: normal;
 }
 .hero .hero-main {
   flex: 1;

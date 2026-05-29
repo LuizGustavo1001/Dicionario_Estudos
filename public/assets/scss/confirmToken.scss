@@ -12,7 +12,7 @@ main{
     @include m.respond(tablet){ width: clamp(300px, 100%, 750px); }
 
     background: var(--white);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-m);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
 
     .main-title{

@@ -18,7 +18,7 @@ export async function getUserInfo(){
 
 export async function getFolders(){
     try{
-        const response = await fetch("/users/me/folders", {
+        const response = await fetch("/users/me/get/folders", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -40,7 +40,7 @@ export async function getFolderTerms(){
 
         const folders = userFolders.map(f => f.idFolder)
 
-        const response = await fetch("/users/me/folders/terms", {
+        const response = await fetch("/users/me/get/terms", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -65,7 +65,7 @@ export async function getTermMeanings(){
 
         const terms = folderTerms.map(t => t.idTerm)
 
-        const response = await fetch("/users/me/folders/terms/meanings", {
+        const response = await fetch("/users/me/get/meanings", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

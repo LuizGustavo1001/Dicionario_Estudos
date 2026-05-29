@@ -56,6 +56,9 @@ export function fillWarning(message, type){
         sameFolderName  : "Nome de pasta digitado está igual ao anterior. Tente novamente",
         folderModified  : "Informações da pasta alteradas com sucesso",
         termCreated     : "Termo criado com sucesso",
+        folderNotSelected: "Nenhuma pasta está selecionada. Tente novamente",
+        folderDeleted   : "Pasta removida com sucesso",
+        tokenVerified   : "Token de autenticação verificado com sucesso",
         missingFields   : "Campos requeridos do formulário não preenchidos ainda. Tente novamente",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"

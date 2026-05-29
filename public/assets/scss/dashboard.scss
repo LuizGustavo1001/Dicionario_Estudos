@@ -94,6 +94,7 @@ body{
         h2{
             font-size: 0.9em;
             color: var(--blue-700);
+            font-family: var(--font-style);
         }
     }
 }
@@ -224,13 +225,12 @@ body{
     .header-nav{
         @include m.flex-center;
         gap: 0.5em;
-        
     }
 
     .title{ 
         h1{ 
-            font-size: clamp(0.9em, 3vw, 1.2em); 
-            font-weight: normal;
+            font-size: 1.1em;
+            font-weight: bold;
         } 
     }
 
@@ -431,9 +431,8 @@ main{
             svg{ width: 20px; }
 
             h1{ 
-                font-size: clamp(1em, 2vw, 1.1em);
+                font-size: 1.1em;
                 @include m.line-text-overflow;
-                font-weight: normal;
             }
         }
     }
