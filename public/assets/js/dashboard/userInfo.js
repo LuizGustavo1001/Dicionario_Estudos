@@ -1,6 +1,6 @@
 import { setWarningCookie, fillWarning, logout, refreshIcons, downloadObject, downloadEvent } from "/assets/js/base.js"
 import { renderIcon } from "/assets/js/iconController.js"
-import { toggleCollpsedEvent } from "/assets/js/dashboard/dashboardGeneral.js"
+import { toggleDetailsEvent, openPopupEvent, closePopupEvent } from "/assets/js/dashboard/dashboardGeneral.js"
 import { getFolderTerms, getFolders, getTermMeanings, getUserInfo } from "/assets/js/getData.js"
 
 const folderList        = document.querySelector(".folders-list")
@@ -70,7 +70,7 @@ async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
             termsArea.append(errorMessage)
 
             refreshIcons()
-            toggleCollpsedEvent() // add collapse event
+            toggleDetailsEvent() // add collapse event
             return
         }
 
@@ -96,49 +96,78 @@ async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
             currentFolderTerms.forEach(term => {
                 const selectedTermMeanings = termMeanings.filter(m => m.idTerm === term.idTerm)
 
-                // creating meaning element
-                const termBox = document.createElement("li")
-                termBox.classList.add("term", "downloadable")
+                const termBox = document.createElement("details")
+                termBox.classList.add("term", "downloadable", "toggleEvent")
                 termBox.dataset.id = term.idTerm
 
-                const collapsible = document.createElement("button")
-                collapsible.classList.add("collapsible")
-                collapsible.ariaExpanded = false
+                const summary = document.createElement("summary")
                 
-                const termName = document.createElement("span")
-                termName.classList.add("term-name")
-                termName.textContent = term.content
+                const termTitle = document.createElement("div")
+                termTitle.classList.add("term-title")
+  
+                const termTitleText = document.createElement("p")
+                termTitleText.textContent = term.content
 
-                const iconsSpan = document.createElement("span")
-                iconsSpan.style.display = "flex"
-                iconsSpan.style.gap = "0.5em"
-                iconsSpan.style.alignItems = "center"
-
+                const btnNav = document.createElement("nav")
+                btnNav.classList.add("btns-nav")
+                /*
                 const editIconBox = document.createElement("span")
-                editIconBox.classList.add("icon-hold")
+                editIconBox.classList.add("icon-hold", "toggle-popup-icon")
                 editIconBox.title = "Clique aqui para editar dados do termo"
+                editIconBox.dataset.id = "edit-term"
 
                 const editIcon = document.createElement("i")
                 editIcon.dataset.icon = "edit"
                 editIcon.dataset.id = term.idTerm
 
                 const downloadIconBox = document.createElement("span")
-                downloadIconBox.classList.add("icon-hold", "download-btn")
+                downloadIconBox.classList.add("icon-hold", "download-btn", "hidden-btn")
                 downloadIconBox.title = "Clique aqui para fazer download do termo e seus significados"
 
                 const downloadIcon = document.createElement("i")
                 downloadIcon.dataset.icon = "download"
 
+                const newTextIconBox = document.createElement("span")
+                newTextIconBox.classList.add("icon-hold", "hidden-btn", "toggle-popup-icon")
+                newTextIconBox.title = "Clique aqui para adicionar significado em texto"
+                newTextIconBox.dataset.id = "add-meaning-text"
+
+                const newTextIcon = document.createElement("i")
+                newTextIcon.dataset.icon = "textboxplus"
+
+                const newImageIconBox = document.createElement("span")
+                newImageIconBox.classList.add("icon-hold", "hidden-btn", "toggle-popup-icon")
+                newImageIconBox.title = "Clique aqui para adicionar significado em imagem"
+                newImageIconBox.dataset.id = "add-meaning-image"
+
+                const newImageIcon = document.createElement("i")
+                newImageIcon.dataset.icon = "imageplus"
+
+                newTextIconBox.append(newTextIcon)
+                newImageIconBox.append(newImageIcon)
                 editIconBox.append(editIcon)
                 downloadIconBox.append(downloadIcon)
+                */
 
-                iconsSpan.append(downloadIconBox, editIconBox)
+                const menuBox = document.createElement("span")
+                menuBox.classList.add("icon-hold", "hidden-btn", "open-menu-btn")
+                menuBox.title = "Clique aqui para abrir as configurações do termo"
+                menuBox.dataset.id = term.idTerm
 
-                collapsible.append(termName, iconsSpan)
+                const menuBoxIcon = document.createElement("i")
+                menuBoxIcon.dataset.icon = "ellipsis"
 
-                const content = document.createElement("div")
-                content.classList.add("content")
+                menuBox.append(menuBoxIcon)
 
+                termTitle.append(termTitleText)
+                btnNav.append(menuBox)
+                //btnNav.append(newTextIconBox, newImageIconBox, downloadIconBox, editIconBox)
+                summary.append(termTitle, btnNav)
+
+                const meaningsBox = document.createElement("div")
+                meaningsBox.classList.add("meanings", "content")
+                meaningsBox.dataset.id = term.idTerm
+                
                 const contentInner = document.createElement("div")
                 contentInner.classList.add("content-inner")
 
@@ -159,18 +188,20 @@ async function fillTermsArea(idFolder, nameFolder, letterFilter = "none"){
                     }
                 })
 
-                content.append(contentInner)
+                meaningsBox.append(contentInner)
 
-                termBox.insertAdjacentElement("beforeend", collapsible)
-                termBox.insertAdjacentElement("beforeend", content)
+                termBox.insertAdjacentElement("beforeend", summary)
+                termBox.insertAdjacentElement("beforeend", meaningsBox)
 
                 termsArea.insertAdjacentElement("beforeend", termBox)
             })
         }
         
+        openPopupEvent()
+        closePopupEvent()
         downloadEvent()
         refreshIcons()
-        toggleCollpsedEvent() // add collapse event
+        toggleDetailsEvent() // add collapse event
     }catch(error){
         fillWarning("dberror", 0)
         console.error("Failure to load folder terms: ", error)
@@ -258,7 +289,6 @@ function updateFormValues(currentSection, data){
 // startup function calls
 fillUserFields()
 fillFolderList(localStorage.getItem("lastFolder") || -1)
-
 
 async function letterFilterEvent(){
     letterTermFilter.addEventListener("input", (e) => {

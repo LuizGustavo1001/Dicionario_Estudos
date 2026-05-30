@@ -110,17 +110,17 @@
 
             <form action="#" method="post">
                 <div class="form-input-box input-box-w-label">
-                    <label for="iterm">Termo</label>
-                    <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres" autocapitalize="on">
+                    <label for="iNewTerm">Termo</label>
+                    <input type="text" name="term" id="iNewTerm" class="input" placeholder="Máximo 100 caracteres" autocapitalize="on">
                 </div>
 
                 <div style="display: flex; justify-content: space-between; gap: 0.5em; align-items: center;">
                     <p><strong>Significados</strong></p>
-                    <div class="add-term-area">
-                        <button type="button" id="add-text" class="icon-hold" title="Clique aqui para adicionar uma entrada de texto">
+                    <div class="wrapper">
+                        <button type="button" id="add-text" class="icon-hold secondary" title="Clique aqui para adicionar uma entrada de texto">
                             <i data-icon="textboxplus"></i>
                         </button>
-                        <button type="button" id="add-image" class="icon-hold" title="Clique aqui para adicionar uma entrada de imagem">
+                        <button type="button" id="add-image" class="icon-hold secondary" title="Clique aqui para adicionar uma entrada de imagem">
                             <i data-icon="imageplus"></i>
                         </button>
                     </div>
@@ -128,7 +128,7 @@
 
                 <div class="inputs-box" style="display: flex; flex-direction: column; gap: 0.5em; overflow: auto;">
                     <div class="form-input-box input-box-w-label">
-                        <label for="itext#1">Siginificado Texto #1</label>
+                        <label for="itext#1">Significado Texto #1</label>
                         <input type="text" name="text" id="itext#1" class="input term-input" placeholder="Máximo 300 caracteres" autocapitalize="on">
                     </div>
                     <div class="form-input-box input-box-w-label">
@@ -210,6 +210,63 @@
                 </button>
             </form>
         </div>
+
+        <div id="edit-term" class="popup mini">
+            <div class="pop-up-title">
+                <h2>Alterar Termo</h2>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+            </div>
+
+            <form action="#" method="post">
+                <div class="form-input-box input-box-w-label">
+                    <label for="ifolder">Nome do Termo</label>
+                    <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres" autocapitalize="on">
+                </div>
+
+                <!-- Meanings list (remove button for each) -->
+
+                <button type="submit" class="btn submit-popup-form" data-id="edit-term">
+                    <div class="spinning-wheel"></div>
+                    <span>Alterar Termo</span>
+                </button>
+            </form>
+        </div>
+
+        <div id="add-meaning-text" class="popup mini">
+            <div class="pop-up-title">
+                <h2>Adicionar Significado Texto</h2>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+            </div>
+
+            <form action="#" method="post">
+                <div class="form-input-box input-box-w-label">
+                    <label for="inewTextMeaning">Significado Texto</label>
+                    <input type="text" name="newTextMeaning" id="inewTextMeaning" class="input" placeholder="Máximo 300 caracteres" autocapitalize="on">
+                </div>
+                <button type="submit" class="btn submit-popup-form" data-id="add-meaning-text">
+                    <div class="spinning-wheel"></div>
+                    <span>Adicionar Significado</span>
+                </button>
+            </form>
+        </div>
+
+        <div id="add-meaning-image" class="popup mini">
+            <div class="pop-up-title">
+                <h2>Adicionar Significado Imagem</h2>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+            </div>
+
+            <form action="#" method="post">
+                <div class="form-input-box input-box-w-label">
+                    <label for="inewImageMeaning">Significado Imagem </label>
+                    <input type="file" name="newImageMeaning" id="inewImageMeaning" class="input image-input" accept="image/*, .pdf">
+                </div>
+                <button type="submit" class="btn submit-popup-form" data-id="add-meaning-image">
+                    <div class="spinning-wheel"></div>
+                    <span>Adicionar Significado</span>
+                </button>
+            </form>
+        </div>
     </div>
 
     <header class="page-header">
@@ -217,6 +274,7 @@
             <i data-icon="brandLogo"></i>
             <h1>Dicionário de Estudos</h1>
         </div>
+        
         <nav class="header-nav">
             <button class="icon-hold">
                 <i data-icon="help"></i>
@@ -230,35 +288,24 @@
     <main>
         <aside class="main-aside">
             <div class="aside-hero">
-                <nav class="aside-nav">
-                    <button class="nav-item btn-styled selected" data-id="folders">Pastas</button>
-                    <button class="nav-item btn-styled" data-id="search-folders">Pesquisa</button>
+                <div class="form-input-box form--w-icon search-input folder-search">
+                    <label for="isearch-folder-terms"><i data-icon="search"></i></label>
+                    <input type="text" name="search-folder-terms" id="isearch-folder-terms" placeholder="Pesquisar pastas">
+                </div>
+
+                <nav class="folders-nav">
+                    <button class="btn toggle-popup-icon" data-id="add-folder">
+                        <i data-icon="new_folder"></i>
+                        <span>Nova Pasta</span>
+                    </button>
+                    
+                    <button class="btn btn--outline toggle-popup-icon" data-id="add-term">
+                        <i data-icon="new_term"></i>
+                        <span>Novo Termo</span>
+                    </button>
                 </nav>
 
-                <div id="folders" class="aside-nav-tab open">
-                    <nav class="folders-nav">
-                        <button class="btn toggle-popup-icon" data-id="add-folder">
-                            <i data-icon="new_folder"></i>
-                            <span>Nova Pasta</span>
-                        </button>
-                        
-                        <button class="btn btn--outline toggle-popup-icon" data-id="add-term">
-                            <i data-icon="new_term"></i>
-                            <span>Novo Termo</span>
-                        </button>
-                    </nav>
-
-                    <ul class="folders-list" aria-label="current user folder list here"></ul>
-                </div>
-
-                <div id="search-folders" class="aside-nav-tab">
-                    <div class="form-input-box form--w-icon search-input term-search">
-                        <label for="isearch-folder-terms"><i data-icon="search"></i></label>
-                        <input type="text" name="search-folder-terms" id="isearch-folder-terms" placeholder="Pesquisar pastas">
-                    </div>
-
-                    <div class="folder-list" aria-label="current user folder list here + search input filter"></div>
-                </div>
+                <ul class="folders-list"></ul>
             </div>
 
             <div class="user-info">
@@ -320,23 +367,36 @@
                     </div>
                 </div>
 
-                <ul class="terms-area" aria-label="current folder terms list here">
-                    <!--
-                    <li class="term">
-                        <button class="collapsible" aria-expanded="false" data-id="1">
-                            <span class="term-name">Termo #1</span>
-                            <span class="icon-hold"><i data-icon="edit"></i></span>
-                        </button>
+                <div class="terms-area" aria-label="current folder terms list here">
+                    <details class="term downloadable toggleEvent" data-id="1">
+                        <summary>
+                            <div class="term-title">
+                                <p>lorem #1</p>
+                            </div>
 
-                        <div class="content" data-id="1">
+                            <nav class="btns-nav">
+                                <span class="icon-hold hidden-btn">
+                                    <i data-icon="textboxplus"></i>
+                                </span>
+                                <span class="icon-hold hidden-btn">
+                                    <i data-icon="imageplus"></i>
+                                </span>
+                                <span class="icon-hold hidden-btn">
+                                    <i data-icon="download"></i>
+                                </span>
+                                <span class="icon-hold">
+                                    <i data-icon="term"></i>
+                                </span>
+                            </nav>
+                        </summary>
+                        <div class="meanings content" data-id="1">
                             <div class="content-inner">
                                 <p class="meaning">Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, amet? Accusamus rem, nihil omnis pariatur, doloribus ducimus sunt modi necessitatibus iure harum excepturi sed porro, id accusantium blanditiis distinctio odio!</p>
                                 <img class="meaning" src="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1764258969/dm-bg_kuphgi.png" alt="meaning">
                             </div>
                         </div>
-                    </li>
-                    -->
-            </div>
+                    </details>
+                </div>
         </section>
     </main>
 

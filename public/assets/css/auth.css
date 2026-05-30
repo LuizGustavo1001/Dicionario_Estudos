@@ -65,19 +65,8 @@ main {
   display: none;
   background: var(--blue-850);
 }
-.auth-image-box svg {
-  color: var(--blue-200);
-}
 .auth-image-box .brand-logo {
-  width: min(25dvw, 250px);
-}
-.auth-image-box .image-title, .auth-image-box .dev-info {
-  width: 100%;
-}
-.auth-image-box .dev-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: min(25dvw, 200px);
 }
 .auth-image-box .image-title {
   text-align: center;
@@ -91,9 +80,12 @@ main {
 @media (min-width: 768px) {
   .auth-image-box {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5em;
+    width: 100%;
   }
 }
 
@@ -132,6 +124,12 @@ main {
   font-size: 0.8em;
   box-shadow: none;
   border-radius: var(--radius-m);
+}
+
+.dev-info {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */

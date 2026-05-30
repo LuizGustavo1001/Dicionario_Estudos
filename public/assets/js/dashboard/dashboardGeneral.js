@@ -39,9 +39,7 @@ const popupCloseIcons   = document.querySelectorAll(".close-popup-icon")
 const addFolderForm     = document.querySelector("#add-folder form")
 const editFolderForm    = document.querySelector("#edit-folder form")
 const searchTermInput   = document.querySelector("#isearch-term")
-const asideNavTabs      = document.querySelectorAll(".aside-nav-tab")
 const heroAsideNav      = document.querySelector(".aside-hero .aside-nav")
-const heroAsideNavItems = heroAsideNav.querySelectorAll(".nav-item")
 
 desktopMedia.addEventListener("change", handleResize2Aside)
 
@@ -51,15 +49,20 @@ asideIcons.forEach(icon => { // Main aside visibility event
     icon.addEventListener('click', toggleAside)
 })
 
-openPopupIcons.forEach(icon => {
-    icon.addEventListener("click", () => {
-        changePopupVisibility(icon.dataset.id)
+export async function openPopupEvent(){
+    openPopupIcons.forEach(icon => {
+        icon.addEventListener("click", (e) => {
+            e.stopPropagation()
+            changePopupVisibility(icon.dataset.id)
+        })
     })
-})
+}
 
-popupCloseIcons.forEach(icon => { // Settings popup close
-    icon.addEventListener("click", closePopup)
-})
+export async function closePopupEvent(){
+    popupCloseIcons.forEach(icon => { 
+        icon.addEventListener("click", closePopup)
+    })
+}
 
 document.addEventListener("click", (e) => { // Mobile aside toggle
     if(!isDesktop()){
@@ -79,16 +82,6 @@ document.addEventListener("click", (e) => { // Mobile aside toggle
 searchTermInput.addEventListener("input", () => {
     console.log("not working yet")
 })
-
-heroAsideNavItems.forEach(el => {
-    el.addEventListener("click", () => {
-        toggleHeroAsideTab(el.dataset.id)
-    })
-})
-
-handleResize2Aside()
-if(addFolderForm) addFolderEvent(addFolderForm)
-if(editFolderForm) addFolderEvent(editFolderForm)
 
 // Functions
 function updateOverlay(){
@@ -119,6 +112,7 @@ function handleResize2Aside(){
 
 function changePopupVisibility(page){
     const popupSection = popupBox.querySelector(`#${page}`)
+    console.log(popupSection.id)
     if(!popupSection) return
 
     popupSection.classList.add("open")
@@ -172,48 +166,41 @@ function addFolderEvent(formContainer){
 }
 
 // collapsible object event listener
-export function toggleCollpsedEvent(){
-    const toggles = document.querySelectorAll(".collapsible")
+export function toggleDetailsEvent(){
+    const toggles = document.querySelectorAll("details.toggleEvent")
 
-    toggles.forEach(toggle => {
-        toggle.addEventListener("click", function() {
-            const content = this.nextElementSibling
+    toggles.forEach(el => {
+        const summary = el.querySelector("summary")
+        const content = el.querySelector(".content")
+
+        if(!summary || !content) return
+
+        summary.addEventListener("click", function(e) {
+            e.preventDefault()
+
             const isOpen = content.classList.contains("open")
 
-            this.classList.toggle("active")
-            this.setAttribute("aria-expanded", !isOpen)
-
-            // animation logic
-            if(isOpen){
+            if(isOpen){ // close logic
                 content.style.maxHeight = null
                 content.classList.remove("open")
-            }else{
-                content.style.maxHeight = content.scrollHeight + "px"
-                content.classList.add("open")
+                el.classList.remove("open")
+
+                // waiting CSS animation timer
+                setTimeout(() => {
+                    el.removeAttribute("open")
+                }, 300)
+            }else{ // open logic
+                el.setAttribute("open", "")
+                el.classList.add("open")
+
+                requestAnimationFrame(() => {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.classList.add("open");
+                })
             }
         })
     })
 }
-
-
-function toggleHeroAsideTab(tabId){
-    asideNavTabs.forEach(tab => {
-        tab.classList.remove("open")
-
-        if(tab.id == tabId){
-            tab.classList.add("open")
-        }
-    })
-
-    heroAsideNavItems.forEach(el => {
-        el.classList.remove("selected")
-
-        if(el.dataset.id == tabId){
-            el.classList.add("selected")
-        }
-    })
-}
-
 
 const addTermInputAreaBtns = document.querySelectorAll(".add-term-area button")
 addTermInputAreaBtns.forEach(btn => {
@@ -261,3 +248,10 @@ function addInput(type){
     const inputBox = document.querySelector(".inputs-box")
     inputBox.insertAdjacentElement("beforeend", formInputBox)
 }
+
+
+handleResize2Aside()
+if(addFolderForm) addFolderEvent(addFolderForm)
+if(editFolderForm) addFolderEvent(editFolderForm)
+openPopupEvent()
+closePopupEvent()

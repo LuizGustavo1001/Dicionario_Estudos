@@ -58,7 +58,7 @@ async function mapAddTerm(clickedBtn, popup){
     
     const closestForm   = clickedBtn.closest("form")
     const folderId      = selectedFolder.dataset.id
-    const newTermName   = popup.querySelector("#iterm").value || null
+    const newTermName   = popup.querySelector("#iNewTerm").value || null
     const meanings      = popup.querySelectorAll(".term-input, .image-input")
 
     const formData = new FormData()

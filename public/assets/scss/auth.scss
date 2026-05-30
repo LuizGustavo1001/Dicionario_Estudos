@@ -40,20 +40,9 @@ main{
 
 .auth-image-box{
     display: none;
-
     background: var(--blue-850);
 
-    svg{ color: var(--blue-200); }
-
-    .brand-logo{ width: min(25dvw, 250px); }
-
-    .image-title, .dev-info{ width: 100%; }
-
-    .dev-info{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    .brand-logo{ width: min(25dvw, 200px); }
 
     .image-title{
         text-align: center;
@@ -63,10 +52,12 @@ main{
     }
     
     @include m.respond(tablet){
-        display: flex;
+        @include m.flex-collumn-05;
+        justify-content: center;
         align-items: center;
-        flex-direction: column;
-        gap: 1em;
+        gap: 1.5em;
+
+        width: 100%;
     }
 }
 
@@ -112,6 +103,12 @@ main{
     }
 }
 
+.dev-info{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
 .dark-mode{
     background: var(--blue-900);
@@ -128,9 +125,7 @@ main{
 
         .hero-container{
             .main-title{
-                p{
-                    color: var(--blue-400);
-                }
+                p{ color: var(--blue-400); }
             }
         }
     }
