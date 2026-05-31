@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Sora:wght@100..800&family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Parkinsans:wght@300..800&display=swap');
 
 $default-time: 0.2s;
 
@@ -8,9 +8,9 @@ $desktop: 1024px;
 $desktop_outer: 1500px;
 
 :root{
-    --font-style: "Sora", sans-serif;
+    --font-style: "Parkinsans", sans-serif;
     --font-sans: "Google Sans Flex", sans-serif;
-    --font-mono: "Ubuntu Sans Mono";
+    --font-mono: "JetBrains Mono";
 
     --radius: 0.25em;
     --radius-sm: calc(var(--radius) + 0.25em);

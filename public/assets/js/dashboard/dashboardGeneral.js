@@ -79,9 +79,6 @@ document.addEventListener("click", (e) => { // Mobile aside toggle
     }
 })
 
-searchTermInput.addEventListener("input", () => {
-    console.log("not working yet")
-})
 
 // Functions
 function updateOverlay(){
@@ -112,7 +109,6 @@ function handleResize2Aside(){
 
 function changePopupVisibility(page){
     const popupSection = popupBox.querySelector(`#${page}`)
-    console.log(popupSection.id)
     if(!popupSection) return
 
     popupSection.classList.add("open")
@@ -205,7 +201,6 @@ export function toggleDetailsEvent(){
 const addTermInputAreaBtns = document.querySelectorAll(".add-term-area button")
 addTermInputAreaBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-        console.log(btn.id)
         addInput(btn.id)
     })
 })

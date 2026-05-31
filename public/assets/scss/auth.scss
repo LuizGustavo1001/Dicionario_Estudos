@@ -13,7 +13,7 @@ main{
 
     @include m.respond(tablet){
         width: clamp(300px, 100%, 1000px);
-        height: clamp(500px, 100%, 650px);
+        height: 500px;
 
         display: grid;
         grid-template-columns: 1fr 1fr;

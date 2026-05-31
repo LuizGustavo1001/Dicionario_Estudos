@@ -61,7 +61,7 @@ export async function getFolderTerms(){
 
 export async function getTermMeanings(){
     try{
-        const folderTerms   = await getFolderTerms()
+        const folderTerms = await getFolderTerms()
 
         const terms = folderTerms.map(t => t.idTerm)
 

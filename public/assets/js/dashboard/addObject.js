@@ -1,7 +1,6 @@
-import { setWarningCookie, fillWarning, logout, getAuth } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning } from "/assets/js/base.js"
 import { closePopup } from "/assets/js/dashboard/dashboardGeneral.js"
-import { fillFolderList } from "/assets/js/dashboard/userInfo.js"
-import { getFolders } from "/assets/js/getData.js"
+import { renderFolderList } from "/assets/js/dashboard/renderContents.js"
 
 const popupSubmitBtns = document.querySelectorAll(".btn.submit-popup-form, .btn.warning-btn")
 if(popupSubmitBtns){
@@ -163,7 +162,6 @@ async function addFolder(nameFolder, clr){
         }) 
 
         const data = await response.json()
-        console.log(data)
 
         if(! response.ok){
             fillWarning(data.error, 0)
@@ -173,7 +171,7 @@ async function addFolder(nameFolder, clr){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        fillFolderList(data.insertId)
+        renderFolderList(data.insertId)
     }catch(err){
         console.error("Server error", err)
     }
@@ -195,7 +193,7 @@ async function addTerm(idFolder, formData){
 
         fillWarning(result.message, 1)
         closePopup()
-        fillFolderList(idFolder)
+        renderFolderList(idFolder)
     }catch(err){
         console.error("Server error", err)
     }
@@ -231,7 +229,7 @@ async function editFolderData(idFolder, newName, newClr){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        fillFolderList(idFolder)
+        renderFolderList(idFolder)
     }catch(err){
         console.error("Server error", err)
     }
@@ -260,7 +258,7 @@ async function removeFolder(idFolder){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        fillFolderList(idFolder)
+        renderFolderList(idFolder)
     }catch(err){
         console.error("Server error", err)
     }

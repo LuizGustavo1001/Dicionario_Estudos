@@ -39,8 +39,6 @@ body{
 }
 
 main{
-    position: relative;
-
     min-height: 0;
     display: flex;
     gap: 1em;
@@ -61,6 +59,10 @@ main{
     grid-template-rows: 1fr auto;
     gap: 0.5em;
 
+    height: 100dvh;
+
+    @include m.respond(desktop){ height: initial; }
+
     position: absolute;
     top: 0;
     left: 0;
@@ -69,7 +71,6 @@ main{
     z-index: 2;
     transition: 0.5s;
     overflow: hidden;
-    max-height: 100dvh;
 
     &.open{
         opacity: 1;
@@ -79,11 +80,10 @@ main{
         @include m.respond(desktop){ 
             width: 250px;
 
-            position: initial; 
+            position: initial;
             z-index: initial;
             margin: 0;
-            padding: 0;
-            max-height: initial;
+            padding: 0;            
         }
     }
 
@@ -438,7 +438,7 @@ main{
     .aside-hero{
         .folders-list{
             li{
-                color: var(--blue-400);
+                color: var(--blue-600);
 
                 &:hover, &.selected{
                     background: var(--blue-900);
@@ -488,6 +488,18 @@ main{
         .btn-styled{
             &.selected, &:hover{
                 background: var(--blue-900);
+            }
+        }
+
+        .settings-hero{
+            .section-content{
+                .item{
+                    ul{
+                        li{
+                            label{ color: var(--blue-200); }
+                        }
+                    }
+                }
             }
         }
     }
