@@ -11,7 +11,6 @@ const meaningController = require("../controller/meaningController")
 
 const upload = multer({ dest: "uploads/" }) // temp folder to save image before Cloudinary
 
-// router.post("/changePassword", userController.changePassword)
 router.post("/login", userController.login)
 router.post("/register", userController.register)
 router.post("/logout", userController.logout)
@@ -27,6 +26,8 @@ router.post("/me/add/folder", authMiddleware.protect, folderController.createFol
 router.post("/me/add/term", authMiddleware.protect, upload.array("images"), termController.createTerm)
 router.post("/me/add/meaning", authMiddleware.protect, meaningController.createMeaning)
 
+router.post("/me/edit/username", authMiddleware.protect, userController.changeUsername)
+router.post("/me/edit/password", authMiddleware.protect, userController.changePassword)
 router.post("/me/edit/folder", authMiddleware.protect, folderController.editFolder)
 //router.post("/me/edit/term")
 //router.post("/me/edit/meaning")

@@ -50,16 +50,16 @@
                         <h2>Credenciais</h2>
                         <ul>
                             <li>
-                                <label for="iusername" title="Nome de Usuário">Nome de Usuário</label>
-                                <input type="text" name="username" id="iusername" class="just-input secondary" placeholder="máximo 30 caracteres" autocapitalize="words" autocomplete="name">
+                                <label for="iusername" title="Nome de Usuário">Nome de Usuário <small>(em Desenvolvimento)</small></label>
+                                <a href="/auth/changeUsername" class="btn" >Clique aqui para alterar seu nome</a>
                             </li>
 
                             <li>
-                                <label title="Token de usuário">Token de Usuário</label>
+                                <label title="Token de usuário">Token de Usuário <small>(em Desenvolvimento)</small></label>
                                 <a href="#" class="btn" >Clique aqui para gerar novo token</a>
                             </li>
 
-                            <small>Para alterar sua senha faça o logout e clique em "Esqueci minha senha" (Indisponível)</small>
+                            <small>Para alterar sua senha faça o logout e clique em "Esqueci minha senha" (em Desenvolvimento)</small>
                         </ul>
                     </li>
 
@@ -67,7 +67,7 @@
                         <h2>Outros</h2>
                         <ul>
                             <li>
-                                <label for="ilanguage" title="Linguagem">Linguagem</label>
+                                <label for="ilanguage" title="Linguagem">Linguagem <small>(em Desenvolvimento)</small></label>
                                 <select name="language" id="ilanguage" class="just-input secondary">
                                     <option value="PTBR">Português - BR</option>
                                     <option value="EN">English</option>
@@ -75,7 +75,7 @@
                             </li>
 
                             <li>
-                                <label title="Termos de Privacidade">Termos de Privacidade</label>
+                                <label title="Termos de Privacidade">Termos de Privacidade <small>(em Desenvolvimento)</small></label>
                                 <a href="#" class="btn" >Clique para saber mais</a>
                             </li>
                         </ul>
@@ -368,6 +368,7 @@
                 </div>
 
                 <div class="terms-area" aria-label="current folder terms list here">
+                    
                     <details class="term downloadable toggleEvent" data-id="1">
                         <summary>
                             <div class="term-title">
@@ -375,18 +376,29 @@
                             </div>
 
                             <nav class="btns-nav">
-                                <span class="icon-hold hidden-btn">
-                                    <i data-icon="textboxplus"></i>
-                                </span>
-                                <span class="icon-hold hidden-btn">
-                                    <i data-icon="imageplus"></i>
-                                </span>
-                                <span class="icon-hold hidden-btn">
-                                    <i data-icon="download"></i>
-                                </span>
                                 <span class="icon-hold">
-                                    <i data-icon="term"></i>
+                                    <i data-icon="ellipsis"></i>
                                 </span>
+
+                                <ul class="tooltip term-tooltip">
+                                    <li>
+                                        <i data-icon="edit"></i>
+                                        <span>Editar Nome</span>
+                                    </li>
+                                    <li>
+                                        <i data-icon="download"></i>
+                                        <span>Baixar</span>
+                                    </li>
+                                    <li>
+                                        <i data-icon="textboxplus"></i>
+                                        <span>Adicionar Siginificado por Texto</span>
+                                    </li>
+                                    <li>
+                                        <i data-icon="imageplus"></i>
+                                        <span>Adicionar Siginificado por Imagem</span>
+                                    </li>
+                                </ul>
+
                             </nav>
                         </summary>
                         <div class="meanings content" data-id="1">
@@ -396,6 +408,7 @@
                             </div>
                         </div>
                     </details>
+                    
                 </div>
         </section>
     </main>
@@ -405,7 +418,6 @@
     <script type="module" src="/assets/js/dashboard/renderContents.js"></script>
     <script type="module" src="/assets/js/dashboard/settings.js"></script>
     <script type="module" src="/assets/js/dashboard/addObject.js"></script>
-    
     <script src="/assets/js/toggleTheme.js"></script>
 </body>
 </html>

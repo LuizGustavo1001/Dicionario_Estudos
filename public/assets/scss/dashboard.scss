@@ -41,28 +41,27 @@ body{
 main{
     min-height: 0;
     display: flex;
-    gap: 1em;
 
     .aside-hero, .user-info, .hero{
         padding: 0.5em;
         background: var(--white);
-        border-radius: var(--radius-sm);
         box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.082);
+    }
+
+    .hero{ border: var(--radius-sm); }
+
+    .aside-hero{ border-radius: 0 0 var(--radius-sm) 0; }
+
+    .user-info{ border-radius: 0 var(--radius-sm) 0 0; }
+
+    @include m.respond(desktop){
+        .aside-hero, .user-info, .hero{
+            border-radius: var(--radius-sm);
+        }
     }
 }
 
 .main-aside{
-    flex: 0 0 250px;
-    width: 300px;
-    
-    display: grid;
-    grid-template-rows: 1fr auto;
-    gap: 0.5em;
-
-    height: 100dvh;
-
-    @include m.respond(desktop){ height: initial; }
-
     position: absolute;
     top: 0;
     left: 0;
@@ -72,18 +71,35 @@ main{
     transition: 0.5s;
     overflow: hidden;
 
+    flex: 0 0 0px;
+    width: 0;
+    height: 100dvh;
+    opacity: 0;
+    overflow: hidden;
+    transform: 0.5s;
+
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 0.5em;
+
+    @include m.respond(desktop){
+        height: initial;
+        position: initial;
+        z-index: initial;
+        margin: 0;
+        padding: 0;
+    }
+
     &.open{
+        width: 70dvw;
         opacity: 1;
         transform: translateX(0);
+
         margin-right: 1em;
 
-        @include m.respond(desktop){ 
+        @include m.respond(desktop){
+            flex: 0 0 250px;
             width: 250px;
-
-            position: initial;
-            z-index: initial;
-            margin: 0;
-            padding: 0;            
         }
     }
 
@@ -275,6 +291,14 @@ main{
                             color: var(--blue-750);
                         }
                     }
+
+                    .btns-nav{
+                        position: relative;
+                        .tooltip{
+                            position: absolute;
+                        }
+                    }
+
                 }
 
                 .meanings{
@@ -310,6 +334,7 @@ main{
 /* POPUP */
 #settings{
     flex-direction: row;
+    padding: 0;
 
     height: clamp(500px, 60dvh, 1000px);
 
@@ -336,7 +361,7 @@ main{
         }
 
         &.selected, &:hover{
-            background: var(--blue-200);
+            background: var(--white);
         }
     }
 
@@ -345,12 +370,15 @@ main{
     }
 
     .settings-aside{
+        padding: 1em;
+
         display: flex;
         flex-direction: column;
         gap: 1em;
 
         width: clamp(30px, 10dvw, 200px);
 
+        background: var(--blue-200);
         ul{
             flex: 1;
 
@@ -377,6 +405,8 @@ main{
     .settings-hero{
         flex: 1;
         @include m.flex-collumn-05;
+
+        padding: 1em;
 
         .close-popup-icon{
             width: fit-content;
@@ -487,8 +517,12 @@ main{
     #settings{
         .btn-styled{
             &.selected, &:hover{
-                background: var(--blue-900);
+                background: var(--blue-850);
             }
+        }
+
+        .settings-aside{
+            background: var(--blue-900);
         }
 
         .settings-hero{

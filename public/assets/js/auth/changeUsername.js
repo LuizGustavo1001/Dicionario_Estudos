@@ -1,0 +1,57 @@
+import { setWarningCookie, fillWarning, getAuth, getCookie } from "/assets/js/base.js"
+
+const authStatus = await getAuth()
+
+if(!authStatus){
+    window.location.href = "/auth/login"
+}else if(authStatus === "pending_confirmation"){
+    window.location.href = "/auth/confirmToken"
+}
+
+const form      = document.querySelector("form")
+const submitBtn = document.querySelector(".btn.submit")
+
+if(form && submitBtn){
+    form.addEventListener("submit", (e) => {
+        e.preventDefault()
+
+        const currentUsername   = document.querySelector("#ioldUsername")
+        const newUsername       = document.querySelector("#inewUsername")
+        const typedToken        = document.querySelector("#iuserToken")
+
+        if((currentUsername && newUsername && typedToken) && currentUsername.value != newUsername.value){
+            changeUsername(currentUsername.value, newUsername.value, typedToken.value)
+        }else if(currentUsername.value == newUsername.value){
+            fillWarning("sameUsername", 0)
+        }else{
+            setWarningCookie("dberror", 0)
+            window.location.href = "/auth/changeUsername"
+        }
+    })
+}
+
+async function changeUsername(currentUsername, newUsername, typedToken){
+    const response = await fetch("/users/me/edit/username", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            currentUsername: currentUsername,
+            newUsername: newUsername,
+            typedToken: typedToken
+        })
+    })
+
+    if (!response.ok){
+        const errorData = await response.json()
+        fillWarning(errorData.error, 0)
+        return
+    }
+
+    const data = await response.json()
+
+    setWarningCookie(data.message, 1)
+    window.location.href = "/auth/login"
+}

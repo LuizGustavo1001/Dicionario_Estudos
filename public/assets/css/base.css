@@ -517,6 +517,10 @@ form {
   gap: 1em;
 }
 
+.tooltip {
+  position: absolute;
+}
+
 .overlay {
   visibility: collapse;
   position: fixed;

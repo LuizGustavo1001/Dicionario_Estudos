@@ -1,8 +1,10 @@
 const db = require("../database/connection")
 
 class User{
-    static async getById(id){
-        const [rows] = await db.execute(`
+    static async getById(id, conn = null){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
             SELECT idUser, username, password, tokenConfirmed
             FROM user_data
             WHERE idUser = ?
@@ -14,8 +16,10 @@ class User{
         return rows[0]
     }
 
-    static async getByName(name){
-        const [rows] = await db.execute(`
+    static async getByName(name, conn = null){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
             SELECT idUser, username, password, tokenConfirmed
             FROM user_data
             WHERE username = ?
@@ -90,14 +94,30 @@ class User{
         return true
     }
 
-    static async updateTokenStatus(conn, idUser){
+    static async updateUsername(newUsername, idUser, conn){
         const executor = conn || db
 
         const [result] = await executor.execute(`
             UPDATE user_data
-            SET tokenConfirmed = true
+            SET username = ?
             WHERE idUser = ?
-        `, [idUser])
+        `, [newUsername, idUser])
+
+        if(result.affectedRows === 0){
+            throw new Error("error trying to update username")
+        }
+
+        return true
+    }
+
+    static async updateTokenStatus(conn, idUser, status){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            UPDATE user_data
+            SET tokenConfirmed = ?
+            WHERE idUser = ?
+        `, [status, idUser])
 
         if(result.affectedRows === 0){
             throw new Error("error trying to update token status")

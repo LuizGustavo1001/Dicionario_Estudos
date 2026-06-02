@@ -263,8 +263,6 @@ function renderEmptyState(message){
     toggleDetailsEvent()
 }
 
-
-
 export async function folderEventInit(folderElement, folderData){
     folderElement.addEventListener("click", async () => {
         const termsMap = await mapFolderTerms(folderElement.dataset.id)
@@ -335,8 +333,6 @@ export function renderEmptyFoldersState(){ // test
     
     renderEmptyState("Nenhuma pasta selecionada")
 }
-
-
 
 letterFilterEvent()
 renderUserInfo()

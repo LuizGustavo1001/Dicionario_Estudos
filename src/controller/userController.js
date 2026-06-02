@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     const user = await User.getByName(username)
 
     if(! user){
-        return res.status(404).json({ error: "userNotExists" })
+        return res.status(404).json({ error: "userNotFound" })
     }
 
     const valid = await bcrypt.compare(password, user.password)
@@ -85,8 +85,8 @@ exports.auth = async (req, res) => {
     const connection = await db.getConnection()
 
     try{ // decode token
-        const decoded = JWT.verify(token, process.env.JWT_SECRET)
-        const idUser = decoded.idUser
+        const decoded   = JWT.verify(token, process.env.JWT_SECRET)
+        const idUser    = decoded.idUser
 
         await connection.beginTransaction()
 
@@ -108,10 +108,10 @@ exports.auth = async (req, res) => {
             })
         } 
 
-        // pending token confirmation -> generate new token + update dabase 
-        const newRawToken = crypto.randomBytes(8).toString('hex').toUpperCase()
-        const saltRounds = 10
-        const hashedToken = await bcrypt.hash(newRawToken, saltRounds)
+        // pending token confirmation -> generate new token + update database 
+        const newRawToken   = crypto.randomBytes(8).toString('hex').toUpperCase()
+        const saltRounds    = 10
+        const hashedToken   = await bcrypt.hash(newRawToken, saltRounds)
 
         await User.updateRecoveryToken(connection, idUser, hashedToken)
 
@@ -228,10 +228,10 @@ exports.verifyToken = async (req, res) => {
 
         if(!tokenMatch){
             await connection.rollback()
-            return res.status(400).json({ error: "incorretToken" })
+            return res.status(400).json({ error: "incorrectToken" })
         }
 
-        await User.updateTokenStatus(connection, idUser)
+        await User.updateTokenStatus(connection, idUser, true)
 
         // new JWT -> token confirmed
         await connection.commit()
@@ -252,6 +252,56 @@ exports.verifyToken = async (req, res) => {
         })
 
         return res.status(201).json({ message: "tokenVerified" }) 
+    }catch(err){
+        await connection.rollback()
+        console.log(err)
+        return res.status(400).json({ error: "dberror" })
+    }finally{
+        connection.release()
+    }
+}
+
+exports.changeUsername = async (req, res) => {
+    const { currentUsername, newUsername, typedToken } = req.body
+    
+    if(!currentUsername || !newUsername || !typedToken) return
+
+    const idUser = req.userId
+
+    const connection = await db.getConnection()
+
+    try{
+        await connection.beginTransaction()
+
+        // verify if typedToken matches with userToken stored in database
+        const userToken = await User.getTokenById(connection, idUser)
+        if(!userToken){
+            await connection.rollback()
+            return res.status(404).json({ error: "tokenNotFound" })
+        }
+        
+        const tokenMatch = await bcrypt.compare(typedToken, userToken.token)
+        if(!tokenMatch){
+            await connection.rollback()
+            return res.status(400).json({ error: "incorrectToken" })
+        }
+
+        // Verify current username
+        const userData = await User.getById(idUser)
+
+        if(currentUsername != userData.username){
+            await connection.rollback()
+            return res.status(404).json({ error: "userNotFound" })
+        }
+
+        // change username + change userToken status to "not_auth/false"
+        await User.updateUsername(newUsername, idUser, connection)
+
+        await User.updateTokenStatus(connection, idUser, false)
+
+        await connection.commit()
+
+        return res.status(201).json({ message: "usernameChanged" })
     }catch(err){
         await connection.rollback()
         console.log(err)

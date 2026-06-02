@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1780068838/favicon_kszowj.ico" type="image/x-icon">
+    
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/confirmToken.css">
+
+    <title>Alterar Nome de Usuário - Dicionário de Estudos</title>
+</head>
+<body>
+    <div class="snackbars-box"></div>
+
+    <main class="fade-in-up" id="changePassword">
+        <a href="/dashboard" class="back-button">
+            <i data-icon="returnArrow"></i>
+            <span>Voltar</span>
+        </a>
+
+        <div class="main-title">
+            <h1>Alterar seu Nome de Usuário</h1>
+        </div>
+
+        <div class="hero">
+            <div class="top">
+                <p>
+                    Digite abaixo seu nome de usuário cadastrado anteriormente e o novo nome desejado.
+                </p>
+                <p>Após confirmar a troca de nome, será gerado um <strong>novo Token de Verificação</strong> e você terá que confirmá-lo.</p>
+                <p style="text-align: center;"><em>O Token de verificação gerado anteriormente não será mais válido.</em></p>
+            </div>
+
+            <form action="#" class="bottom">
+                <div class="form-input-box input-box-w-label">
+                    <label for="iuserToken">Token:</label>
+                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="Código de 16 dígitos" minlength="16" maxlength="16" required>
+                </div>
+                
+                <div class="form-input-box input-box-w-label">
+                    <label for="ioldUsername">Nome de usuário anterior:</label>
+                    <input type="text" name="oldUsername" id="ioldUsername" class="input" placeholder="Nome de usuário anterior aqui" minlength="8" required autofocus>
+                </div>
+
+                <div class="form-input-box input-box-w-label">
+                    <label for="inewUsername">Novo nome de usuário:</label>
+                    <input type="text" name="newUsername" id="inewUsername" class="input" placeholder="Novo nome de usuário aqui" minlength="8" required>
+                </div>
+
+                <button type="submit" class="btn submit">Alterar Nome</button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="/assets/js/base.js"></script>
+    <script type="module" src="/assets/js/auth/changeUsername.js"></script>
+    <script src="/assets/js/toggleTheme.js"></script>
+    
+</body>
+</html>
