@@ -30,15 +30,16 @@
                     <p>Registre-se para começar o seu dicionário.</p>
                 </div>
                 <form action="#" method="POST">
-                    <div class="form-input-box input-box-w-label">
-                        <label for="iuserName">Nome de Usuário</label>
+                    <fieldset class="input-fieldset">
+                        <legend class="label">Nome de Usuário</legend>
                         <input type="text" name="userName" id="iuserName" class="input" placeholder="Nome de usuário aqui" maxlength="30" minlength="8" autocomplete="username" autocapitalize="words" autofocus required>
-                    </div>
+                    </fieldset>
 
-                    <div class="form-input-box input-box-w-label">
-                        <label for="ipassword">Senha</label>
+                    <fieldset class="input-fieldset">
+                        <legend class="label">Senha</legend>
                         <input type="password" name="password" id="ipassword" class="input" placeholder="********" minlength="4" autocomplete="current-password" required>
-                    </div>
+                    </fieldset>
+
                     <button type="submit" class="btn submit">Cadastrar-se</button>
                 </form>
             </div>

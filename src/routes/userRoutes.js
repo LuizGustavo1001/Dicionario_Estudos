@@ -27,7 +27,7 @@ router.post("/me/add/term", authMiddleware.protect, upload.array("images"), term
 router.post("/me/add/meaning", authMiddleware.protect, meaningController.createMeaning)
 
 router.post("/me/edit/username", authMiddleware.protect, userController.changeUsername)
-router.post("/me/edit/password", authMiddleware.protect, userController.changePassword)
+router.post("/me/edit/password", userController.changePassword)
 router.post("/me/edit/folder", authMiddleware.protect, folderController.editFolder)
 //router.post("/me/edit/term")
 //router.post("/me/edit/meaning")

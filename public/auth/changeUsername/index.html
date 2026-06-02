@@ -20,36 +20,38 @@
             <span>Voltar</span>
         </a>
 
-        <div class="main-title">
-            <h1>Alterar seu Nome de Usuário</h1>
-        </div>
-
         <div class="hero">
+            <div class="main-title">
+                <h1>Alterar seu Nome de Usuário</h1>
+            </div>
+
             <div class="top">
-                <p>
-                    Digite abaixo seu nome de usuário cadastrado anteriormente e o novo nome desejado.
-                </p>
-                <p>Após confirmar a troca de nome, será gerado um <strong>novo Token de Verificação</strong> e você terá que confirmá-lo.</p>
-                <p style="text-align: center;"><em>O Token de verificação gerado anteriormente não será mais válido.</em></p>
+                <div class="subtitle">
+                    <p>
+                        Digite abaixo seu nome de usuário cadastrado anteriormente e o novo nome desejado.
+                    </p>
+                    <p>Após confirmar a troca de nome, será gerado um <strong>novo Token de Verificação</strong> e você terá que confirmá-lo.</p>
+                    <p style="text-align: center;"><em>O Token de verificação gerado anteriormente não será mais válido.</em></p>
+                </div>
             </div>
 
             <form action="#" class="bottom">
-                <div class="form-input-box input-box-w-label">
-                    <label for="iuserToken">Token:</label>
-                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="Código de 16 dígitos" minlength="16" maxlength="16" required>
-                </div>
-                
-                <div class="form-input-box input-box-w-label">
-                    <label for="ioldUsername">Nome de usuário anterior:</label>
-                    <input type="text" name="oldUsername" id="ioldUsername" class="input" placeholder="Nome de usuário anterior aqui" minlength="8" required autofocus>
-                </div>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Nome de Usuário Atual</legend>
+                    <input type="text" name="oldUsername" id="ioldUsername" class="input" placeholder="Nome de usuário atual aqui" maxlength="8" autocomplete="username" required autofocus>
+                </fieldset>
 
-                <div class="form-input-box input-box-w-label">
-                    <label for="inewUsername">Novo nome de usuário:</label>
-                    <input type="text" name="newUsername" id="inewUsername" class="input" placeholder="Novo nome de usuário aqui" minlength="8" required>
-                </div>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Novo Nome de Usuário</legend>
+                    <input type="text" name="newUsername" id="inewUsername" class="input" placeholder="Máximo 30 caracteres" maxlength="8" autocomplete="username" autocapitalize="words" required>
+                </fieldset>
 
-                <button type="submit" class="btn submit">Alterar Nome</button>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Código de Verificação</legend>
+                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="Código de 16 dígitos" minlength="16" maxlength="16" autocapitalize="characters" required>
+                </fieldset>
+
+                <button type="submit" class="btn submit">Alterar Nome de Usuário</button>
             </form>
         </div>
     </main>

@@ -139,6 +139,7 @@ exports.auth = async (req, res) => {
 
 exports.logout = (req, res) => {
     res.clearCookie("token")
+    res.clearCookie("lastFolder")
 
     return res.json({ success: true })
 }
@@ -163,51 +164,6 @@ exports.me = async (req, res) => {
     }catch(err){
         console.log(err)
         return res.status(500).json({ error: 'internalServerError' })
-    }
-}
-
-// verify input token while changing password
-exports.changePassword = async (req, res) => {
-    const { username, typedToken, newPassword } = req.body
-
-    const connection = await db.getConnection()
-
-    try{
-        await connection.beginTransaction() 
-
-        // retrieve user token at dabatase
-        const user = await User.getTokenByName(connection, userId)
-
-        if(!user.recoveryToken){
-            await connection.rollback()
-            return res.status(400).json({ error: "tokenNotFound" })
-        }
-
-        const tokenMatch = await bcrypt.compare(typedToken, user.recoveryToken)
-
-        if(!tokenMatch){
-            await connection.rollback()
-            return res.status(400).json({ error: "incorretToken" })
-        }
-
-        // update password and generate new token
-        const newHashedPassword = await bcrypt.hash(newPassword, 10)
-
-        const newRawToken   = crypto.randomBytes(8).toString('hex').toUpperCase()
-        const saltRounds    = 10
-        const hashedToken   = await bcrypt.hash(newRawToken, saltRounds)
-
-        await User.updatePassword(connection, newHashedPassword, hashedToken, user.idUser)
-
-        await connection.commit()
-
-        return res.status(201).json({ message: "passwordChanged" })
-    }catch(err){
-        await connection.rollback()
-        console.log(err)
-        return res.status(400).json({ error: "dberror" })
-    }finally{
-        connection.release()
     }
 }
 
@@ -252,6 +208,59 @@ exports.verifyToken = async (req, res) => {
         })
 
         return res.status(201).json({ message: "tokenVerified" }) 
+    }catch(err){
+        await connection.rollback()
+        console.log(err)
+        return res.status(400).json({ error: "dberror" })
+    }finally{
+        connection.release()
+    }
+}
+
+// verify input token while changing password
+exports.changePassword = async (req, res) => {
+    const { currentUsername, newPassword, typedToken } = req.body
+
+    if(!currentUsername || !newPassword || !typedToken) return
+
+    const connection = await db.getConnection()
+
+    try{
+        await connection.beginTransaction()
+
+        // retrieve userdata base at typed username
+        const userData = await User.getByName(currentUsername, connection)
+        if(!userData){
+            await connection.rollback()
+            return res.status(404).json({ error: "userNotFound" })
+        }
+
+        // verify if typedToken matches with database userToken
+        const userToken = await User.getTokenById(connection, userData.idUser)
+        if(!userToken){
+            await connection.rollback()
+            return res.status(404).json({ error: "tokenNotFound" })
+        }
+        
+        const tokenMatch = await bcrypt.compare(typedToken, userToken.token)
+        if(!tokenMatch){
+            await connection.rollback()
+            return res.status(400).json({ error: "incorrectToken" })
+        }
+
+        // change password + new token
+        const newHashedPassword = await bcrypt.hash(newPassword, 10)
+
+        const newRawToken   = crypto.randomBytes(8).toString('hex').toUpperCase()
+        const saltRounds    = 10
+        const hashedToken   = await bcrypt.hash(newRawToken, saltRounds)
+
+        await User.updatePassword(connection, newHashedPassword, hashedToken, userData.idUser)
+        await User.updateTokenStatus(connection, userData.idUser, false)
+
+        await connection.commit()
+
+        return res.status(201).json({ message: "passwordChanged" })
     }catch(err){
         await connection.rollback()
         console.log(err)

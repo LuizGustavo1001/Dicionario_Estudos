@@ -32,6 +32,38 @@ button {
   background: none;
 }
 
+.input-fieldset {
+  border: 2px solid var(--blue-500);
+  border-radius: var(--radius-sm);
+}
+.input-fieldset:hover, .input-fieldset:focus-within {
+  border-color: rgb(46, 125, 190);
+}
+.input-fieldset:hover .label, .input-fieldset:focus-within .label {
+  color: rgb(46, 125, 190);
+}
+.input-fieldset .label {
+  margin-left: 0.5em;
+  padding-inline: 0.5em;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: var(--blue-750);
+}
+.input-fieldset .input {
+  width: 100%;
+  outline: none;
+  font-weight: bold;
+  color: var(--blue-800);
+}
+.input-fieldset .input::placeholder {
+  color: var(--blue-500);
+}
+.input-fieldset.border-bottom {
+  border: none;
+  border-bottom: 2px solid var(--blue-500);
+  border-radius: 0;
+}
+
 .icon-hold {
   padding: 0.5em;
   display: flex;
@@ -79,13 +111,6 @@ input, select, textarea {
   border: none;
 }
 
-.form-input-box {
-  display: flex;
-}
-.form-input-box label small {
-  color: var(--blue-700);
-}
-
 .just-input {
   border: 1px solid var(--blue-600);
   border-radius: var(--radius);
@@ -105,17 +130,28 @@ input, select, textarea {
   border-bottom: 1px solid var(--blue-600);
 }
 
+.form-input-box {
+  display: flex;
+  gap: 0.3em;
+}
+.form-input-box label {
+  font-size: 0.9em;
+}
+.form-input-box label small {
+  color: var(--blue-700);
+}
 .form-input-box .input {
-  border: 1px solid var(--blue-400);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--blue-200);
 }
 .form-input-box .input::placeholder {
   color: var(--blue-400);
   font-weight: bold;
 }
 .form-input-box:hover .input, .form-input-box:focus-within .input {
-  background: var(--blue-200);
-  border-color: transparent;
+  background: transparent;
+  border-color: rgb(8, 83, 180);
 }
 .form-input-box.--secondary .input {
   border-radius: 0;
@@ -185,7 +221,7 @@ input, select, textarea {
   gap: 0.5em;
   padding: 1em;
   border: none;
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   font-weight: bold;
   background: var(--blue-850);
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.075);
@@ -291,6 +327,28 @@ input, select, textarea {
 }
 
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
+.dark-mode .input-fieldset {
+  border-color: var(--blue-700);
+}
+.dark-mode .input-fieldset:hover, .dark-mode .input-fieldset:focus-within {
+  border-color: rgb(140, 182, 216);
+}
+.dark-mode .input-fieldset:hover .label, .dark-mode .input-fieldset:focus-within .label {
+  color: rgb(140, 182, 216);
+}
+.dark-mode .input-fieldset .label {
+  color: var(--blue-400);
+}
+.dark-mode .input-fieldset .input {
+  color: var(--blue-200);
+}
+.dark-mode .input-fieldset .input::placeholder {
+  color: var(--blue-700);
+}
+.dark-mode .input-fieldset.border-bottom {
+  border: none;
+  border-color: var(--blue-700);
+}
 .dark-mode .icon-hold:hover {
   background: var(--blue-850);
 }
@@ -305,24 +363,6 @@ input, select, textarea {
 }
 .dark-mode .clipboard-btn.clicked {
   animation: clipboard-bg-dm 1s ease-in-out;
-}
-.dark-mode .form-input-box label small {
-  color: var(--blue-500);
-}
-.dark-mode .form-input-box .input {
-  border-color: var(--blue-700);
-}
-.dark-mode .form-input-box .input::placeholder {
-  color: var(--blue-700);
-}
-.dark-mode .form-input-box:hover .input, .dark-mode .form-input-box:focus-within .input {
-  background: var(--blue-200);
-  border-color: transparent;
-}
-.dark-mode .form-input-box.--secondary .input {
-  border-radius: 0;
-  border: none;
-  border-bottom: 1px solid var(--blue-600);
 }
 .dark-mode .just-input {
   border-color: var(--blue-700);
@@ -343,19 +383,19 @@ input, select, textarea {
   color: var(--blue-500);
 }
 .dark-mode .form-input-box .input {
-  border-color: var(--blue-700);
-  color: var(--blue-300);
+  background: var(--blue-900);
 }
 .dark-mode .form-input-box .input::placeholder {
   color: var(--blue-700);
 }
 .dark-mode .form-input-box:hover .input, .dark-mode .form-input-box:focus-within .input {
-  background: var(--blue-900);
-  border-color: transparent;
+  background: transparent;
+  border-color: rgb(60, 116, 189);
 }
 .dark-mode .form-input-box.--secondary .input {
+  border-radius: 0;
   border: none;
-  border-bottom: 1px solid var(--blue-700);
+  border-bottom: 1px solid var(--blue-600);
 }
 .dark-mode .form-input-box.form--w-icon {
   border-color: var(--blue-700);

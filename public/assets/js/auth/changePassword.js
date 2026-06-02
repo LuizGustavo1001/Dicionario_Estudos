@@ -16,40 +16,40 @@ if(form && submitBtn){
         e.preventDefault()
 
         const currentUsername   = document.querySelector("#iusername")
-        const newPassword       = document.querySelector("#iuserToken")
+        const newPassword       = document.querySelector("#inewPassword")
+        const typedToken        = document.querySelector("#iuserToken")
 
-        if(currentUsername && newPassword){
-            /* 
-            após trocar nome de senha é necessário deixar o token como não confirmado
-            */
-
-            /*
-            const response = await fetch("/users/me/edit/password", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                credentials: "include",
-                body: JSON.stringify({ 
-                    currentUsername: currentUsername,
-                    newPassword: newPassword
-                })
-            })
-
-            if (!response.ok) { 
-                const errorData = await response.json()
-                fillWarning(errorData.error, 0)
-                return
-            }
-
-            const data = await response.json()
-
-            setWarningCookie(data.message, 1)
-            window.location.href = "/auth/login"
-            */ 
+        if(currentUsername && newPassword && typedToken){
+            changePassword(currentUsername.value, newPassword.value, typedToken.value)
         }else{
             setWarningCookie("dberror", 0)
             window.location.href = "/auth/changePassword"
         }
     })
+}
+
+async function changePassword(currentUsername, newPassword, typedToken){
+    const response = await fetch("/users/me/edit/password", {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+            currentUsername: currentUsername,
+            newPassword: newPassword,
+            typedToken: typedToken
+        })
+    })
+
+    if (!response.ok){
+        const errorData = await response.json()
+        fillWarning(errorData.error, 0)
+        return
+    }
+
+    const data = await response.json()
+
+    setWarningCookie(data.message, 1)
+    window.location.href = "/auth/login"
 }

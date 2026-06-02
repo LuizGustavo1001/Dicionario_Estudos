@@ -63,6 +63,7 @@ export function fillWarning(message, type){
         tokenNotFound   : "Token inserido não encontrado. Tente novamente",
         usernameChanged : "Nome de usuário alterado com sucesso",
         sameUsername    : "Nome de usuário digitado está igual ao atual. Tente novamente",
+        passwordChanged : "Senha alterada com sucesso. Faça seu login novamente",
         missingFields   : "Campos requeridos do formulário não preenchidos ainda. Tente novamente",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"

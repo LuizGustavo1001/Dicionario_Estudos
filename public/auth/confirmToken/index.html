@@ -15,21 +15,23 @@
     <div class="snackbars-box"></div>
 
     <main class="fade-in-up" id="confirmToken">
-        <div class="main-title">
-            <h1>Token de Recuperação de Conta</h1>
-        </div>
-
         <div class="hero">
+            <div class="main-title">
+                <h1>Token de Recuperação de Conta</h1>
+            </div>
+            
             <div class="top">
-                <p>
-                    O token listado abaixo tem o propósito de verificar sua identidade ao tentar
-                    alterar algum dado sensível de sua conta.
-                    <strong>
-                        Tenha certeza de copiar o código abaixo,
-                        uma vez que você não poderá visualizá-lo posteriormente.
-                    </strong>
-                </p>
-                <p><strong>Salve ele em algum gerenciador de senhas ou local de preferência.</strong></p>
+                <div class="subtitle">
+                    <p>
+                        O token listado abaixo tem o propósito de verificar sua identidade ao tentar
+                        alterar algum dado sensível de sua conta.
+                        <strong>
+                            Tenha certeza de copiar o código abaixo,
+                            uma vez que você não poderá visualizá-lo posteriormente.
+                        </strong>
+                    </p>
+                    <p><strong>Salve ele em algum gerenciador de senhas ou local de preferência.</strong></p>
+                </div>
             </div>
 
             <div class="middle token-box">
@@ -38,10 +40,11 @@
             </div>
 
             <form action="#" class="bottom">
-                <div class="form-input-box input-box-w-label">
-                    <label for="iuserToken">Digite o código para continuar para seu dicionário:</label>
-                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="XXXX-XXXX-XXXX-XXXX" minlength="16" maxlength="16" required autofocus>
-                </div>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Digite o código para continuar para seu dicionário</legend>
+                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="XXXX-XXXX-XXXX-XXXX" minlength="16" maxlength="16" autocapitalize="characters" required autofocus>
+                </fieldset>
+
                 <button type="submit" class="btn submit">Confirmar Código</button>
                 <button type="button" class="btn warning-btn" id="removeUser">Reverter Criação de Conta</button>
             </form>

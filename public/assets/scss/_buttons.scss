@@ -6,6 +6,43 @@ button{
     background: none;
 }
 
+.input-fieldset{
+    border: 2px solid var(--blue-500);
+    border-radius: var(--radius-sm);
+
+    &:hover, &:focus-within{
+        border-color: rgb(46, 125, 190);
+
+        .label{ color: rgb(46, 125, 190); }
+    }
+
+    .label{
+        margin-left: 0.5em;
+        padding-inline: 0.5em;
+        font-weight: bold;
+        font-size: 0.9em;
+
+        color: var(--blue-750);
+    }
+
+    .input{
+        width: 100%;
+        outline: none;
+        font-weight: bold;
+        color: var(--blue-800);
+
+        &::placeholder{ color: var(--blue-500); }
+    }
+    
+    &.border-bottom{
+        border: none;
+        border-bottom: 2px solid var(--blue-500);
+
+        border-radius: 0;
+    }
+}
+
+
 .icon-hold{
     padding: 0.5em;
     @include m.flex-center;
@@ -49,11 +86,6 @@ input, select, textarea{
     border: none;
 }
 
-.form-input-box{
-    display: flex;
-    label{ small{ color: var(--blue-700); } }
-}
-
 .just-input{
     border: 1px solid var(--blue-600);
     border-radius: var(--radius);
@@ -78,9 +110,18 @@ input, select, textarea{
 }
 
 .form-input-box{
+    display: flex;
+    gap: 0.3em;
+
+    label{ 
+        font-size: 0.9em;
+        small{ color: var(--blue-700); } 
+    }
+
     .input{
-        border: 1px solid var(--blue-400);
-        border-radius: var(--radius);
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        background: var(--blue-200);
 
         &::placeholder{
             color: var(--blue-400);
@@ -91,8 +132,8 @@ input, select, textarea{
     &:hover,
     &:focus-within{
         .input{
-            background: var(--blue-200);
-            border-color: transparent;
+            background: transparent;
+            border-color: rgb(8, 83, 180);
         }
     }
 
@@ -173,7 +214,7 @@ input, select, textarea{
     padding: 1em;
 
     border: none;
-    border-radius: var(--radius);
+    border-radius: var(--radius-sm);
 
     font-weight: bold;
     
@@ -194,17 +235,13 @@ input, select, textarea{
         background: #D4275B;
         color: var(--white);
 
-        &:hover{
-            background: #9c1941;
-        }
+        &:hover{ background: #9c1941; }
     }
 
     &.waiting{
         cursor: no-drop;
 
-        .spinning-wheel{
-            display: block;
-        }
+        .spinning-wheel{ display: block; }
     }
 }
 
@@ -292,6 +329,29 @@ input, select, textarea{
 
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
 .dark-mode{
+    .input-fieldset{
+        border-color: var(--blue-700);
+
+        &:hover, &:focus-within{
+            border-color: rgb(140, 182, 216);
+
+            .label{ color: rgb(140, 182, 216); }
+        }
+
+        .label{ color: var(--blue-400); }
+
+        .input{
+            color: var(--blue-200);
+
+            &::placeholder{ color: var(--blue-700); }
+        }
+        
+        &.border-bottom{
+            border: none;
+            border-color: var(--blue-700);
+        }
+    }
+
     .icon-hold{
         &:hover{
             background: var(--blue-850);
@@ -308,34 +368,6 @@ input, select, textarea{
         background: var(--blue-900);
         &.clicked{
             animation: clipboard-bg-dm 1s ease-in-out;
-        }
-    }
-
-    .form-input-box{
-        label{ small{ color: var(--blue-500); } }
-
-        .input{
-            border-color: var(--blue-700);
-
-            &::placeholder{
-                color: var(--blue-700);
-            }
-        }
-
-        &:hover,
-        &:focus-within{
-            .input{
-                background: var(--blue-200);
-                border-color: transparent;
-            }
-        }
-
-        &.--secondary{
-            .input{
-                border-radius: 0;
-                border: none;
-                border-bottom: 1px solid var(--blue-600);
-            }
         }
     }
 
@@ -358,10 +390,12 @@ input, select, textarea{
     }
 
     .form-input-box{
-        label{ small{ color: var(--blue-500); } }
+        label{ 
+            small{ color: var(--blue-500); } 
+        }
+
         .input{
-            border-color: var(--blue-700);
-            color: var(--blue-300);
+            background: var(--blue-900);
 
             &::placeholder{ color: var(--blue-700); }
         }
@@ -369,15 +403,16 @@ input, select, textarea{
         &:hover,
         &:focus-within{
             .input{
-                background: var(--blue-900);
-                border-color: transparent;
+                background: transparent;
+                border-color: rgb(60, 116, 189);
             }
         }
 
         &.--secondary{
             .input{
+                border-radius: 0;
                 border: none;
-                border-bottom: 1px solid var(--blue-700);
+                border-bottom: 1px solid var(--blue-600);
             }
         }
     }

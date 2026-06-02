@@ -1,23 +1,104 @@
 @use "mixins" as m;
 
-body{ @include m.flex-center; }
+body{ 
+    padding: 1em;
+    @include m.flex-center; 
+}
 
 main{
     width: 100%;
     height: fit-content;
 
-    padding: 1em;
-    margin-bottom: 0.5em;
+    @include m.respond(tablet){ width: clamp(300px, 100%, 750px);}
 
-    @include m.respond(tablet){ width: clamp(300px, 100%, 750px); }
-
-    background: var(--white);
     border-radius: var(--radius-m);
+}
+
+.hero{
+    @include m.flex-collumn-05;
+    gap: 1em;
+
+    padding-bottom: 1em;
+
+    border-radius: var(--radius-m);
+    background: var(--white);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
 
     .main-title{
-        border-bottom: 2px solid var(--blue-200);
-        margin-bottom: 0.5em;
+        padding: 1em;
+
+        background: var(--blue-100);
+        border-radius: var(--radius-m) var(--radius-m) 0 0;
+
+        h1{ font-size: 1.2em; }
+    }
+
+    .top, .middle, .bottom{ padding-inline: 1em; }
+
+    .top{
+        em{ color: rgb(46, 125, 190); }
+    }
+
+    .middle{
+        display: flex;
+        gap: 0.5em;
+        align-items: center;
+        justify-content: center;
+
+        #token{
+            padding: 0.5em;
+            letter-spacing: 0.2em;
+
+            background: var(--blue-200);
+            font-family: var(--font-mono);
+            font-size: 1.3em;
+            border-radius: var(--radius);
+            font-weight: bold;
+        }
+    }
+}
+
+/* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
+.dark-mode{
+    .hero{
+        background: var(--blue-850);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
+
+        .main-title{
+            background: var(--blue-800);
+
+            h1{ font-size: 1.2em; }
+        }
+
+        .top{
+            em{ color: rgb(140, 182, 216); }
+        }
+
+        .middle{
+            #token{
+                 background: var(--blue-900);
+            }
+        }
+    }
+
+}
+
+/*
+
+main{
+    width: 100%;
+    height: fit-content;
+
+    @include m.respond(tablet){ width: clamp(300px, 100%, 750px); }
+
+    border-radius: var(--radius-m);
+
+    .main-title{
+        background: var(--blue-100);
+        padding: 1em;
+
+        border-radius: var(--radius-m) var(--radius-m) 0 0;
+
 
         h1{
             font-size: 1.2em;
@@ -26,13 +107,20 @@ main{
     }
 
     .hero{
+        background: var(--white);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
+
+        border-radius: var(--radius-m);
+
         @include m.flex-collumn-05;
-        gap: 1em;
+        gap: 0;
     }
 }
 
 .hero{
-    .top{ @include m.flex-collumn-05; }
+    .top .subtitle, .middle, .bottom{ padding: 1em;}
+
+    .top .subtitle em{ color: rgb(46, 125, 190); }
 
     .middle{
         @include m.flex-center;
@@ -61,6 +149,7 @@ main{
 }
 
 /* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
+/*
 .dark-mode{
     main{
         background: var(--blue-850);
@@ -80,3 +169,5 @@ main{
         }
     }
 }
+
+*/
