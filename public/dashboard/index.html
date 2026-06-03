@@ -50,16 +50,16 @@
                         <h2>Credenciais</h2>
                         <ul>
                             <li>
-                                <label for="iusername" title="Nome de Usuário">Nome de Usuário <small>(em Desenvolvimento)</small></label>
-                                <a href="/auth/changeUsername" class="btn" >Clique aqui para alterar seu nome</a>
+                                <p title="Nome de Usuário">Nome de Usuário</p>
+                                <button class="btn" onclick="window.location.href='/auth/changeUsername'">Alterar seu nome</button>
                             </li>
 
                             <li>
-                                <label title="Token de usuário">Token de Usuário <small>(em Desenvolvimento)</small></label>
-                                <a href="#" class="btn" >Clique aqui para gerar novo token</a>
+                                <p title="Código de Autenticação">Código de Autenticação</p>
+                                <button class="btn" onclick="window.location.href='/auth/newToken'">Gerar novo código</button>
                             </li>
 
-                            <small>Para alterar sua senha faça o logout e clique em "Esqueci minha senha" (em Desenvolvimento)</small>
+                            <small>Para alterar sua senha faça o logout e clique em <em>"Esqueceu sua senha?"</em></small>
                         </ul>
                     </li>
 
@@ -75,8 +75,8 @@
                             </li>
 
                             <li>
-                                <label title="Termos de Privacidade">Termos de Privacidade <small>(em Desenvolvimento)</small></label>
-                                <a href="#" class="btn" >Clique para saber mais</a>
+                                <p title="Termos de Privacidade">Termos de Privacidade</p>
+                                <a href="#" class="btn">Saber mais</a>
                             </li>
                         </ul>
                     </li>
@@ -117,10 +117,10 @@
                 <div style="display: flex; justify-content: space-between; gap: 0.5em; align-items: center;">
                     <p><strong>Significados</strong></p>
                     <div class="wrapper">
-                        <button type="button" id="add-text" class="icon-hold secondary" title="Clique aqui para adicionar uma entrada de texto">
+                        <button type="button" id="add-text" class="icon-hold secondary add-input" title="Clique aqui para adicionar uma entrada de texto">
                             <i data-icon="textboxplus"></i>
                         </button>
-                        <button type="button" id="add-image" class="icon-hold secondary" title="Clique aqui para adicionar uma entrada de imagem">
+                        <button type="button" id="add-image" class="icon-hold secondary add-input" title="Clique aqui para adicionar uma entrada de imagem">
                             <i data-icon="imageplus"></i>
                         </button>
                     </div>
@@ -128,7 +128,7 @@
 
                 <div class="inputs-box" style="display: flex; flex-direction: column; gap: 0.5em; overflow: auto;">
                     <fieldset class="input-fieldset">
-                        <legend class="label">Nome do Termo</legend>
+                        <legend class="label">Significado Texto</legend>
                         <input type="text" name="text" id="itext#1" class="input term-input" placeholder="Máximo 300 caracteres" maxlength="300" autocapitalize="on">
                     </fieldset>
 
@@ -136,7 +136,6 @@
                         <legend class="label">Nome do Termo</legend>
                         <input type="file" name="image" id="iimage#1" class="input image-input" accept="image/*">
                     </fieldset>
-
                 </div>
 
                 <button type="submit" class="btn submit-popup-form" data-id="add-term">
@@ -176,7 +175,7 @@
                 </button>
             </form>
         </div>
-        <!--
+        
         <div id="edit-folder" class="popup mini">
             <div class="pop-up-title">
                 <h2>Editar Pasta</h2>
@@ -184,13 +183,8 @@
             </div>
 
             <form action="#" method="post">
-                <div class="form-input-box input-box-w-label regular">
-                    <label for="inameFolder">Nome da Pasta <small>(máximo 50 caracteres)</small></label>
-                    <input type="text" name="nameFolder" id="inameFolder" class="input">
-                </div>
-
                 <fieldset class="input-fieldset">
-                    <legend class="label">Nome da Pasta <small>(máximo 50 caracteres)</legend>
+                    <legend class="label">Nome da Pasta <small>(máximo 50 caracteres)</small></legend>
                     <input type="text" name="nameFolder" id="inameFolder" class="input" placeholder="Máxmo 50 caracteres" maxlength="50" autocapitalize="on">
                 </fieldset>
 
@@ -218,8 +212,6 @@
                 </button>
             </form>
         </div>
-
-        -->
 
         <div id="edit-term" class="popup mini">
             <div class="pop-up-title">
@@ -298,9 +290,9 @@
     <main>
         <aside class="main-aside">
             <div class="aside-hero">
-                <div class="form-input-box form--w-icon search-input folder-search">
-                    <label for="isearch-folder-terms"><i data-icon="search"></i></label>
-                    <input type="text" name="search-folder-terms" id="isearch-folder-terms" placeholder="Pesquisar pastas">
+                <div class="form-input-box form--w-icon search-input folder-search" id="search-folder">
+                    <label for="isearch-folder"><i data-icon="search"></i></label>
+                    <input type="text" name="search-folder" id="isearch-folder" placeholder="Pesquisar pastas">
                 </div>
 
                 <nav class="folders-nav">
@@ -376,21 +368,21 @@
                         </select>
                     </div>
                 </div>
-
+                
                 <div class="terms-area" aria-label="current folder terms list here">
-                    
+                    <!--
                     <details class="term downloadable toggleEvent" data-id="1">
                         <summary>
                             <div class="term-title">
                                 <p>lorem #1</p>
                             </div>
 
-                            <nav class="btns-nav">
-                                <span class="icon-hold">
+                            <div class="dropdown">
+                                <span class="icon-hold dropdown-hover">
                                     <i data-icon="ellipsis"></i>
                                 </span>
 
-                                <ul class="tooltip term-tooltip">
+                                <ul class="dropdown-content">
                                     <li>
                                         <i data-icon="edit"></i>
                                         <span>Editar Nome</span>
@@ -408,8 +400,7 @@
                                         <span>Adicionar Siginificado por Imagem</span>
                                     </li>
                                 </ul>
-
-                            </nav>
+                            </div>
                         </summary>
                         <div class="meanings content" data-id="1">
                             <div class="content-inner">
@@ -418,7 +409,7 @@
                             </div>
                         </div>
                     </details>
-                    
+                    -->
                 </div>
         </section>
     </main>

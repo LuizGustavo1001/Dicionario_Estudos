@@ -64,6 +64,8 @@ export function fillWarning(message, type){
         usernameChanged : "Nome de usuário alterado com sucesso",
         sameUsername    : "Nome de usuário digitado está igual ao atual. Tente novamente",
         passwordChanged : "Senha alterada com sucesso. Faça seu login novamente",
+        tokenCreated    : "Novo código de verificação criado com sucesso",
+        accountRemoved  : "Conta removida com sucesso",
         missingFields   : "Campos requeridos do formulário não preenchidos ainda. Tente novamente",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"
@@ -234,4 +236,48 @@ if(cookie_message && cookie_type){
     fillWarning(cookie_message, Number(cookie_type))
 }
 
+
+// dropdown toggle animation
+export function dropdownEvent(){
+    const dropdownBoxes = document.querySelectorAll(".dropdown")
+    if(dropdownBoxes.length > 0){
+        dropdownBoxes.forEach(box => {
+            const dropdownHoverEl   = box.querySelector(".dropdown-hover")
+            const dropdowContent    = box.querySelector(".dropdown-content")
+
+            dropdownHoverEl.addEventListener("click", (e) => {
+                e.preventDefault()
+                e.stopPropagation()
+
+                const isOpen = dropdowContent.classList.contains("open")
+
+                if(isOpen){ // close logic
+                    dropdowContent.style.maxHeight = null
+                    dropdowContent.classList.remove("open")
+
+                }else{ // open logic
+                    requestAnimationFrame(() => {
+                        dropdowContent.style.maxHeight = dropdowContent.scrollHeight + "px";
+                        dropdowContent.classList.add("open");
+                    })
+                }
+            })
+        })
+    }
+}
+
+// document event click outside dropdownBox
+document.addEventListener("click", (e) => {
+    const clickedDropdown   = e.target.closest(".dropdown")
+    const clickedInside     = e.target.closest(".dropdown-content")
+    
+    if(!clickedInside &&  !clickedDropdown){ // close logic
+        document.querySelectorAll(".dropdown-content.open").forEach(openedDropdown => {
+            openedDropdown.style.maxHeight = null
+            openedDropdown.classList.remove("open")
+        })
+    }
+})
+
+dropdownEvent()
 refreshIcons()

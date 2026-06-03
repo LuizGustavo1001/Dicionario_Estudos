@@ -1,4 +1,4 @@
-import { setWarningCookie, fillWarning, getAuth, getCookie } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, getAuth, getCookie, logout } from "/assets/js/base.js"
 
 const authStatus = await getAuth()
 
@@ -57,6 +57,41 @@ async function verifyToken(typedToken){
 
         setWarningCookie(data.message, 1)
         window.location.href = "/dashboard"
+    }catch(err){
+        fillWarning(data.error, 0)
+        console.error("Server error: ", err)
+    }
+}
+
+
+const removeAccBtn = document.querySelector(".warning-btn")
+if(removeAccBtn){
+    removeAccBtn.addEventListener("click", removeAccount)
+}
+
+async function removeAccount(){
+    try{
+        const response = await fetch("/users/me/remove", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+        })
+
+        if (!response.ok) { 
+            const errorData = await response.json()
+            fillWarning(errorData.error, 0)
+            return
+        }
+
+        // clear JWT cookie
+        await logout()
+
+        const data = await response.json()
+
+        setWarningCookie(data.message, 1)
+        window.location.href = "/auth/login"
     }catch(err){
         fillWarning(data.error, 0)
         console.error("Server error: ", err)

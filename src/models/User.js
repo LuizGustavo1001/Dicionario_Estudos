@@ -158,6 +158,22 @@ class User{
 
         return true
     }
+
+
+    static async delete(idUser, conn){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            DELETE FROM user_data
+            WHERE idUser = ?
+        `, [idUser])
+
+        if(result.affectedRows === 0){
+            throw new Error("error trying to delete account")
+        }
+
+        return true
+    }
 }
 
 module.exports = User

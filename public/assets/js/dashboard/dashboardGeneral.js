@@ -166,27 +166,33 @@ export function toggleDetailsEvent(){
     const toggles = document.querySelectorAll("details.toggleEvent")
 
     toggles.forEach(el => {
+        el.addEventListener("click", (e) => { e.preventDefault })
+
         const summary = el.querySelector("summary")
         const content = el.querySelector(".content")
 
         if(!summary || !content) return
 
-        summary.addEventListener("click", function(e) {
+        const summaryTitle = summary.querySelector(".term-title")
+        if(!summaryTitle) return
+
+        summary.addEventListener("click", (e) => {
             e.preventDefault()
+        })
+
+        summaryTitle.addEventListener("click", function(e) {
+            e.stopPropagation()
 
             const isOpen = content.classList.contains("open")
 
             if(isOpen){ // close logic
                 content.style.maxHeight = null
                 content.classList.remove("open")
+                //el.removeAttribute("open")
                 el.classList.remove("open")
-
-                // waiting CSS animation timer
-                setTimeout(() => {
-                    el.removeAttribute("open")
-                }, 300)
+                
             }else{ // open logic
-                el.setAttribute("open", "")
+                //el.setAttribute("open", "")
                 el.classList.add("open")
 
                 requestAnimationFrame(() => {
@@ -198,7 +204,7 @@ export function toggleDetailsEvent(){
     })
 }
 
-const addTermInputAreaBtns = document.querySelectorAll(".add-term-area button")
+const addTermInputAreaBtns = document.querySelectorAll("#add-term .add-input")
 addTermInputAreaBtns.forEach(btn => {
     btn.addEventListener("click", () => {
         addInput(btn.id)
@@ -209,39 +215,40 @@ function addInput(type){
     const textInputAmount   = document.querySelectorAll("#add-term .term-input").length
     const imageInputAmount  = document.querySelectorAll("#add-term .image-input").length
 
-    const formInputBox = document.createElement("div")
-    formInputBox.classList.add("form-input-box", "input-box-w-label")
+    const fieldset = document.createElement("fieldset")
+    fieldset.classList.add("input-fieldset")
 
-    const label = document.createElement("label")
+    const legend = document.createElement("legend")
+    legend.classList.add("label")
 
     const input = document.createElement("input")
     input.classList.add("input")
 
     if(type == "add-text"){
-        label.setAttribute("for", `itext#${textInputAmount+ 1}`)
-        label.textContent = `Significado Texto #${textInputAmount+ 1}`
+        //legend.setAttribute("for", `itext#${textInputAmount+ 1}`)
+        legend.textContent = `Significado Texto #${textInputAmount+ 1}`
 
         input.type = "text"
-        input.name = `text${textInputAmount+ 1}`
+        input.name = `text`
         input.id = `itext#${textInputAmount+ 1}`
         input.classList.add("term-input")
         input.placeholder = "Máximo 300 caracteres"
         input.autocapitalize = "on"
     }else{
-        label.setAttribute("for", `iimage#${imageInputAmount+ 1}`)
-        label.textContent = `Significado Imagem #${imageInputAmount+ 1}`
+        legend.setAttribute("for", `iimage#${imageInputAmount+ 1}`)
+        legend.textContent = `Significado Imagem #${imageInputAmount+ 1}`
 
         input.type = "file"
-        input.accept = "image/*, .pdf"
-        input.name = `image#${imageInputAmount+ 1}`
+        input.accept = "image/*"
+        input.name = `image`
         input.id = `iimage#${imageInputAmount+ 1}`
         input.classList.add("image-input")
     }
 
-    formInputBox.append(label, input)
+    fieldset.append(legend, input)
 
     const inputBox = document.querySelector(".inputs-box")
-    inputBox.insertAdjacentElement("beforeend", formInputBox)
+    inputBox.insertAdjacentElement("beforeend", fieldset)
 }
 
 

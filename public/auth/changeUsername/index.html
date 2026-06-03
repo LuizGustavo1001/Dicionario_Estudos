@@ -28,22 +28,22 @@
             <div class="top">
                 <div class="subtitle">
                     <p>
-                        Digite abaixo seu nome de usuário cadastrado anteriormente e o novo nome desejado.
+                        Digite seu nome de usuário cadastrado anteriormente e o novo nome desejado nos campos destinados.
                     </p>
-                    <p>Após confirmar a troca de nome, será gerado um <strong>novo Token de Verificação</strong> e você terá que confirmá-lo.</p>
-                    <p style="text-align: center;"><em>O Token de verificação gerado anteriormente não será mais válido.</em></p>
+                    <p>Após confirmar a troca de nome, será gerado um <strong>novo Código de Verificação</strong>, sendo necessário confirmá-lo.</p>
+                    <p style="text-align: center;"><em>Código de Verificação gerado anteriormente não será mais válido.</em></p>
                 </div>
             </div>
 
             <form action="#" class="bottom">
                 <fieldset class="input-fieldset">
                     <legend class="label">Nome de Usuário Atual</legend>
-                    <input type="text" name="oldUsername" id="ioldUsername" class="input" placeholder="Nome de usuário atual aqui" maxlength="8" autocomplete="username" required autofocus>
+                    <input type="text" name="oldUsername" id="ioldUsername" class="input" placeholder="Nome de usuário atual aqui" minlength="8" maxlength="30" autocomplete="username" required autofocus>
                 </fieldset>
 
                 <fieldset class="input-fieldset">
                     <legend class="label">Novo Nome de Usuário</legend>
-                    <input type="text" name="newUsername" id="inewUsername" class="input" placeholder="Máximo 30 caracteres" maxlength="8" autocomplete="username" autocapitalize="words" required>
+                    <input type="text" name="newUsername" id="inewUsername" class="input" placeholder="Máximo 30 caracteres" minlength="8" maxlength="30" autocomplete="username" autocapitalize="words" required>
                 </fieldset>
 
                 <fieldset class="input-fieldset">

@@ -214,6 +214,7 @@ main .user-info {
   min-height: 0;
   height: 100%;
   flex: 1;
+  overflow: auto;
 }
 .hero .hero-header {
   display: grid;
@@ -262,7 +263,6 @@ main .user-info {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
-  overflow: auto;
 }
 .hero .hero-main .terms-area .errorMessage {
   height: 100%;
@@ -287,12 +287,6 @@ main .user-info {
   background: var(--blue-200);
   border-radius: var(--radius-sm);
 }
-.hero .hero-main .terms-area .term .hidden-btn {
-  display: none;
-}
-.hero .hero-main .terms-area .term.open .hidden-btn {
-  display: inline-block;
-}
 .hero .hero-main .terms-area .term summary {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -312,11 +306,28 @@ main .user-info {
   font-weight: bold;
   color: var(--blue-750);
 }
-.hero .hero-main .terms-area .term summary .btns-nav {
-  position: relative;
+.hero .hero-main .terms-area .term summary .dropdown .dropdown-content {
+  z-index: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
 }
-.hero .hero-main .terms-area .term summary .btns-nav .tooltip {
-  position: absolute;
+.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.5em;
+  font-size: 0.9em;
+}
+.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li svg {
+  flex-shrink: 0;
+  width: 20px;
+}
+.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li, .hero .hero-main .terms-area .term summary .dropdown .dropdown-content li svg {
+  color: var(--blue-800);
+}
+.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li:hover {
+  background: var(--blue-200);
 }
 .hero .hero-main .terms-area .term .meanings {
   max-height: 0;
@@ -347,8 +358,12 @@ main .user-info {
 }
 
 /* POPUP */
+#settings.open {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+}
 #settings {
-  flex-direction: row;
   padding: 0;
   height: clamp(500px, 60dvh, 1000px);
 }
@@ -371,6 +386,9 @@ main .user-info {
 #settings .btn-styled svg {
   width: 25px;
 }
+#settings .btn-styled {
+  font-size: 0.9em;
+}
 @media (min-width: 768px) {
   #settings .btn-styled p {
     display: inline;
@@ -388,11 +406,12 @@ main .user-info {
   }
 }
 #settings .settings-aside {
+  flex-shrink: 0;
   padding: 1em;
   display: flex;
   flex-direction: column;
   gap: 1em;
-  width: clamp(30px, 10dvw, 200px);
+  max-width: 200px;
   background: var(--blue-200);
 }
 #settings .settings-aside ul {
@@ -461,18 +480,18 @@ main .user-info {
   align-items: center;
   gap: 0.5em;
 }
-#settings .settings-hero .section-content .item ul li label {
+#settings .settings-hero .section-content .item ul li label, #settings .settings-hero .section-content .item ul li p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: bold;
   color: var(--blue-700);
-  cursor: pointer;
   font-size: clamp(0.8em, 1.5vw, 0.9em);
 }
 #settings .settings-hero .section-content .item ul li .btn {
   padding: 0.5em;
   font-size: clamp(0.75em, 1.5vw, 0.85em);
+  font-weight: normal;
 }
 #settings .settings-hero .section-content .item ul small {
   color: var(--blue-600);

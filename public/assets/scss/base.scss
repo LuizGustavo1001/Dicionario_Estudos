@@ -57,8 +57,26 @@ form{
     gap: 1em;
 }
 
-.tooltip{
+.dropdown{
+    position: relative;
+}
+
+.dropdown-content{
     position: absolute;
+    top: 100%;
+    right: 0;
+
+    max-height: 0;
+    opacity: 0;
+
+    overflow: hidden;
+
+    background: var(--blue-300);
+
+    border-radius: var(--radius-sm);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096);
+
+    &.open{ opacity: 1; }
 }
 
 .overlay{
@@ -181,7 +199,7 @@ form{
 
         background: #FFB4B4;
         color: #A34949;
-        padding: 0.5em;
+        padding: 0.7em;
 
         cursor: pointer;
 

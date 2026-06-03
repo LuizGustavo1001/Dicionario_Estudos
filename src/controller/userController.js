@@ -319,3 +319,52 @@ exports.changeUsername = async (req, res) => {
         connection.release()
     }
 }
+
+exports.newToken = async (req, res) => {
+    const { typedToken } = req.body
+    if(!typedToken) return
+
+    const idUser = req.userId
+
+    const connection = await db.getConnection()
+    
+    try{
+        await connection.beginTransaction()
+
+        const userToken = await User.getTokenById(connection, idUser)
+        if(!userToken){
+            await connection.rollback()
+            return res.status(404).json({ error: "tokenNotFound" })
+        }
+
+        // verify typedToken
+        const tokenMatch = await bcrypt.compare(typedToken, userToken.token)
+        if(!tokenMatch){
+            await connection.rollback()
+            return res.status(400).json({ error: "incorrectToken" })
+        }
+
+        // update token status
+        await User.updateTokenStatus(connection, idUser, false)
+        
+        await connection.commit()
+        return res.status(201).json({ message: "tokenCreated" })
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({ error: "dberror" })
+    }
+}
+
+
+exports.removeAccount = async (req, res) => {
+    const idUser = req.userId
+    
+    try{
+        await User.delete(idUser)
+
+        return res.status(201).json({ message: "accountRemoved" })
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({ error: "dberror" })
+    }
+}

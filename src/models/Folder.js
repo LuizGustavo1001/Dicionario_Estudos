@@ -46,7 +46,7 @@ class Folder{
         `, [idFolder])
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to remove folder")
+            throw new Error("error trying to delete folder")
         }
 
         return true

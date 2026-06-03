@@ -1,5 +1,5 @@
 import { getFolderTerms, getFolders, getTermMeanings, getUserInfo } from "/assets/js/getData.js"
-import { fillWarning, refreshIcons, downloadObject, downloadEvent } from "/assets/js/base.js"
+import { fillWarning, refreshIcons, downloadObject, downloadEvent, dropdownEvent } from "/assets/js/base.js"
 import { toggleDetailsEvent, openPopupEvent, closePopupEvent } from "/assets/js/dashboard/dashboardGeneral.js"
 
 const folderList        = document.querySelector(".folders-list")
@@ -37,19 +37,22 @@ export async function renderUserInfo(){
     }
 }
 
-export async function renderFolderList(currentIdFolder){
+export async function renderFolderList(foldersMap = null, currentIdFolder){
     if (!folderList) return
 
     folderList.textContent = "" // ensure it's clean
 
     try{
-        const userFolders = await getFolders()
-        if(!userFolders || userFolders.length === 0) {
+        if(!foldersMap){
+            foldersMap = await getFolders()
+        }
+
+        if(foldersMap.length == 0){
             renderEmptyFoldersState()
             return
         }
 
-        userFolders.forEach(folder => {
+        foldersMap.forEach(folder => {
             const item = document.createElement("li")
             item.setAttribute("style", `--color: ${folder.colorFolder}`)
             item.dataset.id = folder.idFolder
@@ -71,10 +74,10 @@ export async function renderFolderList(currentIdFolder){
         })
 
         // determine which folder should be marked active/selected
-        let selectedFolder = userFolders.find(f => f.idFolder == currentIdFolder)
+        let selectedFolder = foldersMap.find(f => f.idFolder == currentIdFolder)
 
         if(currentIdFolder === -1 || !selectedFolder){
-            selectedFolder = userFolders[0]
+            selectedFolder = foldersMap[0]
         }
 
         // find the matching DOM list item and mark as selected
@@ -101,6 +104,38 @@ export async function renderFolderList(currentIdFolder){
         fillWarning("dberror", 0)
         console.error("Failure to load user folders: ", err)
     }
+}
+
+export async function mapFolders(filter = null){
+    try{
+        const userFolders = await getFolders()
+        if(!userFolders || userFolders.length === 0) {
+            renderEmptyFoldersState()
+            return
+        }
+
+        if(filter){
+            const searchTerm = filter.toLowerCase()
+            const currentFolders = userFolders.filter(f => f.nameFolder?.toLowerCase().includes(searchTerm))
+            return currentFolders
+        }
+
+        return userFolders
+    }catch(err){
+        fillWarning("dberror", 0)
+        console.error("Failure to load user folders: ", err)
+    }
+}
+
+const searchFolder = document.querySelector("#search-folder")
+if(searchFolder){
+    searchFolder.addEventListener("input", async (e) => {
+        const searchTerm = e.target.value
+
+        const foldersMap = await mapFolders(searchTerm)
+
+        renderFolderList(foldersMap, localStorage.getItem("lastFolder") || -1)
+    })
 }
 
 const searchFilter = document.querySelector("#term-search")
@@ -185,22 +220,61 @@ export async function renderTermsArea(termsMap = null){
             const termTitleText = document.createElement("p")
             termTitleText.textContent = term.content
 
-            const btnNav = document.createElement("nav")
-            btnNav.classList.add("btns-nav")
-
-            const menuBox = document.createElement("span")
-            menuBox.classList.add("icon-hold", "hidden-btn", "open-menu-btn")
-            menuBox.title = "Clique aqui para abrir as configurações do termo"
-            menuBox.dataset.id = term.idTerm
-
-            const menuBoxIcon = document.createElement("i")
-            menuBoxIcon.dataset.icon = "ellipsis"
-
-            menuBox.append(menuBoxIcon)
-
             termTitle.append(termTitleText)
-            btnNav.append(menuBox)
-            summary.append(termTitle, btnNav)
+
+            const dropdown = document.createElement("div")
+            dropdown.classList.add("dropdown")
+
+            const ellipsisIconBox = document.createElement("span")
+            ellipsisIconBox.classList.add("icon-hold", "dropdown-hover")
+
+            const ellipsisIcon = document.createElement("i")
+            ellipsisIcon.dataset.icon = "ellipsis"
+
+            ellipsisIconBox.append(ellipsisIcon)
+
+            const dropdownContent = document.createElement("ul")
+            dropdownContent.classList.add("dropdown-content")
+
+            const editItem = document.createElement("li")
+            editItem.classList.add("toggle-popup-icon")
+            editItem.dataset.id = "edit-term"
+            const editIcon = document.createElement("i")
+            editIcon.dataset.icon = "edit"
+            const editContent = document.createElement("span")
+            editContent.textContent = "Editar Nome"
+
+            const downloadItem = document.createElement("li")
+            downloadItem.classList.add("download-btn")
+            const downloadIcon = document.createElement("i")
+            downloadIcon.dataset.icon = "download"
+            const downloadContent = document.createElement("span")
+            downloadContent.textContent = "Baixar Termo"
+
+            const addTextItem = document.createElement("li")
+            addTextItem.classList.add("toggle-popup-icon")
+            addTextItem.dataset.id = "add-meaning-text"
+            const AddTextIcon = document.createElement("i")
+            AddTextIcon.dataset.icon = "textboxplus"
+            const addTextContent = document.createElement("span")
+            addTextContent.textContent = "Adicionar Significado por Texto"
+
+            const addImageItem = document.createElement("li")
+            addImageItem.classList.add("toggle-popup-icon")
+            addImageItem.dataset.id = "add-meaning-image"
+            const addImageIcon = document.createElement("i")
+            addImageIcon.dataset.icon = "imageplus"
+            const addImageContent = document.createElement("span")
+            addImageContent.textContent = "Adicionar Significado por Imagem"
+
+            editItem.append(editIcon, editContent)
+            downloadItem.append(downloadIcon, downloadContent)
+            addTextItem.append(AddTextIcon, addTextContent)
+            addImageItem.append(addImageIcon, addImageContent)
+
+            dropdownContent.append(editItem, downloadItem, addTextItem, addImageItem)
+            dropdown.append(ellipsisIconBox, dropdownContent)
+            summary.append(termTitle, dropdown)
 
             const meaningsBox = document.createElement("div")
             meaningsBox.classList.add("meanings", "content")
@@ -235,6 +309,7 @@ export async function renderTermsArea(termsMap = null){
         })
 
         // UI updates
+        dropdownEvent()
         openPopupEvent()
         closePopupEvent()
         downloadEvent()
@@ -336,4 +411,5 @@ export function renderEmptyFoldersState(){ // test
 
 letterFilterEvent()
 renderUserInfo()
-renderFolderList(localStorage.getItem("lastFolder") || -1)
+renderFolderList(null, localStorage.getItem("lastFolder") || -1)
+//renderFolderList(localStorage.getItem("lastFolder") || -1)

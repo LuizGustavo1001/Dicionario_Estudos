@@ -26,12 +26,14 @@ router.post("/me/add/folder", authMiddleware.protect, folderController.createFol
 router.post("/me/add/term", authMiddleware.protect, upload.array("images"), termController.createTerm)
 router.post("/me/add/meaning", authMiddleware.protect, meaningController.createMeaning)
 
+router.post("/me/edit/token", authMiddleware.protect, userController.newToken)
 router.post("/me/edit/username", authMiddleware.protect, userController.changeUsername)
 router.post("/me/edit/password", userController.changePassword)
 router.post("/me/edit/folder", authMiddleware.protect, folderController.editFolder)
 //router.post("/me/edit/term")
 //router.post("/me/edit/meaning")
 
+router.post("/me/remove", authMiddleware.protect, userController.removeAccount)
 router.post("/me/remove/folder", authMiddleware.protect, folderController.removeFolder)
 //router.post("/me/remove/term")
 //router.post("/me/remove/meaning")

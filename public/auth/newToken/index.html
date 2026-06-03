@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="https://res.cloudinary.com/dw2eqq9kk/image/upload/v1780068838/favicon_kszowj.ico" type="image/x-icon">
+    
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/confirmToken.css">
+
+    <title>Gerar Novo Token - Dicionário de Estudos</title>
+</head>
+<body>
+    <div class="snackbars-box"></div>
+
+    <main class="fade-in-up" id="confirmToken">
+        <a href="/dashboard" class="back-button">
+            <i data-icon="returnArrow"></i>
+            <span>Voltar</span>
+        </a>
+
+        <div class="hero">
+            <div class="main-title">
+                <h1>Gerar Novo Código de Recuperação de Conta</h1>
+            </div>
+            
+            <div class="top">
+                <div class="subtitle">
+                    <p> Insira seu código de verificação antigo para gerar um novo. </p>
+                </div>
+            </div>
+
+            <form action="#" class="bottom">
+                <fieldset class="input-fieldset">
+                    <legend class="label">Código de Verificação</legend>
+                    <input type="text" name="userToken" id="iuserToken" class="input" placeholder="Código de 16 dígitos" minlength="16" maxlength="16" autocapitalize="characters" required autofocus>
+                </fieldset>
+
+                <button type="submit" class="btn submit">Enviar Código</button>
+                <button type="button" class="btn warning-btn" id="removeUser">Excluir Conta <small>(Em desenvolvimento)</small></button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="/assets/js/base.js"></script>
+    <script type="module" src="/assets/js/auth/newToken.js"></script>
+    <script src="/assets/js/toggleTheme.js"></script>
+</body>
+</html>

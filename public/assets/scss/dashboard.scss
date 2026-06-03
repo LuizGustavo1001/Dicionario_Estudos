@@ -192,6 +192,8 @@ main{
     height: 100%;
     flex: 1;
 
+    overflow: auto;
+
     .hero-header{
         display: grid;
         grid-template-columns: 1fr auto;
@@ -238,7 +240,7 @@ main{
 
         .terms-area{
             @include m.flex-collumn-05;
-            overflow: auto;
+            //overflow: auto;
 
             .errorMessage{
                 height: 100%;
@@ -265,10 +267,16 @@ main{
                 background: var(--blue-200);
                 border-radius: var(--radius-sm);
 
-                .hidden-btn{ display: none; }
+                .dropdown-hover{ 
+                    //opacity: 0;
+                    //visibility: hidden;
+                }
 
                 &.open{
-                    .hidden-btn{ display: inline-block }
+                    .dropdown-hover{ 
+                        //opacity: 1;
+                        //visibility: visible;
+                    }
                 }
 
                 summary{
@@ -292,13 +300,33 @@ main{
                         }
                     }
 
-                    .btns-nav{
-                        position: relative;
-                        .tooltip{
-                            position: absolute;
+                    .dropdown{
+                        .dropdown-content{
+                            z-index: 1;
+                            min-width: 200px;
+
+                            display: flex;
+                            flex-direction: column;
+
+                            li{
+                                display: flex;
+                                align-items: center;
+                                gap: 0.3em;
+
+                                padding: 0.5em;
+                                font-size: 0.9em;
+
+                                svg{
+                                    flex-shrink: 0;
+                                    width: 20px;
+                                }
+
+                                &, svg{ color: var(--blue-800); }
+
+                                &:hover{ background: var(--blue-200); }
+                            }
                         }
                     }
-
                 }
 
                 .meanings{
@@ -333,7 +361,12 @@ main{
 
 /* POPUP */
 #settings{
-    flex-direction: row;
+    &.open{
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 0;
+    }
+
     padding: 0;
 
     height: clamp(500px, 60dvh, 1000px);
@@ -355,14 +388,14 @@ main{
 
         svg{ width: 25px; }
 
+        font-size: 0.9em;
+
         @include m.respond(tablet){
             p{ display: inline; }
             svg{ width: 20px;}
         }
 
-        &.selected, &:hover{
-            background: var(--white);
-        }
+        &.selected, &:hover{ background: var(--white); }
     }
 
     @include m.respond(tablet){
@@ -370,15 +403,17 @@ main{
     }
 
     .settings-aside{
+        flex-shrink: 0;
         padding: 1em;
 
         display: flex;
         flex-direction: column;
         gap: 1em;
 
-        width: clamp(30px, 10dvw, 200px);
+        max-width: 200px;
 
         background: var(--blue-200);
+        
         ul{
             flex: 1;
 
@@ -438,11 +473,10 @@ main{
                         align-items: center;
                         gap: 0.5em;
 
-                        label{
+                        label, p{
                             @include m.line-text-overflow;
                             font-weight: bold;
                             color: var(--blue-700);
-                            cursor: pointer;
 
                             font-size: clamp(0.8em, 1.5vw, 0.9em);
                         }
@@ -450,6 +484,7 @@ main{
                         .btn{
                             padding: 0.5em;
                             font-size: clamp(0.75em, 1.5vw, 0.85em);
+                            font-weight: normal;
                         }
                     }
                     small{ color: var(--blue-600); }

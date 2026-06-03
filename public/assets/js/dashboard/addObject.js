@@ -21,7 +21,7 @@ if(popupSubmitBtns){
                 }else if(routeLabel === "edit-folder"){
                     mapEditFolder(btn, popupSection)
                 }else if(routeLabel === "rmv-folder"){
-                    mapRemoveFolder(btn, popupSection)
+                    mapRemoveFolder(btn)
                 }else{
                     btn.classList.remove("waiting")
                     console.error('System error')
@@ -38,6 +38,7 @@ async function mapAddFolder(clickedBtn, popup){
 
     if(nameFolder && clr){
         addFolder(nameFolder, clr)
+        clickedBtn.classList.remove("waiting")
     }else{
         fillWarning("missingFields", 0)
         clickedBtn.classList.remove("waiting")
@@ -95,6 +96,7 @@ async function mapAddTerm(clickedBtn, popup){
     if(newTermName && hasValidMeaning){
         formData.append("meanings", JSON.stringify(meaningsMap)) // JSON structure
         addTerm(folderId, formData)
+        clickedBtn.classList.remove("waiting")
         closestForm.reset()
     }else{
         clickedBtn.classList.remove("waiting")
@@ -107,6 +109,7 @@ async function mapEditFolder(clickedBtn, popup){
     // retrieve selected folder data
     const currentIdFolder = document.querySelector("#edit-folder-info").dataset.folder || null
     if(!currentIdFolder){
+        clickedBtn.classList.remove("waiting")
         fillWarning("noSelectedFolder", 0)
         return
     }
@@ -123,7 +126,7 @@ async function mapEditFolder(clickedBtn, popup){
     closestForm.reset()
 }
 
-async function mapRemoveFolder(){
+async function mapRemoveFolder(clickedBtn){
     const selectedFolder = document.querySelector(".folders-list li.selected")
 
     if(!selectedFolder){
@@ -135,6 +138,7 @@ async function mapRemoveFolder(){
 
     // confirm warning button logic here...
 
+    clickedBtn.classList.remove("waiting")
     removeFolder(selectedFolderId)
 }
 
@@ -171,7 +175,7 @@ async function addFolder(nameFolder, clr){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        renderFolderList(data.insertId)
+        renderFolderList(null, data.insertId)
     }catch(err){
         console.error("Server error", err)
     }
@@ -191,9 +195,8 @@ async function addTerm(idFolder, formData){
             return
         }
 
-        fillWarning(result.message, 1)
-        closePopup()
-        renderFolderList(idFolder)
+        setWarningCookie(result.message, 1)
+        window.location.href = "/dashboard"
     }catch(err){
         console.error("Server error", err)
     }
@@ -229,7 +232,7 @@ async function editFolderData(idFolder, newName, newClr){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        renderFolderList(idFolder)
+        renderFolderList(null, idFolder)
     }catch(err){
         console.error("Server error", err)
     }
@@ -258,7 +261,7 @@ async function removeFolder(idFolder){
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
         closePopup()
-        renderFolderList(idFolder)
+        renderFolderList(null, idFolder)
     }catch(err){
         console.error("Server error", err)
     }
