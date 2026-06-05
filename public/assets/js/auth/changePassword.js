@@ -1,11 +1,11 @@
-import { setWarningCookie, fillWarning, getAuth, getCookie } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, getAuth } from "/assets/js/base.js"
 
 const authStatus = await getAuth()
 
 if(authStatus === "confirmed"){
-    window.location.href = "/dashboard"
+    window.location.href = "/dashboard/"
 }else if(authStatus === "pending_confirmation"){
-    window.location.href = "/auth/confirmToken"
+    window.location.href = "/auth/confirmToken/"
 }
 
 const form      = document.querySelector("form")
@@ -29,27 +29,32 @@ if(form && submitBtn){
 }
 
 async function changePassword(currentUsername, newPassword, typedToken){
-    const response = await fetch("/users/me/edit/password", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({
-            currentUsername: currentUsername,
-            newPassword: newPassword,
-            typedToken: typedToken
+    try{
+        const response = await fetch("/users/me/edit/password", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                currentUsername: currentUsername,
+                newPassword: newPassword,
+                typedToken: typedToken
+            })
         })
-    })
 
-    if (!response.ok){
-        const errorData = await response.json()
-        fillWarning(errorData.error, 0)
-        return
+        if(!response.ok){
+            const errorData = await response.json()
+            fillWarning(errorData.error, 0)
+            return
+        }
+
+        const data = await response.json()
+
+        setWarningCookie(data.message, 1)
+        window.location.href = "/auth/login/"
+    }catch(err){
+        fillWarning("dberror", 0)
+        console.error("Server error: ", err)
     }
-
-    const data = await response.json()
-
-    setWarningCookie(data.message, 1)
-    window.location.href = "/auth/login"
 }

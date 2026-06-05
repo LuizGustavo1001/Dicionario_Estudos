@@ -1,6 +1,7 @@
 const db = require("../database/connection")
  
 class Term{
+    // GET
     static async getAll(order = 'date'){
         const orderBy = order
 
@@ -8,56 +9,11 @@ class Term{
             `SELECT * FROM term_data ORDER BY ${orderBy}`
         )
 
-        return rows
-    }
-
-    static async getAllByFolder(idFolders){
-        if(!idFolders || idFolders.length === 0) return []
-
-        const [rows] = await db.query(
-            `SELECT * FROM term_data WHERE idFolder IN (?)`,
-            [idFolders] 
-        )
-
         if(rows.length === 0){
-            return null
+            throw new Error("No Term found")
         }
 
         return rows
-    }
-
-    static async create(conn, idFolder, term = null){
-        const executor = conn || db
-        
-        if(term == null){
-            term = "Termo exemplo #1"
-        }
-        
-        const [result] = await executor.execute(`
-            INSERT INTO term_data (content, idFolder) VALUES (?, ?)
-        `, [term, idFolder])
-
-        if(result.affectedRows === 0){
-            throw new Error("error trying to add new term")
-        }
-        return result.insertId
-    }
-
-    static async insertMeaning(conn, idTerm, content = null, type = 'text'){
-        const executor = conn || db
-
-        if(content == null){
-            content = "Significados podem ser tanto <strong>imagens</strong> quanto <strong>textos</strong>"
-        }
-
-        const [result] = await executor.execute(`
-            INSERT INTO meaning_data (content, type, idTerm) VALUES (?, ?, ?)    
-        `, [content, type, idTerm])
-
-        if(result.affectedRows === 0){
-            throw new Error("error trying to add new meaning")
-        }
-        return result.insertId
     }
 
     static async getByName(conn, nameTerm){
@@ -70,10 +26,43 @@ class Term{
         `, [nameTerm])
 
         if(rows.length === 0){
-            return false
+            throw new Error("No Term found for term name selected")
         }
 
         return rows[0]
+    }
+
+    static async getAllByFolder(idFolders){
+        if(!idFolders || idFolders.length === 0) return []
+
+        const [rows] = await db.query(
+            `SELECT * FROM term_data WHERE idFolder IN (?)`,
+            [idFolders] 
+        )
+
+        if(rows.length === 0){
+            throw new Error("No Term found for folder identifier selected")
+        }
+
+        return rows
+    }
+
+    // CREATE
+    static async create(conn, idFolder, term = null){
+        const executor = conn || db
+        
+        if(term == null){
+            term = "Termo Exemplo #1"
+        }
+        
+        const [result] = await executor.execute(`
+            INSERT INTO term_data (content, idFolder) VALUES (?, ?)
+        `, [term, idFolder])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to add new term")
+        }
+        return result.insertId
     }
 }
 

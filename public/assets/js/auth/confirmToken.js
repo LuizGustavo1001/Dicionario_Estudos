@@ -3,9 +3,9 @@ import { setWarningCookie, fillWarning, getAuth, getCookie, logout } from "/asse
 const authStatus = await getAuth()
 
 if(authStatus === "confirmed"){
-    window.location.href = "/dashboard"
+    window.location.href = "/dashboard/"
 }else if(!authStatus){
-    window.location.href = '/auth/login'
+    window.location.href = '/auth/login/'
 }
 
 // retrieve backend token
@@ -27,9 +27,13 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        const typedToken = document.querySelector("#iuserToken").value
-
-        verifyToken(typedToken)
+        const typedToken = document.querySelector("#iuserToken")
+        if(typedToken){
+            verifyToken(typedToken.value)
+        }else{
+            setWarningCookie("dberror", 0)
+            window.location.href = "/auth/confirmToken/"
+        }
     })
 }
 
@@ -46,7 +50,7 @@ async function verifyToken(typedToken){
             })
         })
 
-        if (!response.ok) { 
+        if(!response.ok){ 
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -56,9 +60,9 @@ async function verifyToken(typedToken){
         await getAuth(true) // refresh auth
 
         setWarningCookie(data.message, 1)
-        window.location.href = "/dashboard"
+        window.location.href = "/dashboard/"
     }catch(err){
-        fillWarning(data.error, 0)
+        fillWarning("dberror", 0)
         console.error("Server error: ", err)
     }
 }
@@ -79,7 +83,7 @@ async function removeAccount(){
             credentials: "include",
         })
 
-        if (!response.ok) { 
+        if(!response.ok){ 
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -91,9 +95,9 @@ async function removeAccount(){
         const data = await response.json()
 
         setWarningCookie(data.message, 1)
-        window.location.href = "/auth/login"
+        window.location.href = "/auth/login/"
     }catch(err){
-        fillWarning(data.error, 0)
+        fillWarning("dberror", 0)
         console.error("Server error: ", err)
     }
 }

@@ -1,16 +1,17 @@
 const db = require("../database/connection")
 
 class Folder{
+    // GET
     static async getAll(){
-        const [result] = await db.execute(`
+        const [rows] = await db.execute(`
             SELECT * FROM folder_data
         `)
 
-        if(result.length === 0){
+        if(rows.length === 0){
             throw new Error("No folder found")
         }
 
-        return result
+        return rows
     }
 
     static async getByIdUser(idUser){
@@ -18,51 +19,12 @@ class Folder{
             SELECT * FROM folder_data WHERE idUser = ?    
         `, [idUser])
 
-        return rows
-    }
-
-    static async create(conn, idUser, nameFolder = null, color = null){
-        const executor = conn || db
-
-        if(nameFolder == null){
-            nameFolder = "Primeira Pasta"
-        }
-
-        const [result] = await executor.execute(`
-            INSERT INTO folder_data (nameFolder, colorFolder, idUser) VALUES (?, ?, ?)
-        `, [nameFolder, color || "#EF8CB9", idUser])
-
-        if(result.affectedRows === 0){
-            throw new Error("error trying to add new folder")
-        }
-
-        return result.insertId
-    }
-
-    static async delete(idFolder){
-        const [result] = await db.execute(`
-            DELETE FROM folder_data
-            WHERE idFolder = ?
-        `, [idFolder])
-
-        if(result.affectedRows === 0){
-            throw new Error("error trying to delete folder")
-        }
-
-        return true
-    }
-
-    static async getByName(idFolder){
-        const [rows] = await db.execute(`
-            SELECT *
-            FROM folder_data
-            WHERE idFolder = ?    
-        `. idFolder)
 
         if(rows.length === 0){
-            return false
+            throw new Error("No folder found with selected user identifier")
         }
-        return rows[0] || null
+
+        return rows
     }
 
     static async getByName(conn, nameFolder){
@@ -75,11 +37,45 @@ class Folder{
         `, [nameFolder])
 
         if(rows.length === 0){
-            return false
+            throw new Error("No folder found with selected username")
         }
-        return rows[0] || null
+        return rows[0]
     }
 
+    // CREATE
+    static async create(conn, idUser, nameFolder = null, color = null){
+        const executor = conn || db
+
+        if(nameFolder == null){
+            nameFolder = "Primeira Pasta"
+        }
+
+        const [result] = await executor.execute(`
+            INSERT INTO folder_data (nameFolder, colorFolder, idUser) VALUES (?, ?, ?)
+        `, [nameFolder, color || "#EF8CB9", idUser])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to add new folder")
+        }
+
+        return result.insertId
+    }
+
+    // DELETE
+    static async delete(idFolder){
+        const [result] = await db.execute(`
+            DELETE FROM folder_data
+            WHERE idFolder = ?
+        `, [idFolder])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to delete folder")
+        }
+
+        return true
+    }
+
+    // MODIFY
     static async editData(folderId, data){
         const entries = Object.entries(data).filter(([_, value]) => value !== undefined)
 
@@ -98,7 +94,7 @@ class Folder{
         `, values)
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to edit folder data")
+            throw new Error("Error trying to edit folder data")
         }
 
         return result

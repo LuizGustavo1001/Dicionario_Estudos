@@ -1,6 +1,7 @@
 const db = require("../database/connection")
 
 class User{
+    // GET
     static async getById(id, conn = null){
         const executor = conn || db
 
@@ -11,7 +12,7 @@ class User{
         `, [id])
 
         if(rows.length === 0){
-            return false
+            throw new Error("No User found with selected user identifier")
         }
         return rows[0]
     }
@@ -26,24 +27,10 @@ class User{
         `, [name])
 
         if(rows.length === 0){
-            return false
+            throw new Error("No User found with selected username")
         }
 
         return rows[0]
-    }
-
-    static async create(conn, name, password){
-        const executor = conn || db
-
-        const [result] = await executor.execute(`
-            INSERT INTO user_data (username, password) VALUES (?, ?)
-        `, [name, password])
-
-        if(result.affectedRows === 0){
-            throw new Error("error trying to add new user")
-        }
-
-        return result.insertId
     }
 
     static async getTokenByName(conn, username){
@@ -56,7 +43,7 @@ class User{
         `, [username])
 
         if(rows.length === 0){
-            return false
+            throw new Error("No Token found with selected username")
         }
 
         return rows[0]
@@ -72,12 +59,59 @@ class User{
         `, [idUser])
 
         if(rows.length === 0){
-            return false
+            throw new Error("No Token found with selected user identifier")
         }
 
         return rows[0]
     }
 
+    static async getTokenStatusById(conn, idUser){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
+            SELECT tokenConfirmed 
+            FROM user_data
+            WHERE idUser = ?
+        `, [idUser])
+
+        if(rows.length === 0){
+            throw new Error("No Token Status found with seleceted user identifier")
+        }
+
+        return rows[0]
+    }
+
+    // CREATE
+    static async create(conn, name, password){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            INSERT INTO user_data (username, password) VALUES (?, ?)
+        `, [name, password])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to add new user")
+        }
+
+        return result.insertId
+    }
+
+    static async delete(idUser, conn){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            DELETE FROM user_data
+            WHERE idUser = ?
+        `, [idUser])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to delete account")
+        }
+
+        return true
+    }
+
+    // UPDATE
     static async updatePassword(conn, newPassword, newToken, idUser){
         const executor = conn || db
 
@@ -88,7 +122,7 @@ class User{
         `, [newPassword, newToken, idUser])
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to update password")
+            throw new Error("Error trying to update password")
         }
 
         return true
@@ -104,7 +138,7 @@ class User{
         `, [newUsername, idUser])
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to update username")
+            throw new Error("Error trying to update username")
         }
 
         return true
@@ -120,27 +154,10 @@ class User{
         `, [status, idUser])
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to update token status")
+            throw new Error("Error trying to update token status")
         }
 
         return true
-    }
-
-
-    static async getTokenStatusById(conn, idUser){
-        const executor = conn || db
-
-        const [rows] = await executor.execute(`
-            SELECT tokenConfirmed 
-            FROM user_data
-            WHERE idUser = ?
-        `, [idUser])
-
-        if(rows.length === 0){
-            return false
-        }
-
-        return rows[0]
     }
 
     static async updateRecoveryToken(conn, idUser, hashedToken){
@@ -153,23 +170,7 @@ class User{
         `, [hashedToken, idUser])
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to update recovery token")
-        }
-
-        return true
-    }
-
-
-    static async delete(idUser, conn){
-        const executor = conn || db
-
-        const [result] = await executor.execute(`
-            DELETE FROM user_data
-            WHERE idUser = ?
-        `, [idUser])
-
-        if(result.affectedRows === 0){
-            throw new Error("error trying to delete account")
+            throw new Error("Error trying to update recovery token")
         }
 
         return true

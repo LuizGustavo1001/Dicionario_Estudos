@@ -1,11 +1,11 @@
-import { setWarningCookie, fillWarning, getAuth, getCookie } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, getAuth } from "/assets/js/base.js"
 
 const authStatus = await getAuth()
 
 if(!authStatus){
-    window.location.href = "/auth/login"
+    window.location.href = "/auth/login/"
 }else if(authStatus === "pending_confirmation"){
-    window.location.href = "/auth/confirmToken"
+    window.location.href = "/auth/confirmToken/"
 }
 
 const form      = document.querySelector("form")
@@ -22,31 +22,36 @@ if(form && submitBtn){
             console.log(typedToken.value)
         }else{
             setWarningCookie("dberror", 0)
-            window.location.href = "/auth/newToken"
+            window.location.href = "/auth/newToken/"
         }
     })
 }
 
 async function createToken(typedToken){
-    const response = await fetch("/users/me/edit/token", {
-        method: "POST",
-        headers: {
-            "Content-type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({
-            typedToken: typedToken
+    try{
+        const response = await fetch("/users/me/edit/token", {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                typedToken: typedToken
+            })
         })
-    })
 
-    if (!response.ok){
-        const errorData = await response.json()
-        fillWarning(errorData.error, 0)
-        return
+        if(!response.ok){
+            const errorData = await response.json()
+            fillWarning(errorData.error, 0)
+            return
+        }
+
+        const data = await response.json()
+
+        setWarningCookie(data.message, 1)
+        window.location.href = "/auth/login/"
+    }catch(err){
+        fillWarning("dberror", 0)
+        console.error("Server error: ", err)
     }
-
-    const data = await response.json()
-
-    setWarningCookie(data.message, 1)
-    window.location.href = "/auth/login"
 }

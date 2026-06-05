@@ -6,6 +6,7 @@ const db        = require("../database/connection")
 const User      = require("../models/User")
 const Folder    = require("../models/Folder")
 const Term      = require("../models/Term")
+const Meaning   = require("../models/Meaning")
 
 exports.login = async (req, res) => {
     const { username, password } = req.body
@@ -61,7 +62,7 @@ exports.register = async (req, res) => {
 
         const exampleTerm = await Term.create(connection, exampleFolder)
 
-        const exampleMeaning = await Term.insertMeaning(connection, exampleTerm)
+        const exampleMeaning = await Meaning.create(connection, exampleTerm)
 
         await connection.commit()
 

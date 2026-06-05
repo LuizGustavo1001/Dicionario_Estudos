@@ -1,6 +1,6 @@
 const db = require("../database/connection")
 const cloudinary = require("cloudinary").v2
-const fs = require("fs").promises // clear /uplaods folder
+const fs = require("fs").promises // clear "/uplaods" folder
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,6 +9,7 @@ cloudinary.config({
 })
 
 class Meaning{
+    // GET
     static async getAllByTerm(idTerms){
         if(!idTerms || idTerms.length === 0) return []
 
@@ -17,9 +18,14 @@ class Meaning{
             [idTerms] 
         )
 
+        if(rows.length === 0){
+            throw new Error("No Meaning found")
+        }
+
         return rows
     }
 
+    // CREATE
     static async create(conn, idTerm, content = null, type = 'text', publicId = null, secureURL = null){
         const executor = conn || db
 
@@ -32,11 +38,12 @@ class Meaning{
         `, [content, type, idTerm, publicId, secureURL])
 
         if(result.affectedRows === 0){
-            throw new Error("error trying to add new meaning")
+            throw new Error("Error trying to add new meaning")
         }
         return result.insertId
     }
 
+    // OTHERS
     static async processAndCreateMeanings(connection, idTerm, meanings, userId) {
         for(const meaning of meanings){
             if(meaning.type == "image"){ // upload image
@@ -56,7 +63,7 @@ class Meaning{
                     )
                 }catch(err){
                     console.error("Cloudinary Upload error: ", err)
-                    throw new Error("failedUpload")
+                    throw new Error("uploadFailed")
                 }finally{ // clear /uploads folder
                     if(meaning.content){
                         try{

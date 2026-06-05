@@ -15,10 +15,15 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        const usernameValue = document.querySelector("#iuserName").value
-        const passwordValue = document.querySelector("#ipassword").value
-
-        login(usernameValue, passwordValue)
+        const usernameInput = document.querySelector("#iuserName")
+        const passwordInput = document.querySelector("#ipassword")
+    
+        if(usernameInput && passwordInput){
+            login(usernameInput.value, passwordInput.value)
+        }else{
+            setWarningCookie("dberror", 0)
+            window.location.href = "/auth/login/"
+        }
     })
 }
 
@@ -36,7 +41,7 @@ async function login(username, password){
             })
         })
 
-        if (!response.ok) {
+        if(!response.ok){
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -47,7 +52,7 @@ async function login(username, password){
         setWarningCookie(data.message, 1)
         window.location.href = "/dashboard"
     }catch(err){
-        fillWarning(data.error, 0)
+        fillWarning("dberror", 0)
         console.error("Server error: ", err)
     }
 }

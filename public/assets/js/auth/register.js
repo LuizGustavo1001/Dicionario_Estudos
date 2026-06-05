@@ -15,10 +15,15 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
-        const usernameValue = document.querySelector("#iuserName").value
-        const passwordValue = document.querySelector("#ipassword").value
-
-        register(usernameValue, passwordValue)
+        const usernameInput = document.querySelector("#iuserName")
+        const passwordInput = document.querySelector("#ipassword")
+    
+        if(usernameInput && passwordInput){
+            register(usernameInput.value, passwordInput.value)
+        }else{
+            setWarningCookie("dberror", 0)
+            window.location.href = "/auth/register/"
+        }
     })
 }
 
@@ -35,7 +40,7 @@ if(form && submitBtn){
             })
         })
 
-        if (!response.ok) {
+        if(!response.ok){
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -46,7 +51,7 @@ if(form && submitBtn){
         setWarningCookie(data.message, 1)
         window.location.href = "/auth/login/"
     }catch(err){
-        fillWarning(data.error, 0)
+        fillWarning("dberror", 0)
         console.error("Server error: ", err)
     }
 }
