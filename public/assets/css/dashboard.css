@@ -100,9 +100,6 @@ main .user-info {
   flex: 0 0 0px;
   width: 0;
   height: 100dvh;
-  opacity: 0;
-  overflow: hidden;
-  transform: 0.5s;
   display: grid;
   grid-template-rows: 1fr auto;
   gap: 0.5em;
@@ -287,6 +284,12 @@ main .user-info {
   background: var(--blue-200);
   border-radius: var(--radius-sm);
 }
+.hero .hero-main .terms-area .term .dropdown-hover {
+  display: none;
+}
+.hero .hero-main .terms-area .term[open] .dropdown-hover {
+  display: block;
+}
 .hero .hero-main .terms-area .term summary {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -308,32 +311,6 @@ main .user-info {
 }
 .hero .hero-main .terms-area .term summary .dropdown .dropdown-content {
   z-index: 1;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-}
-.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li {
-  display: flex;
-  align-items: center;
-  gap: 0.3em;
-  padding: 0.5em;
-  font-size: 0.9em;
-}
-.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li svg {
-  flex-shrink: 0;
-  width: 20px;
-}
-.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li, .hero .hero-main .terms-area .term summary .dropdown .dropdown-content li svg {
-  color: var(--blue-800);
-}
-.hero .hero-main .terms-area .term summary .dropdown .dropdown-content li:hover {
-  background: var(--blue-200);
-}
-.hero .hero-main .terms-area .term .meanings {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
 }
 .hero .hero-main .terms-area .term .meanings .content-inner {
   display: flex;
@@ -352,9 +329,6 @@ main .user-info {
   .hero .hero-main .terms-area .term .meanings img {
     max-width: 500px;
   }
-}
-.hero .hero-main .terms-area .term .meanings.open {
-  opacity: 1;
 }
 
 /* POPUP */

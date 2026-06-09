@@ -37,12 +37,15 @@
                     <input type="text" name="userToken" id="iuserToken" class="input" placeholder="Código de 16 dígitos" minlength="16" maxlength="16" autocapitalize="characters" required autofocus>
                 </fieldset>
 
-                <button type="submit" class="btn submit">Enviar Código</button>
-                <button type="button" class="btn warning-btn" id="removeUser">Excluir Conta <small>(Em desenvolvimento)</small></button>
+                <div class="wrapper-inline">
+                    <button type="submit" class="btn submit">Enviar Código</button>
+                    <button type="button" class="btn warning-btn" id="removeUser">Excluir Conta</button>
+                </div>
             </form>
         </div>
     </main>
-
+    
+    <script type="module" src="/assets/js/init.js"></script>
     <script type="module" src="/assets/js/base.js"></script>
     <script type="module" src="/assets/js/auth/newToken.js"></script>
     <script src="/assets/js/toggleTheme.js"></script>

@@ -1,7 +1,7 @@
 // General user routes
 const express   = require("express")
-const router    = express.Router()
 const multer    = require("multer")
+const router    = express.Router()
 
 const authMiddleware    = require("../middleware/auth")
 const userController    = require("../controller/userController")

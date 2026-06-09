@@ -10,7 +10,7 @@ class Term{
         )
 
         if(rows.length === 0){
-            throw new Error("No Term found")
+            return false
         }
 
         return rows
@@ -26,7 +26,7 @@ class Term{
         `, [nameTerm])
 
         if(rows.length === 0){
-            throw new Error("No Term found for term name selected")
+            return false
         }
 
         return rows[0]
@@ -41,7 +41,7 @@ class Term{
         )
 
         if(rows.length === 0){
-            throw new Error("No Term found for folder identifier selected")
+            return false
         }
 
         return rows

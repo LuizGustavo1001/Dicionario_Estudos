@@ -1,68 +1,22 @@
-import { setWarningCookie, fillWarning, logout, getAuth } from "/assets/js/base.js"
+import { getAuth } from "/assets/js/base.js"
+import { updateOverlay, overlayState, isDesktop } from "../init.js"
 
 const authStatus = await getAuth()
-
 if(!authStatus){
     window.location.href = "/auth/login"
 }else if(authStatus === "pending_confirmation"){
     window.location.href = "/auth/confirmToken"
 }
 
-async function initLogout(){ // logout
-    try{
-        const data = await logout()
-
-        if(data?.success){
-            setWarningCookie("logoutSuccess", 1)
-            window.location.href = "/auth/login"
-        }
-    }catch(err){
-        console.error("Logout error:", err)
-    }
-}
-
-const isDesktop = () => window.innerWidth >= 1024
-let overlayState = { // control wich element is using overlay
-    aside: false,
-    popup: false
-}
-
-const mainAside         = document.querySelector(".main-aside")
-const asideIcons        = document.querySelectorAll(".aside-toggle-icon")
-const overlayAside      = document.querySelector(".overlay-aside")
-const overlayPopup      = document.querySelector(".overlay-popup")
 const desktopMedia      = window.matchMedia("(min-width: 1024px)")
-const logoutBtn         = document.querySelector(".logout-btn")
-const popupBox          = document.querySelector(".popup-box")
-const openPopupIcons    = document.querySelectorAll(".toggle-popup-icon")
-const popupCloseIcons   = document.querySelectorAll(".close-popup-icon")
+const asideIcons        = document.querySelectorAll(".aside-toggle-icon")
+const mainAside         = document.querySelector(".main-aside")
 const addFolderForm     = document.querySelector("#add-folder form")
 const editFolderForm    = document.querySelector("#edit-folder form")
-const searchTermInput   = document.querySelector("#isearch-term")
-const heroAsideNav      = document.querySelector(".aside-hero .aside-nav")
+const settingsOptions   = document.querySelectorAll(".settings-aside ul li")
+const addTermInputAreaBtns = document.querySelectorAll("#add-term .add-input")
 
 desktopMedia.addEventListener("change", handleResize2Aside)
-
-logoutBtn.addEventListener("click", initLogout)
-
-asideIcons.forEach(icon => { // Main aside visibility event
-    icon.addEventListener('click', toggleAside)
-})
-
-export async function openPopupEvent(){
-    openPopupIcons.forEach(icon => {
-        icon.addEventListener("click", (e) => {
-            e.stopPropagation()
-            changePopupVisibility(icon.dataset.id)
-        })
-    })
-}
-
-export async function closePopupEvent(){
-    popupCloseIcons.forEach(icon => { 
-        icon.addEventListener("click", closePopup)
-    })
-}
 
 document.addEventListener("click", (e) => { // Mobile aside toggle
     if(!isDesktop()){
@@ -79,13 +33,31 @@ document.addEventListener("click", (e) => { // Mobile aside toggle
     }
 })
 
-
-// Functions
-function updateOverlay(){
-    const isActive = overlayState.aside || overlayState.popup
-    overlayAside.classList.toggle("active", isActive)
+// Main aside visibility event
+if(asideIcons.length > 0){
+    asideIcons.forEach(icon => {
+        icon.addEventListener('click', toggleAside)
+    })
 }
 
+if(addTermInputAreaBtns.length > 0){
+    addTermInputAreaBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            addInput(btn.id)
+        })
+    })
+}
+
+// settings aside options click event
+if(settingsOptions){
+    settingsOptions.forEach(option => {
+        option.addEventListener("click", () => {
+            toggleSelectedOption(option.dataset.id)
+        })
+    })
+}
+
+// Functions
 function toggleAside(){
     const isOpen = mainAside.classList.toggle("open")
 
@@ -107,36 +79,9 @@ function handleResize2Aside(){
     updateOverlay()
 }
 
-function changePopupVisibility(page){
-    const popupSection = popupBox.querySelector(`#${page}`)
-    if(!popupSection) return
-
-    popupSection.classList.add("open")
-
-    // close mobile aside
-    if(!isDesktop()){
-        mainAside.classList.remove("open")
-        overlayState.aside = false
-    }
-    
-    overlayState.popup = true
-    updateOverlay()
-}
-
-export function closePopup(){
-    const popupSections = popupBox.querySelectorAll(".popup")
-    popupSections.forEach(section => {
-        section.classList.remove("open")
-    })
-
-    overlayState.popup = false
-    updateOverlay()
-}
-
-// toggle input color value
-function addFolderEvent(formContainer){
-    const circles = formContainer.querySelectorAll(".clr-circle")
-    const colorInput = formContainer.querySelector("#iclr") || formContainer.querySelector("#inewClr")
+function toggleColorInputEvent(formContainer){ // toggle input color value
+    const circles       = formContainer.querySelectorAll(".clr-circle")
+    const colorInput    = formContainer.querySelector("#iclr") || formContainer.querySelector("#inewClr")
 
     if (!colorInput) return
 
@@ -160,56 +105,6 @@ function addFolderEvent(formContainer){
         colorInput.value = color
     }
 }
-
-// collapsible object event listener
-export function toggleDetailsEvent(){
-    const toggles = document.querySelectorAll("details.toggleEvent")
-
-    toggles.forEach(el => {
-        el.addEventListener("click", (e) => { e.preventDefault })
-
-        const summary = el.querySelector("summary")
-        const content = el.querySelector(".content")
-
-        if(!summary || !content) return
-
-        const summaryTitle = summary.querySelector(".term-title")
-        if(!summaryTitle) return
-
-        summary.addEventListener("click", (e) => {
-            e.preventDefault()
-        })
-
-        summaryTitle.addEventListener("click", function(e) {
-            e.stopPropagation()
-
-            const isOpen = content.classList.contains("open")
-
-            if(isOpen){ // close logic
-                content.style.maxHeight = null
-                content.classList.remove("open")
-                //el.removeAttribute("open")
-                el.classList.remove("open")
-                
-            }else{ // open logic
-                //el.setAttribute("open", "")
-                el.classList.add("open")
-
-                requestAnimationFrame(() => {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    content.classList.add("open");
-                })
-            }
-        })
-    })
-}
-
-const addTermInputAreaBtns = document.querySelectorAll("#add-term .add-input")
-addTermInputAreaBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        addInput(btn.id)
-    })
-})
 
 function addInput(type){
     const textInputAmount   = document.querySelectorAll("#add-term .term-input").length
@@ -251,9 +146,30 @@ function addInput(type){
     inputBox.insertAdjacentElement("beforeend", fieldset)
 }
 
+function dashboardInit(){
+    handleResize2Aside()
+    if(addFolderForm) toggleColorInputEvent(addFolderForm)
+    if(editFolderForm) toggleColorInputEvent(editFolderForm)
+    
+    // remove all skeleton nodes...
+}
 
-handleResize2Aside()
-if(addFolderForm) addFolderEvent(addFolderForm)
-if(editFolderForm) addFolderEvent(editFolderForm)
-openPopupEvent()
-closePopupEvent()
+function toggleSelectedOption(selectedOption){
+    settingsOptions.forEach(option => {
+        option.classList.remove("selected")
+        if(option.dataset.id === selectedOption){
+            option.classList.add("selected")
+        }
+    })
+
+    const sections = document.querySelectorAll(".section-content")
+    sections.forEach(section => {
+        section.classList.remove("open")
+
+        if(section.id === selectedOption){
+            section.classList.add("open")
+        }
+    })
+}
+
+dashboardInit()

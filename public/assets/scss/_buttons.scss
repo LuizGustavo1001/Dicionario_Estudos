@@ -7,11 +7,11 @@ button{
 }
 
 .input-fieldset{
-    border: 2px solid var(--blue-500);
+    border: 2px solid var(--blue-300);
     border-radius: var(--radius-sm);
 
     &:hover, &:focus-within{
-        border-color: rgb(46, 125, 190);
+        border-color: #2e7dbe;
 
         .label{ color: rgb(46, 125, 190); }
     }
@@ -31,12 +31,12 @@ button{
         font-weight: bold;
         color: var(--blue-750);
 
-        &::placeholder{ color: var(--blue-500); }
+        &::placeholder{ color: var(--blue-300); }
     }
     
     &.border-bottom{
         border: none;
-        border-bottom: 2px solid var(--blue-500);
+        border-bottom: 2px solid var(--blue-300);
 
         border-radius: 0;
     }
@@ -285,7 +285,6 @@ input, select, textarea{
     }
 }
 
-
 .icon-wrapper{
     --size: 50px;
 
@@ -334,7 +333,7 @@ input, select, textarea{
         border-color: var(--blue-700);
 
         &:hover, &:focus-within{
-            border-color: rgb(140, 182, 216);
+            border-color: #8cb6d8;
 
             .label{ color: rgb(140, 182, 216); }
         }

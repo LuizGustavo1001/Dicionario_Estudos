@@ -19,7 +19,7 @@ class Meaning{
         )
 
         if(rows.length === 0){
-            throw new Error("No Meaning found")
+            return false
         }
 
         return rows

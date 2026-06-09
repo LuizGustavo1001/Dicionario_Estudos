@@ -1,5 +1,4 @@
-import { setWarningCookie, fillWarning, logout } from "../base.js"
-
+// settings aside options click event
 const settingsOptions = document.querySelectorAll(".settings-aside ul li")
 
 if(settingsOptions){

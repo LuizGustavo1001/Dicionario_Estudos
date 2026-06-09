@@ -29,7 +29,7 @@ if(form && submitBtn){
 
 async function login(username, password){
     try{
-        const response = await fetch("/users/login", {
+        const response = await fetch("/api/login", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

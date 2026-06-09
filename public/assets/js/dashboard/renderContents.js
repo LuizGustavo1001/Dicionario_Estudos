@@ -1,6 +1,5 @@
 import { getFolderTerms, getFolders, getTermMeanings, getUserInfo } from "/assets/js/getData.js"
-import { fillWarning, refreshIcons, downloadObject, downloadEvent, dropdownEvent } from "/assets/js/base.js"
-import { toggleDetailsEvent, openPopupEvent, closePopupEvent } from "/assets/js/dashboard/dashboardGeneral.js"
+import { fillWarning, refreshIcons } from "/assets/js/base.js"
 
 const folderList        = document.querySelector(".folders-list")
 const termsArea         = document.querySelector(".terms-area")
@@ -61,7 +60,7 @@ export async function renderFolderList(foldersMap = null, currentIdFolder){
             highlightBar.classList.add("highlight-clr-bar")
 
             const folderIcon = document.createElement("i")
-            folderIcon.dataset.icon = "folder"
+            folderIcon.dataset.icon = "folder_fill"
 
             const folderName = document.createElement("span")
             folderName.textContent = folder.nameFolder
@@ -156,11 +155,10 @@ export async function mapFolderTerms(idFolder, type = null, filter = null){
         const foldersList = await getFolderTerms()
         if(!foldersList) return []
 
-        let currentFolderTerms = foldersList.filter(t => t.idFolder == idFolder) // selected folder
+        let currentFolderTerms = foldersList.filter(t => t.idFolder == idFolder) // terms from selected folder
 
         if(type == "search"){
-            // check if filter exists
-            if(filter && typeof filter === "string"){
+            if(filter && typeof filter === "string"){ // check if filter exists
                 const searchTerm = filter.toLowerCase()
 
                 currentFolderTerms = currentFolderTerms.filter(t => t.content?.toLowerCase().includes(searchTerm))
@@ -209,7 +207,7 @@ export async function renderTermsArea(termsMap = null){
             const selectedTermMeanings = termMeanings.filter(m => m.idTerm === term.idTerm)
 
             const termBox = document.createElement("details")
-            termBox.classList.add("term", "downloadable", "toggleEvent")
+            termBox.classList.add("term", "downloadable", "toggle-event")
             termBox.dataset.id = term.idTerm
 
             const summary = document.createElement("summary")
@@ -309,12 +307,7 @@ export async function renderTermsArea(termsMap = null){
         })
 
         // UI updates
-        dropdownEvent()
-        openPopupEvent()
-        closePopupEvent()
-        downloadEvent()
         refreshIcons()
-        toggleDetailsEvent()
     }catch(err){
         fillWarning("dberror", 0)
         console.error("Failure trying to render terms area: ", err)
@@ -335,10 +328,9 @@ function renderEmptyState(message){
     termsArea.append(errorMessage)
 
     refreshIcons()
-    toggleDetailsEvent()
 }
 
-export async function folderEventInit(folderElement, folderData){
+export function folderEventInit(folderElement, folderData){
     folderElement.addEventListener("click", async () => {
         const termsMap = await mapFolderTerms(folderElement.dataset.id)
 
@@ -359,7 +351,7 @@ export async function folderEventInit(folderElement, folderData){
     })
 }
 
-async function updateFormValues(currentSection, data){
+function updateFormValues(currentSection, data){
     const sectionForm = document.querySelector(`#${currentSection} form`)
     if (!sectionForm) {
         console.error(`Form not found in section: ${currentSection}`)
@@ -375,7 +367,7 @@ async function updateFormValues(currentSection, data){
     })
 }
 
-async function letterFilterEvent(){
+function letterFilterEvent(){
     if (!letterTermFilter) return
 
     letterTermFilter.addEventListener("input", async (e) => {
@@ -412,4 +404,3 @@ export function renderEmptyFoldersState(){ // test
 letterFilterEvent()
 renderUserInfo()
 renderFolderList(null, localStorage.getItem("lastFolder") || -1)
-//renderFolderList(localStorage.getItem("lastFolder") || -1)

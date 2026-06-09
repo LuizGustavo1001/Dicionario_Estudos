@@ -1,12 +1,9 @@
 import { renderIcon } from "/assets/js/iconController.js"
-import * as htmlToImage from 'https://esm.sh/html-to-image@1.11.11'
 
 const cookie_message    = getCookie("warning_message")
 const cookie_type       = getCookie("warning_type")
 
 let authPromise = null
-
-const clipboardIcons = document.querySelectorAll(".clipboard-btn")
 
 export function refreshIcons(){ // render icons
     const dataIcons = document.querySelectorAll("[data-icon]")
@@ -121,7 +118,7 @@ export function getAuth(forceRefresh = false){
 
 async function checkAuth(){
     try{
-        const response = await fetch("/users/auth", {
+        const response = await fetch("/api/auth", {
             method: "GET",
             credentials: "include"
         })
@@ -146,138 +143,9 @@ async function checkAuth(){
     }
 }
 
-export async function logout(){
-    try{
-        const response = await fetch("/users/logout", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            credentials: "include"
-        })
-
-        return await response.json()
-    }catch(err){
-        console.error("Failure trying to logout: ", err)
-        return null
-    }
-}
-
-function copyText(icon){
-    const copyTarget = document.querySelector(`.copyValue[data-copy="${icon.dataset.copy}"]`)
-
-    if(copyTarget){
-        const textToCopy = copyTarget.value || copyTarget.textContent;
-        navigator.clipboard.writeText(textToCopy)
-    }
-
-    // icon animation
-    icon.classList.add("clicked")
-    setTimeout(() => icon.classList.remove("clicked"), 1000)
-}
-
-export function downloadEvent(){
-    const downloadIcons = document.querySelectorAll(".download-btn")
-
-    downloadIcons.forEach(icon => {
-        icon.addEventListener("click", async (e) => {
-            e.stopPropagation() // avoid collpsible event
-
-            let targetElement = null
-
-            if(icon.dataset.element){
-                targetElement = document.querySelector(icon.dataset.element)
-            }else{
-                targetElement = icon.closest(".downloadable")
-            }
-
-            if(targetElement){
-                await downloadObject(targetElement)
-            }else{
-                console.warn("No capturable object found for this button")
-            }
-        })
-    })
-}
-
-export async function downloadObject(element){
-    try{
-        const blob = await htmlToImage.toBlob(element)
-
-        // temp download link
-        const link = document.createElement("a")
-        link.download = 'copy-element.png'
-        link.href = URL.createObjectURL(blob)
-        link.click()
-        URL.revokeObjectURL(link.href)
-
-        try{
-            const data = [new ClipboardItem({ 'image/png': blob })]   
-            await navigator.clipboard.write(data)
-            console.log("Image copied to the clipboard with success!")
-        }catch(error){
-            console.warn("Browser does not support image copy to clipboard: ", error)
-        }
-    }catch(err){
-        console.error("Error trying to generate image: ", err)
-    }        
-}
-
-
-// copy to clipboard event
-if(clipboardIcons.length > 0){
-    clipboardIcons.forEach(icon => {
-        icon.addEventListener("click", () => { copyText(icon) })
-    })
-}
-
 // retrieve message cookies
 if(cookie_message && cookie_type){
     fillWarning(cookie_message, Number(cookie_type))
 }
 
-
-// dropdown toggle animation
-export function dropdownEvent(){
-    const dropdownBoxes = document.querySelectorAll(".dropdown")
-    if(dropdownBoxes.length > 0){
-        dropdownBoxes.forEach(box => {
-            const dropdownHoverEl   = box.querySelector(".dropdown-hover")
-            const dropdowContent    = box.querySelector(".dropdown-content")
-
-            dropdownHoverEl.addEventListener("click", (e) => {
-                e.preventDefault()
-                e.stopPropagation()
-
-                const isOpen = dropdowContent.classList.contains("open")
-
-                if(isOpen){ // close logic
-                    dropdowContent.style.maxHeight = null
-                    dropdowContent.classList.remove("open")
-
-                }else{ // open logic
-                    requestAnimationFrame(() => {
-                        dropdowContent.style.maxHeight = dropdowContent.scrollHeight + "px";
-                        dropdowContent.classList.add("open");
-                    })
-                }
-            })
-        })
-    }
-}
-
-// document event click outside dropdownBox
-document.addEventListener("click", (e) => {
-    const clickedDropdown   = e.target.closest(".dropdown")
-    const clickedInside     = e.target.closest(".dropdown-content")
-    
-    if(!clickedInside &&  !clickedDropdown){ // close logic
-        document.querySelectorAll(".dropdown-content.open").forEach(openedDropdown => {
-            openedDropdown.style.maxHeight = null
-            openedDropdown.classList.remove("open")
-        })
-    }
-})
-
-dropdownEvent()
 refreshIcons()

@@ -8,7 +8,7 @@ class Folder{
         `)
 
         if(rows.length === 0){
-            throw new Error("No folder found")
+            return false
         }
 
         return rows
@@ -21,7 +21,7 @@ class Folder{
 
 
         if(rows.length === 0){
-            throw new Error("No folder found with selected user identifier")
+            return false
         }
 
         return rows
@@ -37,7 +37,7 @@ class Folder{
         `, [nameFolder])
 
         if(rows.length === 0){
-            throw new Error("No folder found with selected username")
+            return false
         }
         return rows[0]
     }

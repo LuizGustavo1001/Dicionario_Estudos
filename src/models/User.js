@@ -12,7 +12,7 @@ class User{
         `, [id])
 
         if(rows.length === 0){
-            throw new Error("No User found with selected user identifier")
+            return false
         }
         return rows[0]
     }
@@ -27,7 +27,7 @@ class User{
         `, [name])
 
         if(rows.length === 0){
-            throw new Error("No User found with selected username")
+            return false
         }
 
         return rows[0]
@@ -43,7 +43,7 @@ class User{
         `, [username])
 
         if(rows.length === 0){
-            throw new Error("No Token found with selected username")
+            return false
         }
 
         return rows[0]
@@ -59,7 +59,7 @@ class User{
         `, [idUser])
 
         if(rows.length === 0){
-            throw new Error("No Token found with selected user identifier")
+            return false
         }
 
         return rows[0]
@@ -75,7 +75,7 @@ class User{
         `, [idUser])
 
         if(rows.length === 0){
-            throw new Error("No Token Status found with seleceted user identifier")
+            return false
         }
 
         return rows[0]

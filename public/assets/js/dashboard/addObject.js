@@ -1,5 +1,4 @@
 import { setWarningCookie, fillWarning } from "/assets/js/base.js"
-import { closePopup } from "/assets/js/dashboard/dashboardGeneral.js"
 import { renderFolderList } from "/assets/js/dashboard/renderContents.js"
 
 const popupSubmitBtns = document.querySelectorAll(".btn.submit-popup-form, .btn.warning-btn")
@@ -153,7 +152,7 @@ async function addFolder(nameFolder, clr){
     }
 
     try{
-        const response = await fetch("/users/me/add/folder", {
+        const response = await fetch("/api/me/add/folder", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -174,7 +173,7 @@ async function addFolder(nameFolder, clr){
 
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
-        closePopup()
+        //closePopup()
         renderFolderList(null, data.insertId)
     }catch(err){
         console.error("Server error", err)
@@ -183,7 +182,7 @@ async function addFolder(nameFolder, clr){
 
 async function addTerm(idFolder, formData){
     try{
-        const response = await fetch("/users/me/add/term", {
+        const response = await fetch("/api/me/add/term", {
             method: "POST",
             body: formData
         })
@@ -209,7 +208,7 @@ async function editFolderData(idFolder, newName, newClr){
             return
         }
         
-        const response = await fetch("/users/me/edit/folder", {
+        const response = await fetch("/api/me/edit/folder", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -231,7 +230,7 @@ async function editFolderData(idFolder, newName, newClr){
 
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
-        closePopup()
+        //closePopup()
         renderFolderList(null, idFolder)
     }catch(err){
         console.error("Server error", err)
@@ -240,7 +239,7 @@ async function editFolderData(idFolder, newName, newClr){
 
 async function removeFolder(idFolder){
     try{
-        const response = await fetch("/users/me/remove/folder", {
+        const response = await fetch("/api/me/remove/folder", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -260,7 +259,7 @@ async function removeFolder(idFolder){
         
         // snackbar + popupEvent + refresh folderList
         fillWarning(data.message, 1)
-        closePopup()
+        //closePopup()
         renderFolderList(null, idFolder)
     }catch(err){
         console.error("Server error", err)

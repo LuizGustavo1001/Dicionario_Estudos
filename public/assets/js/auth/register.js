@@ -1,7 +1,6 @@
 import { setWarningCookie, fillWarning, getAuth } from "/assets/js/base.js"
 
 const authStatus = await getAuth()
-
 if(authStatus){
     window.location.href = "/dashboard"
 }else if(authStatus === "pending_confirmation"){
@@ -29,7 +28,7 @@ if(form && submitBtn){
 
  async function register(username, password){
     try{
-        const response = await fetch("/users/register", {
+        const response = await fetch("/api/register", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

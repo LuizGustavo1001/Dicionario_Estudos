@@ -32,7 +32,7 @@ if(form && submitBtn){
 
 async function changeUsername(currentUsername, newUsername, typedToken){
     try{
-        const response = await fetch("/users/me/edit/username", {
+        const response = await fetch("/api/me/edit/username", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

@@ -74,9 +74,6 @@ main{
     flex: 0 0 0px;
     width: 0;
     height: 100dvh;
-    opacity: 0;
-    overflow: hidden;
-    transform: 0.5s;
 
     display: grid;
     grid-template-rows: 1fr auto;
@@ -240,7 +237,6 @@ main{
 
         .terms-area{
             @include m.flex-collumn-05;
-            //overflow: auto;
 
             .errorMessage{
                 height: 100%;
@@ -267,16 +263,10 @@ main{
                 background: var(--blue-200);
                 border-radius: var(--radius-sm);
 
-                .dropdown-hover{ 
-                    //opacity: 0;
-                    //visibility: hidden;
-                }
+                .dropdown-hover{ display: none; }
 
-                &.open{
-                    .dropdown-hover{ 
-                        //opacity: 1;
-                        //visibility: visible;
-                    }
+                &[open]{
+                    .dropdown-hover{ display: block; }
                 }
 
                 summary{
@@ -303,39 +293,11 @@ main{
                     .dropdown{
                         .dropdown-content{
                             z-index: 1;
-                            min-width: 200px;
-
-                            display: flex;
-                            flex-direction: column;
-
-                            li{
-                                display: flex;
-                                align-items: center;
-                                gap: 0.3em;
-
-                                padding: 0.5em;
-                                font-size: 0.9em;
-
-                                svg{
-                                    flex-shrink: 0;
-                                    width: 20px;
-                                }
-
-                                &, svg{ color: var(--blue-800); }
-
-                                &:hover{ background: var(--blue-200); }
-                            }
                         }
                     }
                 }
 
                 .meanings{
-                    max-height: 0;
-                    opacity: 0;
-                    overflow: hidden;
-
-                    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-
                     .content-inner{ // allows padding with scrollHeight
                         @include m.flex-collumn-05;
                         border-radius: 0 0 var(--radius-sm) var(--radius-sm);
@@ -351,7 +313,7 @@ main{
                         @include m.respond(tablet){ max-width: 500px; }
                     }
 
-                    &.open{ opacity: 1; }
+                    //&.open{ opacity: 1; }
                 }
             }
         }

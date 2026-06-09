@@ -1,4 +1,5 @@
-import { setWarningCookie, fillWarning, getAuth, getCookie, logout } from "/assets/js/base.js"
+import { setWarningCookie, fillWarning, getAuth, getCookie } from "/assets/js/base.js"
+import { logout } from "/assets/js/init.js"
 
 const authStatus = await getAuth()
 
@@ -39,7 +40,7 @@ if(form && submitBtn){
 
 async function verifyToken(typedToken){
     try{
-        const response = await fetch("/users/auth/confirmToken", {
+        const response = await fetch("/api/auth/confirmToken", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -75,7 +76,7 @@ if(removeAccBtn){
 
 async function removeAccount(){
     try{
-        const response = await fetch("/users/me/remove", {
+        const response = await fetch("/api/me/remove", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

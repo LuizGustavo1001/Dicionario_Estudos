@@ -201,15 +201,16 @@
                     </span>
                 </div>
 
-                <button class="btn submit-popup-form" data-id="edit-folder">
-                    <div class="spinning-wheel"></div>
-                    <span>Editar Pasta</span>
-                </button>
-
-                <button type="button" class="btn warning-btn" data-id="rmv-folder">
-                    <div class="spinning-wheel"></div>
-                    <span>Remover Pasta</span>
-                </button>
+                <div class="wrapper-inline">
+                    <button class="btn submit-popup-form" data-id="edit-folder">
+                        <div class="spinning-wheel"></div>
+                        <span>Editar Pasta</span>
+                    </button>
+                    <button type="button" class="btn warning-btn" data-id="rmv-folder">
+                        <div class="spinning-wheel"></div>
+                        <span>Remover Pasta</span>
+                    </button>
+                </div>
             </form>
         </div>
 
@@ -220,11 +221,11 @@
             </div>
 
             <form action="#" method="post">
-                <div class="form-input-box input-box-w-label">
-                    <label for="ifolder">Nome do Termo</label>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Nome do Termo</legend>
                     <input type="text" name="term" id="iterm" class="input" placeholder="Máximo 100 caracteres" autocapitalize="on">
-                </div>
-
+                </fieldset>
+                
                 <!-- Meanings list (remove button for each) -->
 
                 <button type="submit" class="btn submit-popup-form" data-id="edit-term">
@@ -241,10 +242,11 @@
             </div>
 
             <form action="#" method="post">
-                <div class="form-input-box input-box-w-label">
-                    <label for="inewTextMeaning">Significado Texto</label>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Significado do Termo</legend>
                     <input type="text" name="newTextMeaning" id="inewTextMeaning" class="input" placeholder="Máximo 300 caracteres" autocapitalize="on">
-                </div>
+                </fieldset>
+
                 <button type="submit" class="btn submit-popup-form" data-id="add-meaning-text">
                     <div class="spinning-wheel"></div>
                     <span>Adicionar Significado</span>
@@ -259,10 +261,11 @@
             </div>
 
             <form action="#" method="post">
-                <div class="form-input-box input-box-w-label">
-                    <label for="inewImageMeaning">Significado Imagem </label>
-                    <input type="file" name="newImageMeaning" id="inewImageMeaning" class="input image-input" accept="image/*, .pdf">
-                </div>
+                <fieldset class="input-fieldset">
+                    <legend class="label">Significado Imagem</legend>
+                    <input type="file" name="newImageMeaning" id="inewImageMeaning" class="input image-input" accept="image/*">
+                </fieldset>
+
                 <button type="submit" class="btn submit-popup-form" data-id="add-meaning-image">
                     <div class="spinning-wheel"></div>
                     <span>Adicionar Significado</span>
@@ -322,7 +325,7 @@
         <section class="hero">
             <header class="hero-header">
                 <span class="header-text" id="folder-name">
-                    <i data-icon="folder"></i>
+                    <i data-icon="folder_fill"></i>
                     <h1 aria-label="current folder name here"></h1>
                 </span>
                 <button class="icon-hold secondary toggle-popup-icon" data-id="edit-folder" data-folder="" id="edit-folder-info" title="Clique aqui para editar informações da pasta">
@@ -414,6 +417,7 @@
         </section>
     </main>
 
+    <script type="module" src="/assets/js/init.js"></script>
     <script type="module" src="/assets/js/base.js"></script>
     <script type="module" src="/assets/js/dashboard/dashboardGeneral.js"></script>
     <script type="module" src="/assets/js/dashboard/renderContents.js"></script>

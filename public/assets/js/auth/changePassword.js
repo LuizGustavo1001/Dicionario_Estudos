@@ -30,7 +30,7 @@ if(form && submitBtn){
 
 async function changePassword(currentUsername, newPassword, typedToken){
     try{
-        const response = await fetch("/users/me/edit/password", {
+        const response = await fetch("/api/me/edit/password", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
