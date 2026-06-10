@@ -125,15 +125,11 @@ cd Dicionario_Estudos
 ```
 ### NPM Dependencies
 ```shell
-npm init -y
-npm install express mysql2 cors dotenv
-npm install bcrypt jsonwebtoken
-npm install sass
-npm install cookie-parser
-npm install jsonwebtoken cookie-parser
-npm install dotenv
+npm install
 ```
+
 ### Environment Variables (`.env`)
+Create `.env` file and:
 
 | Variable                | Description                    | Example                                   |
 | ----------------------- | ------------------------------ | ----------------------------------------- |

@@ -1,0 +1,37 @@
+{
+  "name": "dicionario_estudos",
+  "version": "1.0.0",
+  "description": "## Technologies  - [Docker Compose](https://docs.docker.com/compose/) - [Node.JS](https://nodejs.org) - [MySQL](https://www.mysql.com/) - [NPM](https://www.npmjs.com/) - [JWT](https://www.jwt.io/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch public/assets/scss:public/assets/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuizGustavo1001/Dicionario_Estudos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuizGustavo1001/Dicionario_Estudos/issues"
+  },
+  "homepage": "https://github.com/LuizGustavo1001/Dicionario_Estudos#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "html-to-image": "^1.11.13",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.3"
+  },
+  "devDependencies": {
+    "sass": "^1.99.0"
+  }
+}
