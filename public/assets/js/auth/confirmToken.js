@@ -40,7 +40,7 @@ if(form && submitBtn){
 
 async function verifyToken(typedToken){
     try{
-        const response = await fetch("/api/auth/confirmToken", {
+        const response = await fetch("/api/me/auth/confirm-token", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -76,12 +76,12 @@ if(removeAccBtn){
 
 async function removeAccount(){
     try{
-        const response = await fetch("/api/me/remove", {
-            method: "POST",
+        const response = await fetch("/api/me", {
+            method: "DELETE",
             headers: {
                 "Content-type": "application/json"
             },
-            credentials: "include",
+            credentials: "include"
         })
 
         if(!response.ok){ 

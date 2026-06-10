@@ -1,10 +1,16 @@
 const Meaning = require("../models/Meaning")
 
-exports.getTermMeaning = async (req, res) => {
-    const { terms } = req.body
+exports.getTermMeanings = async (req, res) => {
+    const { terms } = req.query
+    if(!terms){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     try{
-        const meanings = await Meaning.getAllByTerm(terms)
+        const termsArray = terms.split(",") // [1,2,3] -> "1,2,3"
+
+        const meanings = await Meaning.getAllByTerm(termsArray)
+        
         return res.json(meanings)
     }catch(err){
         console.log(err)
@@ -17,7 +23,7 @@ exports.createMeaning = async (req, res) => {
     const idUser = req.userId
 
     if (!idTerm || !meanings || !idUser) {
-        return res.status(400).json({ error: "missingMeaningFields" });
+        return res.status(400).json({ error: "missingFields" })
     }
 
     const connection = await db.getConnection()

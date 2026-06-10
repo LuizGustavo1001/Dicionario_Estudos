@@ -10,6 +10,9 @@ const Meaning   = require("../models/Meaning")
 
 exports.login = async (req, res) => {
     const { username, password } = req.body
+    if(!username || !password){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     const user = await User.getByName(username)
 
@@ -45,6 +48,9 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
     const { username, password } = req.body
+    if(!username || !password){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     const user = await User.getByName(username)
     if(user){ return res.status(409).json({ error: "userExists" }) }
@@ -78,7 +84,6 @@ exports.register = async (req, res) => {
 
 exports.auth = async (req, res) => {
     const token = req.cookies.token
-    
     if(!token){
         return res.status(401).json({ error: "notAuthenticated" })
     }
@@ -171,9 +176,11 @@ exports.me = async (req, res) => {
 // verify input token confirmation at /auth/confirmToken
 exports.verifyToken = async (req, res) => {
     const { typedToken } = req.body
+    if(!typedToken){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     const idUser = req.userId
-
     const connection = await db.getConnection()
 
     try{
@@ -221,8 +228,9 @@ exports.verifyToken = async (req, res) => {
 // verify input token while changing password
 exports.changePassword = async (req, res) => {
     const { currentUsername, newPassword, typedToken } = req.body
-
-    if(!currentUsername || !newPassword || !typedToken) return
+    if(!currentUsername || !newPassword || !typedToken) {
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     const connection = await db.getConnection()
 
@@ -273,11 +281,11 @@ exports.changePassword = async (req, res) => {
 
 exports.changeUsername = async (req, res) => {
     const { currentUsername, newUsername, typedToken } = req.body
-    
-    if(!currentUsername || !newUsername || !typedToken) return
+    if(!currentUsername || !newUsername || !typedToken) {
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     const idUser = req.userId
-
     const connection = await db.getConnection()
 
     try{
@@ -323,10 +331,9 @@ exports.changeUsername = async (req, res) => {
 
 exports.newToken = async (req, res) => {
     const { typedToken } = req.body
-    if(!typedToken) return
+    if(!typedToken) return res.status(400).json({ error: "missingFields" })
 
     const idUser = req.userId
-
     const connection = await db.getConnection()
     
     try{

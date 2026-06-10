@@ -18,7 +18,7 @@ export async function getUserInfo(){
 
 export async function getFolders(){
     try{
-        const response = await fetch("/api/me/get/folders", {
+        const response = await fetch("/api/me/folders", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -37,18 +37,15 @@ export async function getFolders(){
 export async function getFolderTerms(){
     try{
         const userFolders = await getFolders()
-
         const folders = userFolders.map(f => f.idFolder)
+        const foldersParam = folders.join(",")
 
-        const response = await fetch("/api/me/get/terms", {
-            method: "POST",
+        const response = await fetch(`/api/me/terms?folders=${foldersParam}`, {
+            method: "GET",
             headers: {
                 "Content-type": "application/json"
             },
-            credentials: "include",
-            body: JSON.stringify({ 
-                folders: folders
-            })
+            credentials: "include"
         })
 
         const data = await response.json()
@@ -65,15 +62,14 @@ export async function getTermMeanings(){
 
         const terms = folderTerms.map(t => t.idTerm)
 
-        const response = await fetch("/api/me/get/meanings", {
-            method: "POST",
+        const termsParam = terms.join(",")
+
+        const response = await fetch(`/api/me/meanings?terms=${termsParam}`, {
+            method: "GET",
             headers: {
                 "Content-type": "application/json"
             },
-            credentials: "include",
-            body: JSON.stringify({
-                terms: terms
-            })
+            credentials: "include"
         })
 
         const data = await response.json()

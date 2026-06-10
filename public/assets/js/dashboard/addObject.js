@@ -152,7 +152,7 @@ async function addFolder(nameFolder, clr){
     }
 
     try{
-        const response = await fetch("/api/me/add/folder", {
+        const response = await fetch("/api/me/folders", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
@@ -182,7 +182,7 @@ async function addFolder(nameFolder, clr){
 
 async function addTerm(idFolder, formData){
     try{
-        const response = await fetch("/api/me/add/term", {
+        const response = await fetch(`/api/me/terms/${idFolder}`, {
             method: "POST",
             body: formData
         })
@@ -208,8 +208,8 @@ async function editFolderData(idFolder, newName, newClr){
             return
         }
         
-        const response = await fetch("/api/me/edit/folder", {
-            method: "POST",
+        const response = await fetch("/api/me/folders", {
+            method: "PUT",
             headers: {
                 "Content-type": "application/json"
             },
@@ -239,8 +239,8 @@ async function editFolderData(idFolder, newName, newClr){
 
 async function removeFolder(idFolder){
     try{
-        const response = await fetch("/api/me/remove/folder", {
-            method: "POST",
+        const response = await fetch("/api/me/folders", {
+            method: "DELETE",
             headers: {
                 "Content-type": "application/json"
             },

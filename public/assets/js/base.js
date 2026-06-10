@@ -118,7 +118,7 @@ export function getAuth(forceRefresh = false){
 
 async function checkAuth(){
     try{
-        const response = await fetch("/api/auth", {
+        const response = await fetch("/api/me/auth", {
             method: "GET",
             credentials: "include"
         })

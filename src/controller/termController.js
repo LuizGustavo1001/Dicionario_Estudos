@@ -4,10 +4,16 @@ const Term = require("../models/Term")
 const db        = require("../database/connection")
 
 exports.getFolderTerms = async (req, res) => {
-    const { folders } = req.body
+    const { folders } = req.query
+    if(!folders){
+        return res.status(400).json({ error: "missingFields" });
+    }
 
     try{
-        const terms = await Term.getAllByFolder(folders)
+        const foldersArray = folders.split(",")
+
+        const terms = await Term.getAllByFolder(foldersArray)
+
         return res.json(terms)
     }catch(err){
         console.log(err)
@@ -16,9 +22,14 @@ exports.getFolderTerms = async (req, res) => {
 }
 
 exports.createTerm = async (req, res) => {
-    let { idFolder, termName, meanings } = req.body
+    const { folderId } = req.params
+    let { termName, meanings } = req.body
     const idUser = req.userId
     const files = req.files
+
+    if(!folderId){
+        return res.status(400).json({ error: "missingFolderId" })
+    }
 
     try{
         if(typeof meanings === "string"){
@@ -49,7 +60,7 @@ exports.createTerm = async (req, res) => {
         await connection.beginTransaction()
 
         // insert term
-        const newTermId = await Term.create(connection, idFolder, termName)
+        const newTermId = await Term.create(connection, folderId, termName)
         if(!newTermId){
             await connection.rollback()
             return res.status(400).json({ error: "invalidTerm" })

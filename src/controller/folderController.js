@@ -14,6 +14,9 @@ exports.getUserFolders = async (req, res) => {
 
 exports.createFolder = async (req, res) => {
     const { folderName, color } = req.body
+    if(!folderName || !color){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     const connection = await db.getConnection()
 
@@ -45,6 +48,9 @@ exports.createFolder = async (req, res) => {
 
 exports.editFolder = async (req, res) => {
     const { idFolder, folderName, color } = req.body
+    if(!idFolder || !folderName || !color){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     try{
         const map = {
@@ -63,6 +69,9 @@ exports.editFolder = async (req, res) => {
 
 exports.removeFolder = async (req, res) => {
     const { idFolder } = req.body
+    if(!idFolder){
+        return res.status(400).json({ error: "missingFields" })
+    }
 
     try{
         const removeFolder = await Folder.delete(idFolder)

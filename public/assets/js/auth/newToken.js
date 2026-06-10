@@ -29,7 +29,7 @@ if(form && submitBtn){
 
 async function createToken(typedToken){
     try{
-        const response = await fetch("/api/me/edit/token", {
+        const response = await fetch("/api/me/token", {
             method: "POST",
             headers: {
                 "Content-type": "application/json"
