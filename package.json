@@ -32,6 +32,6 @@
     "mysql2": "^3.22.3"
   },
   "devDependencies": {
-    "sass": "^1.99.0"
+    "sass": "^1.69.5"
   }
 }

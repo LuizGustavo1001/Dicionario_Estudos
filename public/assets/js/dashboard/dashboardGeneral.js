@@ -1,5 +1,5 @@
 import { getAuth } from "/assets/js/base.js"
-import { updateOverlay, overlayState, isDesktop } from "../init.js"
+import {isDesktop, setAsideState } from "../init.js"
 
 const authStatus = await getAuth()
 if(!authStatus){
@@ -17,21 +17,6 @@ const settingsOptions   = document.querySelectorAll(".settings-aside ul li")
 const addTermInputAreaBtns = document.querySelectorAll("#add-term .add-input")
 
 desktopMedia.addEventListener("change", handleResize2Aside)
-
-document.addEventListener("click", (e) => { // Mobile aside toggle
-    if(!isDesktop()){
-        const clickedPopup = e.target.closest(".popup-box")
-        const clickedInside = e.target.closest(".main-aside")
-        const clickedToggle = e.target.closest(".aside-toggle-icon")
-        
-        if(!clickedInside && !clickedToggle && !clickedPopup){ // avoid event when popup is opened
-            mainAside.classList.remove("open")
-
-            overlayState.aside = false
-            updateOverlay()
-        }
-    }
-})
 
 // Main aside visibility event
 if(asideIcons.length > 0){
@@ -59,24 +44,23 @@ if(settingsOptions){
 
 // Functions
 function toggleAside(){
+    if(!mainAside) return
     const isOpen = mainAside.classList.toggle("open")
 
     if(!isDesktop()){
-        overlayState.aside = isOpen
-        updateOverlay()
+        setAsideState(isOpen)
     }
 }
 
 function handleResize2Aside(){
+    if(!mainAside) return
     const desktop = isDesktop()
 
     mainAside.classList.toggle("open", desktop)
     
-    if(desktop){
-        overlayState.aside = false
+    if(desktop || !desktop){
+        setAsideState(false)
     }
-
-    updateOverlay()
 }
 
 function toggleColorInputEvent(formContainer){ // toggle input color value
@@ -86,7 +70,7 @@ function toggleColorInputEvent(formContainer){ // toggle input color value
     if (!colorInput) return
 
     circles.forEach(circle => {
-        circle.addEventListener("click", () => {changeColor(circle.dataset.color)})
+        circle.addEventListener("click", () => { changeColor(circle.dataset.color) })
     })
 
     // match input with the clr-circle

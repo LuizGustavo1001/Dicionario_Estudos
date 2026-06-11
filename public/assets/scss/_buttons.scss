@@ -231,6 +231,10 @@ input, select, textarea{
         background: var(--blue-750);
     }
 
+    &:active{
+        transform: scale(0.95);
+    }
+
     &.warning-btn{
         background: #D4275B;
         color: var(--white);

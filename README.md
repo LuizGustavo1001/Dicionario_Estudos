@@ -33,11 +33,13 @@
 	</a>
 </p>
 
+<img src="https://res.cloudinary.com/dxfelxvyy/image/upload/q_auto/f_auto/v1781096574/asd_wmlujk.avif" width="600px">
+
 # `Dicionário de Estudos`
 
 </div>
 
-Dicionário de Estudos is a robust platform developed for **customized organization terms** . The system works as a **vocabulary manager** focused on **students and researchers** who need a space to centralize their Knowledge in an intuitive way. 
+Dicionário de Estudos is a robust platform developed for **customized organization terms**. The system works as a **vocabulary manager** focused on **students and researchers** who need a space to centralize their Knowledge in an intuitive way. 
 
 The application allows **users** to:
 - **Create Folders** separated by personalized colors.
@@ -86,7 +88,7 @@ The API was builded  using:
 	"message": "loginSuccess"
 }
 ```
-2. **User Folders:** `GET /me/folders`
+2. **User Folders:**
 	- Endpoint: `GET /me/folders`
 	- Response: 200 (OK)
 ```JSON
@@ -105,7 +107,7 @@ The API was builded  using:
 	}
 ]
 ```
-3. **Login (Missing Fields):** `POST /login`
+3. **Login (Missing Fields):**
 	- Endpoint: `POST /login`
 	- Response: 400 (Bad Request)
 ```JSON

@@ -97,7 +97,7 @@ export async function renderFolderList(foldersMap = null, currentIdFolder){
         renderTermsArea(termsMap)
 
         if(editFolderIcon){
-            editFolderIcon.dataset.folder = selectedFolder.idFolder;
+            editFolderIcon.dataset.folder = selectedFolder.idFolder
         }
     }catch(err){
         fillWarning("dberror", 0)
@@ -220,59 +220,14 @@ export async function renderTermsArea(termsMap = null){
 
             termTitle.append(termTitleText)
 
-            const dropdown = document.createElement("div")
-            dropdown.classList.add("dropdown")
+            const expandIconBox = document.createElement("span")
+            expandIconBox.classList.add("icon-hold", "toggle-popup-icon")
+            expandIconBox.dataset.id = "term-expand"
+            const expandIcon = document.createElement("i")
+            expandIcon.dataset.icon = "expand"
 
-            const ellipsisIconBox = document.createElement("span")
-            ellipsisIconBox.classList.add("icon-hold", "dropdown-hover")
-
-            const ellipsisIcon = document.createElement("i")
-            ellipsisIcon.dataset.icon = "ellipsis"
-
-            ellipsisIconBox.append(ellipsisIcon)
-
-            const dropdownContent = document.createElement("ul")
-            dropdownContent.classList.add("dropdown-content")
-
-            const editItem = document.createElement("li")
-            editItem.classList.add("toggle-popup-icon")
-            editItem.dataset.id = "edit-term"
-            const editIcon = document.createElement("i")
-            editIcon.dataset.icon = "edit"
-            const editContent = document.createElement("span")
-            editContent.textContent = "Editar Nome"
-
-            const downloadItem = document.createElement("li")
-            downloadItem.classList.add("download-btn")
-            const downloadIcon = document.createElement("i")
-            downloadIcon.dataset.icon = "download"
-            const downloadContent = document.createElement("span")
-            downloadContent.textContent = "Baixar Termo"
-
-            const addTextItem = document.createElement("li")
-            addTextItem.classList.add("toggle-popup-icon")
-            addTextItem.dataset.id = "add-meaning-text"
-            const AddTextIcon = document.createElement("i")
-            AddTextIcon.dataset.icon = "textboxplus"
-            const addTextContent = document.createElement("span")
-            addTextContent.textContent = "Adicionar Significado por Texto"
-
-            const addImageItem = document.createElement("li")
-            addImageItem.classList.add("toggle-popup-icon")
-            addImageItem.dataset.id = "add-meaning-image"
-            const addImageIcon = document.createElement("i")
-            addImageIcon.dataset.icon = "imageplus"
-            const addImageContent = document.createElement("span")
-            addImageContent.textContent = "Adicionar Significado por Imagem"
-
-            editItem.append(editIcon, editContent)
-            downloadItem.append(downloadIcon, downloadContent)
-            addTextItem.append(AddTextIcon, addTextContent)
-            addImageItem.append(addImageIcon, addImageContent)
-
-            dropdownContent.append(editItem, downloadItem, addTextItem, addImageItem)
-            dropdown.append(ellipsisIconBox, dropdownContent)
-            summary.append(termTitle, dropdown)
+            expandIconBox.append(expandIcon)
+            summary.append(termTitle, expandIconBox)
 
             const meaningsBox = document.createElement("div")
             meaningsBox.classList.add("meanings", "content")

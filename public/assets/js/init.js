@@ -1,23 +1,34 @@
 import { setWarningCookie } from "/assets/js/base.js"
 import * as htmlToImage from 'https://esm.sh/html-to-image@1.11.11'
 
-export let overlayState = { // control wich element is using overlay
+let overlayState = { // control wich element is using overlay
     aside: false,
     popup: false
 }
 export const isDesktop = () => window.innerWidth >= 1024
 
+const asideIcons        = document.querySelectorAll(".aside-toggle-icon")
+
+
 // Rounting events
 function initGlobalEventListeners(){
     document.addEventListener("click", async (e) => {
+        const mainAside         = document.querySelector(".main-aside")
+
         const openIcon      = e.target.closest(".toggle-popup-icon")
         const closeIcon     = e.target.closest(".close-popup-icon")
         const logoutIcon    = e.target.closest(".logout-btn")
-        const detailsElements = e.target.closest(".details.toggle-event")
         const clipboardIcon = e.target.closest(".clipboard-btn")
         const downloadIcon  = e.target.closest(".download-btn")
-        const dropdownBox   = e.target.closest(".dropdown")
+
+        const detailsSummary = e.target.closest(".details.toggle-event summary")
+        const detailsDropdown = e.target.closest(".details.toggle-event .dropdown")
+        const dropdownHoverEl = e.target.closest(".dropdown-hover")
         const clickedInsideDropdown = e.target.closest(".dropdown-content")
+        const dropdownBox   = e.target.closest(".dropdown")
+
+        const clickedInsidePopup = e.target.closest(".popup")
+        
 
         if(openIcon){
             e.stopPropagation()
@@ -26,9 +37,7 @@ function initGlobalEventListeners(){
         }
 
         if(closeIcon){
-            overlayState.popup = false
             closePopup()
-            updateOverlay()
             return
         }
 
@@ -39,13 +48,13 @@ function initGlobalEventListeners(){
             return
         }
 
-        if(detailsElements){
-            toggleDetails(detailsElements)
+        if(detailsSummary || detailsDropdown){
+            e.stopPropagation()
             return
         }
 
         if(clipboardIcon){
-            clipboardIcon.addEventListener("click", () => { copyText(clipboardIcon) })
+            copyText(clipboardIcon)
             return
         }
         
@@ -67,45 +76,55 @@ function initGlobalEventListeners(){
             return
         }
 
-        if(dropdownBox){
-            const dropdownHoverEl   = dropdownBox.querySelector(".dropdown-hover")
-            const dropdowContent    = dropdownBox.querySelector(".dropdown-content")
+        if(dropdownHoverEl){
+            e.preventDefault()
+            e.stopPropagation()
 
-            dropdownHoverEl.addEventListener("click", (e) => {
-                e.preventDefault()
-                e.stopPropagation()
+            const currentDropdownBox = dropdownHoverEl.closest(".dropdown")
+            const dropdowContent = currentDropdownBox.querySelector(".dropdown-content")
+            const isOpen = dropdowContent.classList.contains("open")
 
-                const isOpen = dropdowContent.classList.contains("open")
-
-                if(isOpen){ // close logic
-                    dropdowContent.style.maxHeight = null
-                    dropdowContent.classList.remove("open")
-
-                }else{ // open logic
-                    dropdowContent.style.maxHeight = dropdowContent.scrollHeight + "px";
-                    dropdowContent.classList.add("open");
-                }
-            })
+            if(isOpen){
+                dropdowContent.style.maxHeight = null
+                dropdowContent.classList.remove("open")
+            }else{
+                dropdowContent.style.maxHeight = dropdowContent.scrollHeight + "px"
+                dropdowContent.classList.add("open")
+            }
 
             return
         }
         
-        if(!clickedInsideDropdown && !dropdownBox){ // document event click outside dropdownBox
+        if(!clickedInsideDropdown && !dropdownBox){ // close dropdown clicking outside
             document.querySelectorAll(".dropdown-content.open").forEach(openedDropdown => {
                 openedDropdown.style.maxHeight = null
                 openedDropdown.classList.remove("open")
             })
-            return
         }
 
+        if(!clickedInsidePopup){ // close popup clicking outside
+            closePopup()
+        }
+
+        if(!isDesktop()){ // close main aside clicking out of aside container
+            const clickedPopup = e.target.closest(".popup-box")
+            const clickedInside = e.target.closest(".main-aside")
+            const clickedToggle = e.target.closest(".aside-toggle-icon")
+            
+            if(!clickedInside && !clickedToggle && !clickedPopup){ 
+                mainAside.classList.remove("open")
+                setAsideState(false)
+            }
+        }
     })
 }
 
-function closePopup(){
+export function closePopup(){
     const popupSections = document.querySelectorAll(".popup")
 
     popupSections.forEach(el => { el.classList.remove("open") })
     overlayState.popup = false
+    updateOverlay()
 }
 
 export function updateOverlay(){
@@ -117,21 +136,31 @@ export function updateOverlay(){
     }
 }
 
+export function setAsideState(isOpen){
+    overlayState.aside = isOpen
+    updateOverlay()
+}
+
 export function changePopupVisibility(page){
     const popupBox = document.querySelector(".popup-box")
+    const mainAside = document.querySelector(".main-aside")
     if(!popupBox) return
         
     const popupSection = popupBox.querySelector(`#${page}`)
     if(!popupSection) return
 
+    document.querySelectorAll(".popup").forEach(popup => {
+        popup.classList.remove("open")
+    })
+
     popupSection.classList.add("open")
 
     // close mobile aside
-    if(!isDesktop()){
+    if(!isDesktop() && mainAside){
         mainAside.classList.remove("open")
         overlayState.aside = false
     }
-    
+
     overlayState.popup = true
     updateOverlay()
 }
@@ -150,24 +179,6 @@ export async function logout(){
     }catch(err){
         console.error("Failure trying to logout: ", err)
         return null
-    }
-}
-
-function toggleDetails(el){
-    const summary   = el.querySelector("summary")
-    const dropdown  = el.querySelector(".dropdown")
-
-    if(summary){
-        summary.addEventListener("click", (e) => {
-            e.stopPropagation()
-        })
-    }
-
-    // avoid drodown click from affect details
-    if(dropdown){
-        dropdown.addEventListener("click", (e) => {
-            e.stopPropagation()
-        })
     }
 }
 

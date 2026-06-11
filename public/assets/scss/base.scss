@@ -89,6 +89,8 @@ form{
         padding: 0.5em;
         font-size: 0.9em;
 
+        cursor: pointer;
+
         svg{
             flex-shrink: 0;
             width: 20px;
@@ -110,6 +112,8 @@ form{
     height: 100dvh;
 
     pointer-events: none;
+
+    backdrop-filter: blur(2px);
 
     &.active{
         visibility: visible;
@@ -142,7 +146,9 @@ form{
 
     padding: 1em;
 
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--blue-600);
+
+    border-radius: var(--radius-m);
     background: var(--white);
 
     &.open{
@@ -169,6 +175,19 @@ form{
             color: var(--blue-700);
             font-family: var(--font-style);
         }
+    }
+
+    animation: open-popup 0.5s;
+}
+
+@keyframes open-popup{
+    from{
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to{
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
@@ -206,9 +225,8 @@ form{
 
 .snackbars-box{
     position: fixed;
-    bottom: 0.5em;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 1em;
+    right: 1em;
     
     @include m.flex-collumn-05;
 
@@ -229,6 +247,8 @@ form{
         padding: 0.7em;
 
         cursor: pointer;
+
+        backdrop-filter: blur(10px);
 
         &::after{
             content: "✕";
@@ -325,6 +345,7 @@ form{
 
     .popup{ 
         background: var(--blue-850); 
+        border-color: var(--blue-750);
 
         .pop-up-title{
             h2{ color: var(--blue-200); }

@@ -18,6 +18,48 @@
     <div class="overlay overlay-popup"></div>
 
     <div class="popup-box">
+        <div id="term-expand" class="popup">
+            <nav>
+                <div class="dropdown">
+                    <button class="icon-hold secondary dropdown-hover">
+                        <i data-icon="ellipsis"></i>
+                    </button>
+
+                    <ul class="dropdown-content">
+                        <li class="toggle-popup-icon" data-id="edit-term">
+                            <i data-icon="edit"></i>
+                            <span>Editar Nome</span>
+                        </li>
+                        <li class="download-btn" data-element="#term-expand .downloadable">
+                            <i data-icon="download"></i>
+                            <span>Baixar</span>
+                        </li>
+                        <li class="toggle-popup-icon" data-id="add-meaning-text">
+                            <i data-icon="textboxplus"></i>
+                            <span>Adicionar Siginificado por Texto</span>
+                        </li>
+                        <li class="toggle-popup-icon" data-id="add-meaning-image">
+                            <i data-icon="imageplus"></i>
+                            <span>Adicionar Siginificado por Imagem</span>
+                        </li>
+                    </ul>
+                </div>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+            </nav>
+
+            <div class="content downloadable">
+                <div class="title">
+                    <div class="highlight-bar"></div>
+                    <h1>Nome do Termo</h1>
+                </div>
+
+                <ul class="meanings">
+                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem similique maxime obcaecati dolorem labore necessitatibus error id atque commodi, sunt temporibus expedita quaerat adipisci nemo repudiandae a possimus cumque. Mollitia.</li>
+                    <img src="https://res.cloudinary.com/dxfelxvyy/image/upload/q_auto/f_auto/v1781096574/asd_wmlujk.avif" alt="">
+                </ul>
+            </div>
+        </div>
+
         <div id="settings" class="popup">
             <aside class="settings-aside">
                 <ul>
@@ -67,7 +109,7 @@
                         <h2>Outros</h2>
                         <ul>
                             <li>
-                                <label for="ilanguage" title="Linguagem">Linguagem <small>(em Desenvolvimento)</small></label>
+                                <label for="ilanguage" title="Idioma">Idioma <small>(em Desenvolvimento)</small></label>
                                 <select name="language" id="ilanguage" class="just-input secondary">
                                     <option value="PTBR">Português - BR</option>
                                     <option value="EN">English</option>
@@ -94,11 +136,20 @@
                                     <option value="system">Seguir Sistema</option>
                                 </select>
                             </li>
+
+                            <li>
+                                <label for="isysClr">Cor Destaque <small>(Desenvolvimento)</small></label>
+                                <select name="sysClr" id="isysClr" class="just-input secondary toggle-clr-box">
+                                    <option value="blue">Azul</option>
+                                </select>
+                            </li>
                         </ul>
                     </li>
                 </ul>
 
-                <div class="section-content" id="help"> </div>
+                <div class="section-content" id="help"> 
+                    <h1>Em desenvolvimento</h1>
+                </div>
             </div>
         </div>
 

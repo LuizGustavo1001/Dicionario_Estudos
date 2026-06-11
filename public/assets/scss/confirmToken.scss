@@ -45,6 +45,8 @@ main{
         align-items: center;
         justify-content: center;
 
+        hyphens: auto;
+
         #token{
             padding: 0.5em;
             letter-spacing: 0.2em;
@@ -82,92 +84,3 @@ main{
     }
 
 }
-
-/*
-
-main{
-    width: 100%;
-    height: fit-content;
-
-    @include m.respond(tablet){ width: clamp(300px, 100%, 750px); }
-
-    border-radius: var(--radius-m);
-
-    .main-title{
-        background: var(--blue-100);
-        padding: 1em;
-
-        border-radius: var(--radius-m) var(--radius-m) 0 0;
-
-
-        h1{
-            font-size: 1.2em;
-            color: var(--blue-700);
-        }
-    }
-
-    .hero{
-        background: var(--white);
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.089);
-
-        border-radius: var(--radius-m);
-
-        @include m.flex-collumn-05;
-        gap: 0;
-    }
-}
-
-.hero{
-    .top .subtitle, .middle, .bottom{ padding: 1em;}
-
-    .top .subtitle em{ color: rgb(46, 125, 190); }
-
-    .middle{
-        @include m.flex-center;
-        gap: 1em;
-
-        width: fit-content;
-        margin: 1em auto;
-
-        color: var(--blue-700);
-        font-size: clamp(1.2em, 3vw, 1.3em);
-
-        #token{
-            padding: 0.5em;
-            letter-spacing: 0.2em;
-
-            background: var(--blue-200);
-            font-family: var(--font-mono);
-            border-radius: var(--radius);
-            font-weight: bold;
-        }
-    }
-
-    .bottom{
-        .warning-btn{ padding: 0.3em; }
-    }
-}
-
-/* -=-=-=-=-=-=-=-=- Dark Mode -=-=-=-=-=-=-=-=- */
-/*
-.dark-mode{
-    main{
-        background: var(--blue-850);
-
-        .main-title{
-            border-color: var(--blue-800);
-
-            h1{ color: var(--blue-500); }
-        }
-    }
-
-    .hero{
-        .middle{
-            color: var(--blue-400);
-
-            #token{ background: var(--blue-900); }
-        }
-    }
-}
-
-*/
