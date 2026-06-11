@@ -21,6 +21,29 @@ exports.getFolderTerms = async (req, res) => {
     }
 }
 
+exports.getTermById = async (req, res) => {
+    const { idTerm } = req.params
+    const idUser = req.userId
+
+    if(!idTerm){
+        return res.status(400).json({ error: "missingFields" })
+    }
+
+    try{
+        // retrieve term information (term + meanings)
+        const term = await Term.getTermAndMeaningById(idTerm, idUser)
+
+        if(!term){
+            return res.status(404).json({ error: "termNotFound" })
+        }
+
+        return res.json(term)
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({ error: "serverError" })
+    }
+}
+
 exports.createTerm = async (req, res) => {
     const { folderId } = req.params
     let { termName, meanings } = req.body
@@ -28,7 +51,7 @@ exports.createTerm = async (req, res) => {
     const files = req.files
 
     if(!folderId){
-        return res.status(400).json({ error: "missingFolderId" })
+        return res.status(400).json({ error: "missingFields" })
     }
 
     try{

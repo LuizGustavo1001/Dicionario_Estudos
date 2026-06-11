@@ -32,6 +32,43 @@ class Term{
         return rows[0]
     }
 
+    static async getById(idTerm, idUser, conn){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
+            SELECT t.content, t.idTerm 
+            FROM term_data AS t 
+                JOIN folder_data AS f ON f.idFolder = t.idFolder
+                JOIN user_data AS u ON u.idUser = f.idUser
+            WHERE t.idTerm = ? AND u.idUser = ?
+        `, [idTerm, idUser])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return rows
+    }
+
+    static async getTermAndMeaningById(idTerm, idUser, conn){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
+            SELECT t.content AS termName, t.idTerm, m.content AS meaningContent, m.type, m.secure_url
+            FROM term_data AS t 
+                JOIN folder_data AS f ON f.idFolder = t.idFolder
+                JOIN user_data AS u ON u.idUser = f.idUser
+                JOIN meaning_data AS m ON m.idTerm = t.idTerm
+            WHERE t.idTerm = ? AND u.idUser = ?
+        `, [idTerm, idUser])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return rows
+    }
+
     static async getAllByFolder(idFolders){
         if(!idFolders || idFolders.length === 0) return []
 

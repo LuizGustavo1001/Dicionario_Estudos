@@ -1,4 +1,5 @@
 import { setWarningCookie } from "/assets/js/base.js"
+import { renderExpandedTerm } from "/assets/js/dashboard/renderContents.js"
 import * as htmlToImage from 'https://esm.sh/html-to-image@1.11.11'
 
 let overlayState = { // control wich element is using overlay
@@ -8,7 +9,6 @@ let overlayState = { // control wich element is using overlay
 export const isDesktop = () => window.innerWidth >= 1024
 
 const asideIcons        = document.querySelectorAll(".aside-toggle-icon")
-
 
 // Rounting events
 function initGlobalEventListeners(){
@@ -28,11 +28,20 @@ function initGlobalEventListeners(){
         const dropdownBox   = e.target.closest(".dropdown")
 
         const clickedInsidePopup = e.target.closest(".popup")
-        
+
+        const expandElement = e.target.closest(".expand-term")
+    
 
         if(openIcon){
-            e.stopPropagation()
             changePopupVisibility(openIcon.dataset.id)
+            
+            // open popup and expand term
+            if(openIcon.closest(".expand-term")){
+                const term = openIcon.closest(".term")
+                if(term){
+                    renderExpandedTerm(term.dataset.id)
+                }
+            }
             return
         }
 
@@ -186,7 +195,7 @@ function copyText(icon){
     const copyTarget = document.querySelector(`.copyValue[data-copy="${icon.dataset.copy}"]`)
 
     if(copyTarget){
-        const textToCopy = copyTarget.value || copyTarget.textContent;
+        const textToCopy = copyTarget.value || copyTarget.textContent
         navigator.clipboard.writeText(textToCopy)
     }
 

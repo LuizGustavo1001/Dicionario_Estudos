@@ -74,7 +74,7 @@ main .aside-hero, main .user-info, main .hero {
   box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.082);
 }
 main .hero {
-  border: var(--radius-sm);
+  border-radius: var(--radius-sm);
 }
 main .aside-hero {
   border-radius: 0 0 var(--radius-sm) 0;
@@ -117,7 +117,7 @@ main .user-info {
   width: 70dvw;
   opacity: 1;
   transform: translateX(0);
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 @media (min-width: 1024px) {
   .main-aside.open {
@@ -333,6 +333,7 @@ main .user-info {
 
 /* POPUP */
 #term-expand {
+  min-height: 250px;
   max-height: 900px;
   overflow: auto;
   padding: 0;
@@ -358,10 +359,10 @@ main .user-info {
   gap: 1em;
 }
 #term-expand .content .title {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 0.3em;
-  background: var(--blue-200);
+  gap: 0.5em;
   border-radius: var(--radius);
 }
 #term-expand .content .title .highlight-bar {
@@ -371,12 +372,18 @@ main .user-info {
   background-color: var(--blue-600);
 }
 #term-expand .content .title h1 {
+  font-size: 1em;
   color: var(--blue-750);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #term-expand .content .meanings {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  list-style-type: disc;
+  list-style-position: inside;
 }
 @media (min-width: 768px) {
   #term-expand .content .meanings img {
@@ -561,9 +568,6 @@ main .user-info {
 }
 .dark-mode #term-expand .content {
   background: var(--blue-850);
-}
-.dark-mode #term-expand .content .title {
-  background: var(--blue-800);
 }
 .dark-mode #term-expand .content .title .highlight-bar {
   background-color: var(--blue-400);

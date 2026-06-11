@@ -221,7 +221,7 @@ export async function renderTermsArea(termsMap = null){
             termTitle.append(termTitleText)
 
             const expandIconBox = document.createElement("span")
-            expandIconBox.classList.add("icon-hold", "toggle-popup-icon")
+            expandIconBox.classList.add("icon-hold", "toggle-popup-icon", "expand-term")
             expandIconBox.dataset.id = "term-expand"
             const expandIcon = document.createElement("i")
             expandIcon.dataset.icon = "expand"
@@ -354,6 +354,125 @@ export function renderEmptyFoldersState(){ // test
     folderList.append(emptyMessage)
     
     renderEmptyState("Nenhuma pasta selecionada")
+}
+
+const termExpandBox = document.querySelector("#term-expand")
+
+export async function renderExpandedTerm(idTerm){
+    if(!termExpandBox) return
+    termExpandBox.textContent = "" // ensure it's clean
+
+    try{
+        const response = await fetch(`/api/me/terms/${idTerm}`, {
+            method: "GET",
+            credentials: "include"
+        })
+
+        const result = await response.json()
+        
+        if(! response.ok){
+            fillWarning(result.error, 0)
+            return
+        }
+
+        // render term content
+        const nav = document.createElement("nav")
+        nav.dataset.term = result[0].idTerm
+
+        const dropdown = document.createElement("div")
+        dropdown.classList.add("dropdown")
+
+        const ellipsisIconBox = document.createElement("button")
+        ellipsisIconBox.classList.add("icon-hold", "secondary", "dropdown-hover")
+        const ellipsisIcon = document.createElement("i")
+        ellipsisIcon.dataset.icon = "ellipsis"
+
+        ellipsisIconBox.append(ellipsisIcon)
+
+        const dropdownContent = document.createElement("ul")
+        dropdownContent.classList.add("dropdown-content")
+
+        const editTermIconBox = document.createElement("li")
+        editTermIconBox.classList.add("toggle-popup-icon")
+        editTermIconBox.dataset.id = "edit-term"
+        const editTermIcon = document.createElement("i")
+        editTermIcon.dataset.icon = "edit"
+        const editTermText = document.createElement("span")
+        editTermText.textContent = "Editar Nome do Termo"
+        editTermIconBox.append(editTermIcon, editTermText)
+
+        const downloadIconBox = document.createElement("li")
+        downloadIconBox.classList.add("download-btn")
+        downloadIconBox.dataset.element = "#term-expand .downloadable"
+        const downloadIcon = document.createElement("i")
+        downloadIcon.dataset.icon = "download"
+        const downloadText = document.createElement("span")
+        downloadText.textContent = "Baixar Termo"
+        downloadIconBox.append(downloadIcon, downloadText)
+
+        const addTextIconBox = document.createElement("li")
+        addTextIconBox.classList.add("toggle-popup-icon")
+        addTextIconBox.dataset.id = "add-meaning-text"
+        const addTextIcon = document.createElement("i")
+        addTextIcon.dataset.icon = "textboxplus"
+        const addTextContent = document.createElement("span")
+        addTextContent.textContent = "Adicionar Significado por Texto"
+        addTextIconBox.append(addTextIcon, addTextContent)
+
+        const addImageIconBox = document.createElement("li")
+        addImageIconBox.classList.add("toggle-popup-icon")
+        addImageIconBox.dataset.id = "add-meaning-image"
+        const addImageIcon = document.createElement("i")
+        addImageIcon.dataset.icon = "imageplus"
+        const addImageText = document.createElement("span")
+        addImageText.textContent = "Adicionar Significado por Imagem"
+        addImageIconBox.append(addImageIcon, addImageText)
+
+        const closeBox = document.createElement("button")
+        closeBox.classList.add("icon-hold", "secondary", "close-popup-icon")
+        const closeIcon = document.createElement("i")
+        closeIcon.dataset.icon = "closeCircle"
+        closeBox.append(closeIcon)
+
+        dropdownContent.append(editTermIconBox, downloadIconBox, addTextIconBox, addImageIconBox)
+        dropdown.append(ellipsisIconBox, dropdownContent)
+        nav.append(dropdown, closeBox)
+
+        const content = document.createElement("div")
+        content.classList.add("content", "downloadable")
+
+        const contentTitle = document.createElement("div")
+        contentTitle.classList.add("title")
+        const highlightBar = document.createElement("div")
+        highlightBar.classList.add("highlight-bar")
+        const termName = document.createElement("h1")
+        termName.textContent = result[0].termName
+        contentTitle.append(highlightBar, termName)
+
+        const contentMeanings = document.createElement("ul")
+        contentMeanings.classList.add("meanings")
+
+        result.forEach(el => {
+            if(el.type == "text"){
+                const meaning = document.createElement("li")
+                meaning.innerHTML = el.meaningContent
+                contentMeanings.append(meaning)
+            }else{
+                const meaning = document.createElement("img")
+                meaning.classList.add("meaning")
+                meaning.src = el.meaningContent
+                meaning.alt = `${el.termName} image meaning`
+                contentMeanings.append(meaning)
+            }
+        })
+        content.append(contentTitle, contentMeanings)
+
+        termExpandBox.append(nav, content)
+
+        refreshIcons()
+    }catch(err){
+        console.error("Server error", err)
+    }
 }
 
 letterFilterEvent()

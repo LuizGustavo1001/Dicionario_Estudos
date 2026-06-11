@@ -34,6 +34,7 @@ router.post("/me/token", authMiddleware.protect, userController.newToken)
 // Terms Management
 router.get("/me/terms", authMiddleware.protect, termController.getFolderTerms)
 router.post("/me/terms/:folderId", authMiddleware.protect, upload.array("images"), termController.createTerm)
+router.get("/me/terms/:idTerm", authMiddleware.protect, termController.getTermById)
 //router.put("/me/folders/:folderId/terms", authMiddleware.protect, )
 //router.delete("/me/folders/:folderId/terms", authMiddleware.protect, )
 
