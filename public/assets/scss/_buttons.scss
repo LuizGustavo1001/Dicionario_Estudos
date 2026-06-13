@@ -87,7 +87,7 @@ input, select, textarea{
 }
 
 .just-input{
-    border: 1px solid var(--blue-600);
+    border: 2px solid var(--blue-600);
     border-radius: var(--radius);
     color: var(--blue-750);
 
@@ -99,13 +99,18 @@ input, select, textarea{
     &:hover,
     &:focus-within{
         background: var(--blue-200);
-        border-color: transparent;
+        border-color: #2e7dbe;
     }
 
     &.secondary{
         border-radius: 0;
         border: none;
-        border-bottom: 1px solid var(--blue-600);
+        border-bottom: 2px solid var(--blue-600);
+
+        &:hover,
+        &:focus-within{
+            border-color: #2e7dbe;
+        }
     }
 }
 
@@ -389,7 +394,7 @@ input, select, textarea{
 
         &.secondary{
             border: none;
-            border-bottom: 1px solid var(--blue-700);
+            border-bottom: 2px solid var(--blue-700);
         }
     }
 

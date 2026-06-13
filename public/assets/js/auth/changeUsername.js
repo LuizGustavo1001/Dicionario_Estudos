@@ -15,12 +15,14 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
+        submitBtn.classList.add("waiting")
+
         const currentUsername   = document.querySelector("#ioldUsername")
         const newUsername       = document.querySelector("#inewUsername")
         const typedToken        = document.querySelector("#iuserToken")
 
         if((currentUsername && newUsername && typedToken) && currentUsername.value != newUsername.value){
-            changeUsername(currentUsername.value, newUsername.value, typedToken.value)
+            changeUsername(currentUsername.value.trim(), newUsername.value.trim(), typedToken.value.trim())
         }else if(currentUsername.value == newUsername.value){
             fillWarning("sameUsername", 0)
         }else{
@@ -46,6 +48,7 @@ async function changeUsername(currentUsername, newUsername, typedToken){
         })
 
         if(!response.ok){
+            submitBtn.classList.remove("waiting")
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -53,6 +56,7 @@ async function changeUsername(currentUsername, newUsername, typedToken){
 
         const data = await response.json()
 
+        submitBtn.classList.remove("waiting")
         setWarningCookie(data.message, 1)
         window.location.href = "/auth/login/"
     }catch(err){

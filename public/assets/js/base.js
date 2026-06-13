@@ -51,7 +51,7 @@ export function fillWarning(message, type){
         folderExists    : "Nome de pasta digitado já cadastrado. Tente novamente",
         emptyFolderName : "Nome de pasta está vazio. Tente novamente",
         sameFolderName  : "Nome de pasta digitado está igual ao anterior. Tente novamente",
-        folderModified  : "Informações da pasta alteradas com sucesso",
+        folderModified  : "Informações da pasta selecionada alteradas com sucesso",
         termCreated     : "Termo criado com sucesso",
         folderNotSelected: "Nenhuma pasta está selecionada. Tente novamente",
         folderDeleted   : "Pasta removida com sucesso",
@@ -63,6 +63,8 @@ export function fillWarning(message, type){
         passwordChanged : "Senha alterada com sucesso. Faça seu login novamente",
         tokenCreated    : "Novo código de verificação criado com sucesso",
         accountRemoved  : "Conta removida com sucesso",
+        fieldUpdated    : "Campo alterado com sucesso",
+        MeaningCreated  : "Significado adicionado com sucesso",
         missingFields   : "Campos requeridos do formulário não preenchidos ainda. Tente novamente",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"

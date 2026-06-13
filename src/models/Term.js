@@ -54,7 +54,7 @@ class Term{
         const executor = conn || db
 
         const [rows] = await executor.execute(`
-            SELECT t.content AS termName, t.idTerm, m.content AS meaningContent, m.type, m.secure_url
+            SELECT t.content AS termName, t.idTerm, m.idMeaning, m.content AS meaningContent, m.type, m.secure_url, f.idFolder
             FROM term_data AS t 
                 JOIN folder_data AS f ON f.idFolder = t.idFolder
                 JOIN user_data AS u ON u.idUser = f.idUser
@@ -100,6 +100,22 @@ class Term{
             throw new Error("Error trying to add new term")
         }
         return result.insertId
+    }
+
+    // UPDATE
+    static async updateName(idTerm, value, conn){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            UPDATE term_data
+            SET content = ?
+            WHERE idTerm = ?
+        `, [value, idTerm])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to update term name")
+        }
+        return true
     }
 }
 

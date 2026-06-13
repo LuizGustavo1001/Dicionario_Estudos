@@ -6,13 +6,14 @@ const popupSubmitBtns = document.querySelectorAll(".btn.submit-popup-form, .btn.
 if(popupSubmitBtns){
     popupSubmitBtns.forEach(btn => {
         btn.addEventListener("click", async (e) => {
-            btn.classList.add("waiting")
             e.preventDefault()
-
+            btn.classList.add("waiting")
+            
             const routeLabel = btn.dataset.id || null
 
             if(routeLabel){
-                const popupSection = document.querySelector(`#${routeLabel}`)
+                const popupSection  = document.querySelector(`#${routeLabel}`)
+                const closestForm   = btn.closest("form")
 
                 if(routeLabel === "add-folder"){
                     mapAddFolder(btn, popupSection)
@@ -22,41 +23,42 @@ if(popupSubmitBtns){
                     mapEditFolder(btn, popupSection)
                 }else if(routeLabel === "rmv-folder"){
                     mapRemoveFolder(btn)
+                }else if(routeLabel === "add-meaning-text"){
+                    mapAddTextMeaning(btn, popupSection, closestForm)
+                }else if(routeLabel === "add-meaning-image"){
+                    mapAddImageMeaning(btn, popupSection, closestForm)
                 }else{
                     btn.classList.remove("waiting")
                     console.error('System error')
                 }
+
+                btn.classList.remove("waiting")
+
+                if(closestForm){ closestForm.reset() }
             }
         })
     })
 }
 
 async function mapAddFolder(clickedBtn, popup){
-    const closestForm   = clickedBtn.closest("form")
-    const nameFolder    = popup.querySelector("#ifolder").value || null
-    const clr           = popup.querySelector("#iclr").value || null
+    const nameFolder    = popup.querySelector("#ifolder")
+    const clr           = popup.querySelector("#iclr")
 
-    if(nameFolder && clr){
-        addFolder(nameFolder, clr)
-        clickedBtn.classList.remove("waiting")
-    }else{
+    if(!nameFolder || !clr){
         fillWarning("missingFields", 0)
-        clickedBtn.classList.remove("waiting")
         return
     }
 
-    closestForm.reset()
+    addFolder(nameFolder.value.trim(), clr.value)
 }
 
 async function mapAddTerm(clickedBtn, popup){
     const selectedFolder = document.querySelector(".folders-list li.selected")
-    if(! selectedFolder){
-        clickedBtn.classList.remove("waiting")
+    if(!selectedFolder){
         fillWarning("folderNotSelected", 0)
         return
     }
     
-    const closestForm   = clickedBtn.closest("form")
     const folderId      = selectedFolder.dataset.id
     const newTermName   = popup.querySelector("#iNewTerm").value || null
     const meanings      = popup.querySelectorAll(".term-input, .image-input")
@@ -93,58 +95,72 @@ async function mapAddTerm(clickedBtn, popup){
         }
     })
 
-    if(newTermName && hasValidMeaning){
-        formData.append("meanings", JSON.stringify(meaningsMap)) // JSON structure
-        addTerm(folderId, formData)
-        clickedBtn.classList.remove("waiting")
-        closestForm.reset()
-    }else{
-        clickedBtn.classList.remove("waiting")
+    if(!newTermName || !hasValidMeaning){
         fillWarning("missingFields", 0)
         return
     }
+
+    formData.append("meanings", JSON.stringify(meaningsMap))
+    addTerm(folderId, formData)
 }
 
 async function mapEditFolder(clickedBtn, popup){
     // retrieve selected folder data
     const currentIdFolder = document.querySelector("#edit-folder-info").dataset.folder || null
     if(!currentIdFolder){
-        clickedBtn.classList.remove("waiting")
         fillWarning("noSelectedFolder", 0)
         return
     }
 
-    const closestForm      = clickedBtn.closest("form")
     const newNameFolder    = popup.querySelector("#inameFolder").value || null
     const newClr           = popup.querySelector("#inewClr").value || null
 
-    if(newNameFolder && newClr) {
+    if(newNameFolder && newClr){
         editFolderData(currentIdFolder, newNameFolder, newClr)
     }
-
-    clickedBtn.classList.remove("waiting")
-    closestForm.reset()
 }
 
 async function mapRemoveFolder(clickedBtn){
     const selectedFolder = document.querySelector(".folders-list li.selected")
 
     if(!selectedFolder){
-        clickedBtn.classList.remove("waiting")
         fillWarning("noSelectedFolder", 0)
+        return
     }
 
     const selectedFolderId = selectedFolder.dataset.id
-
-    // confirm warning button logic here...
-
-    clickedBtn.classList.remove("waiting")
     removeFolder(selectedFolderId)
 }
 
-async function removeTermMap(){}
+//async function removeTermMap(){}
 
-async function removeMeaningMap(){}
+async function mapAddTextMeaning(clickedBtn, popup, closestForm){
+    const newMeaning = popup.querySelector("#inewTextMeaning")
+
+    if(!newMeaning || newMeaning.value.trim().length <= 0){
+        fillWarning("missingFields", 0)
+    }
+
+    const idTerm = closestForm.closest(".popup").dataset.term
+    if(!idTerm) return
+
+    addTextMeaning(newMeaning.value.trim(), idTerm)
+}
+
+async function mapAddImageMeaning(clickedBtn, popup, closestForm){
+    const newMeaning = popup.querySelector("#inewImageMeaning")
+
+    if(!newMeaning){
+        fillWarning("missingFields", 0)
+        return
+    }
+
+    const idTerm = closestForm.closest(".popup").dataset.term
+    if(!idTerm) return
+
+    const file = newMeaning.files[0]
+    addImageMeaning(file, idTerm)
+}
 
 async function addFolder(nameFolder, clr){
     if(nameFolder === ""){
@@ -167,7 +183,7 @@ async function addFolder(nameFolder, clr){
 
         const data = await response.json()
 
-        if(! response.ok){
+        if(!response.ok){
             fillWarning(data.error, 0)
             return
         }
@@ -178,6 +194,7 @@ async function addFolder(nameFolder, clr){
         renderFolderList(null, data.insertId)
     }catch(err){
         console.error("Server error", err)
+        return
     }
 }
 
@@ -199,6 +216,7 @@ async function addTerm(idFolder, formData){
         window.location.href = "/dashboard"
     }catch(err){
         console.error("Server error", err)
+        return
     }
 }
 
@@ -235,6 +253,7 @@ async function editFolderData(idFolder, newName, newClr){
         renderFolderList(null, idFolder)
     }catch(err){
         console.error("Server error", err)
+        return
     }
 }
 
@@ -264,5 +283,65 @@ async function removeFolder(idFolder){
         renderFolderList(null, idFolder)
     }catch(err){
         console.error("Server error", err)
+        return
+    }
+}
+
+async function addTextMeaning(meaningText, idTerm){
+    try{
+        const response = await fetch(`/api/me/terms/${idTerm}/meanings`, {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                meaningContent: meaningText,
+                meaningType: "text"
+            })
+        })
+
+        const data = await response.json()
+
+        if(!response.ok){
+            fillWarning(data.error, 0)
+            return
+        }
+
+        fillWarning(data.message, 1)
+        closePopup()
+        renderFolderList(null, localStorage.getItem("lastFolder") || -1)
+    }catch(err){
+        console.error("Server error", err)
+        return
+    }
+}
+
+async function addImageMeaning(imageFile, idTerm){
+    try{
+        const formData = new FormData()
+
+        formData.append("image", imageFile)
+        formData.append("meaningType", "image")
+
+        const response = await fetch(`/api/me/terms/${idTerm}/meanings`, {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        })
+
+        const data = await response.json()
+
+        if(!response.ok){
+            fillWarning(data.error, 0)
+            return
+        }
+
+        fillWarning(data.message, 1)
+        closePopup()
+        renderFolderList(null, localStorage.getItem("lastFolder") || -1)
+    }catch(err){
+        console.error("Server error", err)
+        return
     }
 }

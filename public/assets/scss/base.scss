@@ -32,6 +32,10 @@ svg{
     color: var(--blue-800);
 }
 
+textarea{
+    resize: none;
+}
+
 a{
     text-decoration: none;
     color: var(--blue-750);
@@ -76,7 +80,7 @@ form{
     overflow: hidden;
 
     background: var(--white);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.219);
     border-radius: var(--radius-sm);
 
     &.open{ opacity: 1; }

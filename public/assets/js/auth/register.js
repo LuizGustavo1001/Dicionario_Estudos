@@ -14,11 +14,13 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
+        submitBtn.classList.add("waiting")
+
         const usernameInput = document.querySelector("#iuserName")
         const passwordInput = document.querySelector("#ipassword")
     
         if(usernameInput && passwordInput){
-            register(usernameInput.value, passwordInput.value)
+            register(usernameInput.value.trim(), passwordInput.value.trim())
         }else{
             setWarningCookie("dberror", 0)
             window.location.href = "/auth/register/"
@@ -40,6 +42,7 @@ if(form && submitBtn){
         })
 
         if(!response.ok){
+            submitBtn.classList.remove("waiting")
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -47,6 +50,7 @@ if(form && submitBtn){
 
         const data = await response.json()
 
+        submitBtn.classList.remove("waiting")
         setWarningCookie(data.message, 1)
         window.location.href = "/auth/login/"
     }catch(err){

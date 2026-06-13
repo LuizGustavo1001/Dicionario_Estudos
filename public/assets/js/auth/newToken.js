@@ -15,11 +15,12 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
+        submitBtn.classList.add("waiting")
+
         const typedToken = document.querySelector("#iuserToken")
 
         if(typedToken){
-            createToken(typedToken.value)
-            console.log(typedToken.value)
+            createToken(typedToken.value.trim())
         }else{
             setWarningCookie("dberror", 0)
             window.location.href = "/auth/newToken/"
@@ -41,6 +42,7 @@ async function createToken(typedToken){
         })
 
         if(!response.ok){
+            submitBtn.classList.remove("waiting")
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -48,6 +50,7 @@ async function createToken(typedToken){
 
         const data = await response.json()
 
+        submitBtn.classList.remove("waiting")
         setWarningCookie(data.message, 1)
         window.location.href = "/auth/login/"
     }catch(err){

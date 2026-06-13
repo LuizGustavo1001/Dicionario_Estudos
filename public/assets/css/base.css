@@ -110,7 +110,7 @@ input, select, textarea {
 }
 
 .just-input {
-  border: 1px solid var(--blue-600);
+  border: 2px solid var(--blue-600);
   border-radius: var(--radius);
   color: var(--blue-750);
 }
@@ -120,12 +120,15 @@ input, select, textarea {
 }
 .just-input:hover, .just-input:focus-within {
   background: var(--blue-200);
-  border-color: transparent;
+  border-color: #2e7dbe;
 }
 .just-input.secondary {
   border-radius: 0;
   border: none;
-  border-bottom: 1px solid var(--blue-600);
+  border-bottom: 2px solid var(--blue-600);
+}
+.just-input.secondary:hover, .just-input.secondary:focus-within {
+  border-color: #2e7dbe;
 }
 
 .form-input-box {
@@ -378,7 +381,7 @@ input, select, textarea {
 }
 .dark-mode .just-input.secondary {
   border: none;
-  border-bottom: 1px solid var(--blue-700);
+  border-bottom: 2px solid var(--blue-700);
 }
 .dark-mode .form-input-box label small {
   color: var(--blue-500);
@@ -533,6 +536,10 @@ svg {
   color: var(--blue-800);
 }
 
+textarea {
+  resize: none;
+}
+
 a {
   text-decoration: none;
   color: var(--blue-750);
@@ -573,7 +580,7 @@ form {
   opacity: 0;
   overflow: hidden;
   background: var(--white);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.096);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.219);
   border-radius: var(--radius-sm);
 }
 .dropdown-content.open {

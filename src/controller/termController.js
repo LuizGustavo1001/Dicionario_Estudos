@@ -1,7 +1,7 @@
 const Meaning = require("../models/Meaning")
 const Term = require("../models/Term")
 
-const db        = require("../database/connection")
+const db = require("../database/connection")
 
 exports.getFolderTerms = async (req, res) => {
     const { folders } = req.query
@@ -16,7 +16,7 @@ exports.getFolderTerms = async (req, res) => {
 
         return res.json(terms)
     }catch(err){
-        console.log(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: "serverError" })
     }
 }
@@ -39,16 +39,16 @@ exports.getTermById = async (req, res) => {
 
         return res.json(term)
     }catch(err){
-        console.log(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: "serverError" })
     }
 }
 
-exports.createTerm = async (req, res) => {
+exports.create = async (req, res) => {
     const { folderId } = req.params
     let { termName, meanings } = req.body
-    const idUser = req.userId
-    const files = req.files
+    const idUser    = req.userId
+    const files     = req.files
 
     if(!folderId){
         return res.status(400).json({ error: "missingFields" })
@@ -59,6 +59,8 @@ exports.createTerm = async (req, res) => {
             meanings = JSON.parse(meanings)
         }
     }catch(err){
+        console.log("Controller error: ", err)
+        await deleteTempFiles(files)
         return res.status(400).json({ error: "invalid_meanings_format" })
     }
 
@@ -71,7 +73,7 @@ exports.createTerm = async (req, res) => {
 
             return{
                 type: "image",
-                content: (currentFile) ? currentFile.path : null
+                content: (currentFile) ? currentFile.path : null // local path
             }
         }
         return meaning
@@ -86,6 +88,7 @@ exports.createTerm = async (req, res) => {
         const newTermId = await Term.create(connection, folderId, termName)
         if(!newTermId){
             await connection.rollback()
+            await deleteTempFiles(files)
             return res.status(400).json({ error: "invalidTerm" })
         }
 
@@ -98,9 +101,44 @@ exports.createTerm = async (req, res) => {
         return res.status(201).json({ message: "termCreated", termId: newTermId })
     }catch(err){
         await connection.rollback()
-        console.log(err)
+        console.log("Controller error: ", err)
+
+        await deleteTempFiles(files)
+
         return res.status(500).json({ error: "serverError" })
     }finally{
         connection.release()
+    }
+}
+
+async function deleteTempFiles(files){
+    if(files && files.length > 0){
+        for(const file of files){
+            if(file.path){
+                try {
+                    await fs.unlink(file.path)
+                }catch (err){
+                    console.log("Error trying to delete temp file:", err.message)
+                }
+            }
+        }
+    }
+}
+
+exports.updateName = async(req, res) => {
+    const { idTerm } = req.params
+    const { termName } = req.body
+
+    if(!idTerm || !termName){
+        return res.status(400).json({ error: "missingFields" })
+    }
+
+    try{
+        await Term.updateName(idTerm, termName)
+
+        return res.status(200).json({ message: "termNameUpdated" })
+    }catch(err){
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "serverError" })
     }
 }

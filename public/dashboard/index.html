@@ -45,19 +45,19 @@
                         </li>
                     </ul>
                 </div>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </nav>
 
             <div class="content downloadable">
-                <div class="title">
-                    <div class="highlight-bar"></div>
-                    <h1>Nome do Termo</h1>
+                <div class="term-name">
+                    <input type="text" name="modifyTermName" id="imodifyTermName" class="just-input secondary" value="Nome do Termo Aqui">
                 </div>
 
-                <ul class="meanings">
-                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem similique maxime obcaecati dolorem labore necessitatibus error id atque commodi, sunt temporibus expedita quaerat adipisci nemo repudiandae a possimus cumque. Mollitia.</li>
+                <div class="meanings">
+                    <textarea rows="3" maxlength="300" name="" id="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem minima nisi placeat hic dolor reiciendis nihil exercitationem earum odit! Officiis libero maxime non sint quod suscipit eos velit modi labore.</textarea>
+
                     <img src="https://res.cloudinary.com/dxfelxvyy/image/upload/q_auto/f_auto/v1781096574/asd_wmlujk.avif" alt="">
-                </ul>
+                </div>
             </div>
             -->
         </div>
@@ -80,14 +80,14 @@
                 </ul>
 
                 <footer>
-                    <button class="icon-hold logout-btn secondary" title="Clique aqui para fazer logout">
+                    <button class="icon-hold logout-btn" title="Clique aqui para fazer logout">
                         <i data-icon="logout"></i>
                     </button>
                 </footer>
             </aside>
 
             <div class="settings-hero">
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
 
                 <ul class="section-content open" id="general">
                     <li class="item">
@@ -158,7 +158,7 @@
         <div id="add-term" class="popup mini">
             <div class="pop-up-title">
                 <h2>Adicionar Termo <small>(Pasta selecionada)</small></h2>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -201,7 +201,7 @@
         <div id="add-folder" class="popup mini">
             <div class="pop-up-title">
                 <h2>Adicionar Pasta</h2>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -232,7 +232,7 @@
         <div id="edit-folder" class="popup mini">
             <div class="pop-up-title">
                 <h2>Editar Pasta</h2>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -259,6 +259,7 @@
                         <div class="spinning-wheel"></div>
                         <span>Editar Pasta</span>
                     </button>
+
                     <button type="button" class="btn warning-btn" data-id="rmv-folder">
                         <div class="spinning-wheel"></div>
                         <span>Remover Pasta</span>
@@ -269,8 +270,8 @@
 
         <div id="edit-term" class="popup mini">
             <div class="pop-up-title">
-                <h2>Alterar Termo</h2>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <h2>Alterar Nome do Termo</h2>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -281,17 +282,25 @@
                 
                 <!-- Meanings list (remove button for each) -->
 
-                <button type="submit" class="btn submit-popup-form" data-id="edit-term">
-                    <div class="spinning-wheel"></div>
-                    <span>Alterar Termo</span>
-                </button>
+                <div class="wrapper-inline">
+                    <button type="submit" class="btn submit-popup-form" data-id="edit-term">
+                        <div class="spinning-wheel"></div>
+                        <span>Alterar Termo</span>
+                    </button>
+
+                    <button type="button" class="btn warning-btn" data-id="rmv-term">
+                        <div class="spinning-wheel"></div>
+                        <span>Excluir Termo</span>
+                    </button>
+                </div>
+                
             </form>
         </div>
 
         <div id="add-meaning-text" class="popup mini">
             <div class="pop-up-title">
                 <h2>Adicionar Significado Texto</h2>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -310,7 +319,7 @@
         <div id="add-meaning-image" class="popup mini">
             <div class="pop-up-title">
                 <h2>Adicionar Significado Imagem</h2>
-                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeCircle"></i></button>
+                <button class="icon-hold secondary close-popup-icon"><i data-icon="closeX"></i></button>
             </div>
 
             <form action="#" method="post">
@@ -475,7 +484,7 @@
     <script type="module" src="/assets/js/dashboard/dashboardGeneral.js"></script>
     <script type="module" src="/assets/js/dashboard/renderContents.js"></script>
     <script type="module" src="/assets/js/dashboard/settings.js"></script>
-    <script type="module" src="/assets/js/dashboard/addObject.js"></script>
+    <script type="module" src="/assets/js/dashboard/modifyObject.js"></script>
     <script src="/assets/js/toggleTheme.js"></script>
 </body>
 </html>

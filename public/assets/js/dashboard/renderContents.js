@@ -10,11 +10,11 @@ const letterTermFilter  = document.querySelector(".letter-term-filter select")
 function refreshCurrentFolder(){
     const currentFolder = document.querySelector(".folders-list li.selected")
 
-    if (!currentFolder) return null
+    if(!currentFolder) return null
 
     const currentFolderName = currentFolder.querySelector("span")
 
-    return {
+    return{
         idFolder: currentFolder.dataset.id,
         nameFolder: currentFolderName ? currentFolderName.textContent : ""
     }
@@ -370,7 +370,7 @@ export async function renderExpandedTerm(idTerm){
 
         const result = await response.json()
         
-        if(! response.ok){
+        if(!response.ok){
             fillWarning(result.error, 0)
             return
         }
@@ -391,15 +391,6 @@ export async function renderExpandedTerm(idTerm){
 
         const dropdownContent = document.createElement("ul")
         dropdownContent.classList.add("dropdown-content")
-
-        const editTermIconBox = document.createElement("li")
-        editTermIconBox.classList.add("toggle-popup-icon")
-        editTermIconBox.dataset.id = "edit-term"
-        const editTermIcon = document.createElement("i")
-        editTermIcon.dataset.icon = "edit"
-        const editTermText = document.createElement("span")
-        editTermText.textContent = "Editar Nome do Termo"
-        editTermIconBox.append(editTermIcon, editTermText)
 
         const downloadIconBox = document.createElement("li")
         downloadIconBox.classList.add("download-btn")
@@ -431,47 +422,155 @@ export async function renderExpandedTerm(idTerm){
         const closeBox = document.createElement("button")
         closeBox.classList.add("icon-hold", "secondary", "close-popup-icon")
         const closeIcon = document.createElement("i")
-        closeIcon.dataset.icon = "closeCircle"
+        closeIcon.dataset.icon = "closeX"
         closeBox.append(closeIcon)
 
-        dropdownContent.append(editTermIconBox, downloadIconBox, addTextIconBox, addImageIconBox)
+        dropdownContent.append(downloadIconBox, addTextIconBox, addImageIconBox)
         dropdown.append(ellipsisIconBox, dropdownContent)
         nav.append(dropdown, closeBox)
 
         const content = document.createElement("div")
         content.classList.add("content", "downloadable")
 
-        const contentTitle = document.createElement("div")
-        contentTitle.classList.add("title")
-        const highlightBar = document.createElement("div")
-        highlightBar.classList.add("highlight-bar")
-        const termName = document.createElement("h1")
-        termName.textContent = result[0].termName
-        contentTitle.append(highlightBar, termName)
+        const termNameBox = document.createElement("div")
+        termNameBox.classList.add("term-name")
+        const termName = document.createElement("input")
+        termName.type = "text"
+        termName.name = "modifyTermName"
+        termName.id = "imodifyTermName"
+        termName.classList.add("just-input", "secondary")
+        termName.value = result[0].termName
+        termNameBox.append(termName)
 
-        const contentMeanings = document.createElement("ul")
+        const contentMeanings = document.createElement("div")
         contentMeanings.classList.add("meanings")
 
+        let counter = 0
         result.forEach(el => {
             if(el.type == "text"){
-                const meaning = document.createElement("li")
+                const meaning = document.createElement("textarea")
+                meaning.classList.add("just-input")
+                meaning.rows = 3
+                meaning.dataset.meaning = el.idMeaning
+                meaning.maxLength = 300
+                meaning.name = `meaning#${counter}`
+                meaning.id = `meaning#${counter}`
                 meaning.innerHTML = el.meaningContent
                 contentMeanings.append(meaning)
             }else{
                 const meaning = document.createElement("img")
+                meaning.dataset.meaning = el.idMeaning
                 meaning.classList.add("meaning")
                 meaning.src = el.meaningContent
                 meaning.alt = `${el.termName} image meaning`
                 contentMeanings.append(meaning)
             }
+            counter++
         })
-        content.append(contentTitle, contentMeanings)
+        content.append(termNameBox, contentMeanings)
 
         termExpandBox.append(nav, content)
 
+        // add selected term id
+        const addTextMeaningPopup = document.querySelector("#add-meaning-text")
+        const addImageMeaningPopup = document.querySelector("#add-meaning-image")
+
+        if(!addTextMeaningPopup || !addImageMeaningPopup) return
+
+        addTextMeaningPopup.dataset.term = result[0].idTerm
+        addImageMeaningPopup.dataset.term = result[0].idTerm
+
+        setupAutoSaveEvents(idTerm, termExpandBox)
         refreshIcons()
     }catch(err){
         console.error("Server error", err)
+    }
+}
+
+function setupAutoSaveEvents(idTerm, container){
+    // try to update term name
+    const inputTermName = container.querySelector("#imodifyTermName")
+
+    if(inputTermName){
+        let currentValue = inputTermName.value.trim()
+
+        inputTermName.addEventListener("blur", async (e) => {
+            const newValue = e.target.value.trim()
+
+            if(!newValue || newValue === currentValue){
+                if(!newValue) e.target.value = currentValue // avoid blank term name
+                return
+            }
+            
+            const success = await sendUpdate("PATCH",`/api/me/terms/${idTerm}/name`, { termName: newValue })
+            
+            if(success){
+                renderFolderList(null, localStorage.getItem("lastFolder") || -1)
+                currentValue = newValue
+            }
+        })
+    }
+
+    // try to update meanings
+    const textareas = container.querySelectorAll(".meanings textarea")
+    
+    textareas.forEach(textarea => {
+        let currentValue = textarea.value.trim()
+
+        textarea.addEventListener("blur", async (e) => {
+            const newValue  = e.target.value.trim()
+            const idMeaning = e.target.dataset.meaning
+
+            if(newValue === currentValue) return
+
+            // delete meaning (empty value)
+            if(newValue === ""){
+                const success = await sendUpdate("DELETE", `/api/me/terms/meanings/text/${idMeaning}`, null)
+
+                if (success) {
+                    renderFolderList(null, localStorage.getItem("lastFolder") || -1)
+                    textarea.remove()
+                }
+                return
+            }
+
+            // update value
+            const success = await sendUpdate("PATCH", `/api/me/terms/meanings/text/${idMeaning}`, { meaningContent: newValue })
+
+            if(success){
+                renderFolderList(null, localStorage.getItem("lastFolder") || -1)
+                currentValue = newValue
+            }
+        })
+    })
+}
+
+async function sendUpdate(method, url, data){
+    try{
+        let fetchOptions = {
+            method: method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include",
+        }
+        
+
+        if(data){ fetchOptions.body = JSON.stringify(data) }
+
+        const response = await fetch(url, fetchOptions)
+
+        if(!response.ok){
+            const result = await response.json()
+            fillWarning("dberror", 0)
+            return false
+        }
+
+        fillWarning("fieldUpdated", 1)
+        return true
+    }catch(err){
+        console.error("Server error", err)
+        return false
     }
 }
 

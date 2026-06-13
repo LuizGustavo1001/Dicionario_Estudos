@@ -15,15 +15,17 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
+        submitBtn.classList.add("waiting")
+
         const currentUsername   = document.querySelector("#iusername")
         const newPassword       = document.querySelector("#inewPassword")
         const typedToken        = document.querySelector("#iuserToken")
 
         if(currentUsername && newPassword && typedToken){
-            changePassword(currentUsername.value, newPassword.value, typedToken.value)
+            changePassword(currentUsername.value.trim(), newPassword.value.trim(), typedToken.value.trim())
         }else{
             setWarningCookie("dberror", 0)
-            window.location.href = "/auth/changePassword"
+            window.location.href = "/auth/changePassword/"
         }
     })
 }
@@ -44,6 +46,7 @@ async function changePassword(currentUsername, newPassword, typedToken){
         })
 
         if(!response.ok){
+            submitBtn.classList.remove("waiting")
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -51,6 +54,7 @@ async function changePassword(currentUsername, newPassword, typedToken){
 
         const data = await response.json()
 
+         submitBtn.classList.remove("waiting")
         setWarningCookie(data.message, 1)
         window.location.href = "/auth/login/"
     }catch(err){

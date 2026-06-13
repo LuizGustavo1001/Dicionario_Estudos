@@ -14,36 +14,41 @@ exports.login = async (req, res) => {
         return res.status(400).json({ error: "missingFields" })
     }
 
-    const user = await User.getByName(username)
+    try{
+        // retrieve user data from database
+        const user = await User.getByName(username)
+        if(!user){
+            return res.status(404).json({ error: "userNotFound" })
+        }
 
-    if(! user){
-        return res.status(404).json({ error: "userNotFound" })
+        // validate typed password
+        const valid = await bcrypt.compare(password, user.password)
+        if(!valid){
+            return res.status(401).json({ error: "invalidPassword" })
+        }
+
+        // create JWT + store in cookie
+        const payload = JWT.sign(
+            {
+                idUser: user.idUser,
+                tokenConfirmed: (!user.tokenConfirmed) ? false : true
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "30d" } // 30 days long sessions
+        )
+
+        res.cookie("token", payload, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 1000 * 60 * 60 * 24 * 30
+        })
+
+        return res.status(201).json({ message: "loginSuccess" })
+    }catch(err){
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "serverError" })
     }
-
-    const valid = await bcrypt.compare(password, user.password)
-
-    if(! valid){
-        return res.status(401).json({ error: "invalidPassword" })
-    }
-
-    // create JWT + store in a cookie
-    const payload = JWT.sign(
-        {
-            idUser: user.idUser,
-            tokenConfirmed: (!user.tokenConfirmed) ? false : true
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "30d" } // 30 days long sessions
-    )
-
-    res.cookie("token", payload, { // HTTPOnly cookie
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 30
-    })
-
-    return res.status(201).json({ message: "loginSuccess" })
 }
 
 exports.register = async (req, res) => {
@@ -52,31 +57,29 @@ exports.register = async (req, res) => {
         return res.status(400).json({ error: "missingFields" })
     }
 
-    const user = await User.getByName(username)
-    if(user){ return res.status(409).json({ error: "userExists" }) }
-    
-    const connection = await db.getConnection() // execute db queries only when every query can be executed => using transactions
+    const connection = await db.getConnection()
 
     try{
-        await connection.beginTransaction() 
+        const user = await User.getByName(username)
+        if(user){
+            return res.status(409).json({ error: "userExists" }) 
+        }
 
-        const hashed = await bcrypt.hash(password, 10)
+        await connection.beginTransaction()
 
-        const addUser = await User.create(connection, username, hashed)
-
-        const exampleFolder = await Folder.create(connection, addUser)
-
-        const exampleTerm = await Term.create(connection, exampleFolder)
-
-        const exampleMeaning = await Meaning.create(connection, exampleTerm)
+        const hashed            = await bcrypt.hash(password, 10)
+        const addUser           = await User.create(connection, username, hashed)
+        const exampleFolder     = await Folder.create(connection, addUser)
+        const exampleTerm       = await Term.create(connection, exampleFolder)
+        const exampleMeaning    = await Meaning.create(connection, exampleTerm)
 
         await connection.commit()
 
         return res.status(201).json({ message: "userCreated" })
     }catch(err){
         await connection.rollback()
-        console.log(err)
-        return res.status(400).json({ error: "dberror" })
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "serverError" })
     }finally{
         connection.release()
     }
@@ -136,7 +139,7 @@ exports.auth = async (req, res) => {
         })
     }catch(err){
         await connection.rollback()
-        console.log(err)
+        console.log("Controller error: ", err)
         return res.status(401).json({ error: "invalidToken" })
     }finally{
         connection.release()
@@ -155,7 +158,6 @@ exports.me = async (req, res) => {
 
     try{
         const user = await User.getById(idUser)
-
         if(!user){
             return res.status(404).json({ error: "userNotFound" })
         }
@@ -168,7 +170,7 @@ exports.me = async (req, res) => {
 
         return res.json(user)
     }catch(err){
-        console.log(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: 'internalServerError' })
     }
 }
@@ -186,9 +188,8 @@ exports.verifyToken = async (req, res) => {
     try{
         await connection.beginTransaction()
 
-        const userData = await User.getTokenById(connection, idUser)
-
-        const tokenMatch = await bcrypt.compare(typedToken, userData.token)
+        const userData      = await User.getTokenById(connection, idUser)
+        const tokenMatch    = await bcrypt.compare(typedToken, userData.token)
 
         if(!tokenMatch){
             await connection.rollback()
@@ -218,8 +219,8 @@ exports.verifyToken = async (req, res) => {
         return res.status(201).json({ message: "tokenVerified" }) 
     }catch(err){
         await connection.rollback()
-        console.log(err)
-        return res.status(400).json({ error: "dberror" })
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "dberror" })
     }finally{
         connection.release()
     }
@@ -272,8 +273,8 @@ exports.changePassword = async (req, res) => {
         return res.status(201).json({ message: "passwordChanged" })
     }catch(err){
         await connection.rollback()
-        console.log(err)
-        return res.status(400).json({ error: "dberror" })
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "dberror" })
     }finally{
         connection.release()
     }
@@ -314,7 +315,6 @@ exports.changeUsername = async (req, res) => {
 
         // change username + change userToken status to "not_auth/false"
         await User.updateUsername(newUsername, idUser, connection)
-
         await User.updateTokenStatus(connection, idUser, false)
 
         await connection.commit()
@@ -322,8 +322,8 @@ exports.changeUsername = async (req, res) => {
         return res.status(201).json({ message: "usernameChanged" })
     }catch(err){
         await connection.rollback()
-        console.log(err)
-        return res.status(400).json({ error: "dberror" })
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "dberror" })
     }finally{
         connection.release()
     }
@@ -358,8 +358,9 @@ exports.newToken = async (req, res) => {
         await connection.commit()
         return res.status(201).json({ message: "tokenCreated" })
     }catch(err){
-        console.log(err)
-        return res.status(400).json({ error: "dberror" })
+        await connection.rollback()
+        console.log("Controller error: ", err)
+        return res.status(500).json({ error: "dberror" })
     }
 }
 
@@ -373,6 +374,6 @@ exports.removeAccount = async (req, res) => {
         return res.status(201).json({ message: "accountRemoved" })
     }catch(err){
         console.log(err)
-        return res.status(400).json({ error: "dberror" })
+        return res.status(500).json({ error: "dberror" })
     }
 }

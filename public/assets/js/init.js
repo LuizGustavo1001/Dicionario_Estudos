@@ -29,9 +29,6 @@ function initGlobalEventListeners(){
 
         const clickedInsidePopup = e.target.closest(".popup")
 
-        const expandElement = e.target.closest(".expand-term")
-    
-
         if(openIcon){
             changePopupVisibility(openIcon.dataset.id)
             

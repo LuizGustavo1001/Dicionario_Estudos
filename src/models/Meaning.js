@@ -1,6 +1,6 @@
 const db = require("../database/connection")
 const cloudinary = require("cloudinary").v2
-const fs = require("fs").promises // clear "/uplaods" folder
+const fs = require('fs').promises
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -43,8 +43,39 @@ class Meaning{
         return result.insertId
     }
 
+    // UPDATE
+    static async updateTextContent(idMeaning, value, conn){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            UPDATE meaning_data
+            SET content = ?
+            WHERE idMeaning = ?
+        `, [value, idMeaning])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to update meaning text content")
+        }
+        return true
+    }
+
+    // DELETE
+    static async deleteTextContent(idMeaning, conn){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
+            DELETE FROM meaning_data
+            WHERE idMeaning = ?
+        `, [idMeaning])
+
+        if(result.affectedRows === 0){
+            throw new Error("Error trying to delete meaning")
+        }
+        return true
+    }
+
     // OTHERS
-    static async processAndCreateMeanings(connection, idTerm, meanings, userId) {
+    static async processAndCreateMeanings(connection, idTerm, meanings, userId){
         for(const meaning of meanings){
             if(meaning.type == "image"){ // upload image
                 try{
@@ -64,12 +95,13 @@ class Meaning{
                 }catch(err){
                     console.error("Cloudinary Upload error: ", err)
                     throw new Error("uploadFailed")
-                }finally{ // clear /uploads folder
-                    if(meaning.content){
+                }finally{
+                    if(meaning.content && !meaning.content.startsWith('http') && !meaning.content.startsWith('data:')){
                         try{
+                            await fs.access(meaning.content)
                             await fs.unlink(meaning.content)
-                        }catch(FSerr){
-                            console.log("Error trying to delete temp file: ", FSerr)
+                        }catch(FSerror){
+                            
                         }
                     }
                 }

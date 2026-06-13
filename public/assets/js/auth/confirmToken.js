@@ -28,9 +28,11 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
+        submitBtn.classList.add("waiting")
+
         const typedToken = document.querySelector("#iuserToken")
         if(typedToken){
-            verifyToken(typedToken.value)
+            verifyToken(typedToken.value.trim())
         }else{
             setWarningCookie("dberror", 0)
             window.location.href = "/auth/confirmToken/"
@@ -51,7 +53,8 @@ async function verifyToken(typedToken){
             })
         })
 
-        if(!response.ok){ 
+        if(!response.ok){
+            submitBtn.classList.remove("waiting")
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
             return
@@ -60,6 +63,7 @@ async function verifyToken(typedToken){
         const data = await response.json()
         await getAuth(true) // refresh auth
 
+        submitBtn.classList.remove("waiting")
         setWarningCookie(data.message, 1)
         window.location.href = "/dashboard/"
     }catch(err){

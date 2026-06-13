@@ -15,11 +15,13 @@ if(form && submitBtn){
     form.addEventListener("submit", (e) => {
         e.preventDefault()
 
+        submitBtn.classList.add("waiting")
+
         const usernameInput = document.querySelector("#iuserName")
         const passwordInput = document.querySelector("#ipassword")
     
         if(usernameInput && passwordInput){
-            login(usernameInput.value, passwordInput.value)
+            login(usernameInput.value.trim(), passwordInput.value.trim())
         }else{
             setWarningCookie("dberror", 0)
             window.location.href = "/auth/login/"
@@ -44,13 +46,15 @@ async function login(username, password){
         if(!response.ok){
             const errorData = await response.json()
             fillWarning(errorData.error, 0)
+            submitBtn.classList.remove("waiting")
             return
         }
 
         const data = await response.json()
 
+        submitBtn.classList.remove("waiting")
         setWarningCookie(data.message, 1)
-        window.location.href = "/dashboard"
+        window.location.href = "/dashboard/"
     }catch(err){
         fillWarning("dberror", 0)
         console.error("Server error: ", err)

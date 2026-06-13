@@ -33,15 +33,15 @@ router.post("/me/token", authMiddleware.protect, userController.newToken)
 
 // Terms Management
 router.get("/me/terms", authMiddleware.protect, termController.getFolderTerms)
-router.post("/me/terms/:folderId", authMiddleware.protect, upload.array("images"), termController.createTerm)
+router.post("/me/terms/:folderId", authMiddleware.protect, upload.array("images"), termController.create)
 router.get("/me/terms/:idTerm", authMiddleware.protect, termController.getTermById)
-//router.put("/me/folders/:folderId/terms", authMiddleware.protect, )
-//router.delete("/me/folders/:folderId/terms", authMiddleware.protect, )
+router.patch("/me/terms/:idTerm/name", authMiddleware.protect, termController.updateName)
 
 // Meanings Management
-router.get("/me/meanings", authMiddleware.protect, meaningController.getTermMeanings)
-router.post("/me/terms/:termId/meanings", authMiddleware.protect, meaningController.createMeaning)
-//router.put("/me/terms/:termId/meanings", authMiddleware.protect,)
+router.get("/me/meanings", authMiddleware.protect, meaningController.getByTerm)
+router.post("/me/terms/:idTerm/meanings", authMiddleware.protect, upload.single('image'), meaningController.create)
+router.patch("/me/terms/meanings/text/:idMeaning", authMiddleware.protect, meaningController.updateTextContent)
+router.delete("/me/terms/meanings/text/:idMeaning", authMiddleware.protect, meaningController.deleteTextContent)
 //router.delete("/me/terms/:termId/meanings", authMiddleware.protect,)
 
 module.exports = router

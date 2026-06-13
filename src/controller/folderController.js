@@ -7,7 +7,7 @@ exports.getUserFolders = async (req, res) => {
 
         return res.json(folders)
     }catch(err){
-        console.log(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: "serverError" })
     }
 }
@@ -39,7 +39,7 @@ exports.createFolder = async (req, res) => {
         })
     }catch(err){
         await connection.rollback()
-        console.error(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: "serverError" })
     }finally{
         connection.release()
@@ -62,7 +62,7 @@ exports.editFolder = async (req, res) => {
 
         return res.status(201).json({ message: "folderModified" })
     }catch(err){
-        console.error(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: "serverError" })
     }
 }
@@ -78,7 +78,7 @@ exports.removeFolder = async (req, res) => {
 
         return res.status(201).json({ message: "folderDeleted" }) 
     }catch(err){
-        console.error(err)
+        console.log("Controller error: ", err)
         return res.status(500).json({ error: "serverError" })
     }
 }

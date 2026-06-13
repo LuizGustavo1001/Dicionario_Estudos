@@ -104,7 +104,6 @@ function addInput(type){
     input.classList.add("input")
 
     if(type == "add-text"){
-        //legend.setAttribute("for", `itext#${textInputAmount+ 1}`)
         legend.textContent = `Significado Texto #${textInputAmount+ 1}`
 
         input.type = "text"
