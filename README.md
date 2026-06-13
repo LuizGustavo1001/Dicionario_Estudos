@@ -115,3 +115,6 @@ The API was builded  using:
 	"error": "missingFields"
 }
 ```
+
+## Try Project
+To access the website [click here](https://dicionarioestudos.onrender.com)
