@@ -22,14 +22,14 @@ exports.createFolder = async (req, res) => {
 
     try{
         // verify if folder name already exists
-        const folder = await Folder.getByName(connection, folderName)
+        const folder = await Folder.getByName(folderName, connection)
         if(folder){
             await connection.rollback()
             return res.status(409).json({ error: "folderExists"})
         }
         
         // add folder
-        const newFolderId = await Folder.create(connection, req.userId, folderName, color)
+        const newFolderId = await Folder.create(req.userId, folderName, color, connection)
 
         await connection.commit()
 

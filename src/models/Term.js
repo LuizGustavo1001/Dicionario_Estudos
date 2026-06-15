@@ -1,4 +1,4 @@
-const db = require("../database/connection")
+const db = require("../database/connection.js")
  
 class Term{
     // GET
@@ -16,7 +16,7 @@ class Term{
         return rows
     }
 
-    static async getByName(conn, nameTerm){
+    static async getByName(nameTerm, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -32,7 +32,7 @@ class Term{
         return rows[0]
     }
 
-    static async getById(idTerm, idUser, conn){
+    static async getById(idTerm, idUser, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -50,7 +50,7 @@ class Term{
         return rows
     }
 
-    static async getTermAndMeaningById(idTerm, idUser, conn){
+    static async getTermAndMeaningById(idTerm, idUser, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -69,10 +69,12 @@ class Term{
         return rows
     }
 
-    static async getAllByFolder(idFolders){
+    static async getAllByFolder(idFolders, conn = null){
+        const executor = conn || db
+
         if(!idFolders || idFolders.length === 0) return []
 
-        const [rows] = await db.query(
+        const [rows] = await executor.query(
             `SELECT * FROM term_data WHERE idFolder IN (?)`,
             [idFolders] 
         )
@@ -85,7 +87,7 @@ class Term{
     }
 
     // CREATE
-    static async create(conn, idFolder, term = null){
+    static async create(idFolder, term = null, conn = null){
         const executor = conn || db
         
         if(term == null){
@@ -103,7 +105,7 @@ class Term{
     }
 
     // UPDATE
-    static async updateName(idTerm, value, conn){
+    static async updateName(idTerm, value, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`

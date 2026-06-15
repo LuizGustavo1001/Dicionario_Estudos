@@ -72,6 +72,10 @@ export async function getTermMeanings(){
             credentials: "include"
         })
 
+        if(!response.ok){
+            return null
+        }
+
         const data = await response.json()
         return data
     }catch(err){

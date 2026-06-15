@@ -64,8 +64,11 @@ export function fillWarning(message, type){
         tokenCreated    : "Novo código de verificação criado com sucesso",
         accountRemoved  : "Conta removida com sucesso",
         fieldUpdated    : "Campo alterado com sucesso",
+        meaningNotFound : "Significado não encontrado",
         MeaningCreated  : "Significado adicionado com sucesso",
         missingFields   : "Campos requeridos do formulário não preenchidos ainda. Tente novamente",
+        serverError     : "Erro interno do servidor. Tente novamente ou contate o suporte",
+        meaningDeleted  : "Significado removido com sucesso",
         dberror         : "Erro interno. Tente novamente ou contate o suporte",
         dev             : "Função ainda em desenvolvimento ou manutenção. Tente novamente mais tarde"
     }

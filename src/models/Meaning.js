@@ -10,10 +10,12 @@ cloudinary.config({
 
 class Meaning{
     // GET
-    static async getAllByTerm(idTerms){
+    static async getAllByTerm(idTerms , conn = null){
+        const executor = conn || db
+
         if(!idTerms || idTerms.length === 0) return []
 
-        const [rows] = await db.query(
+        const [rows] = await executor.query(
             `SELECT * FROM meaning_data WHERE idTerm IN (?)`,
             [idTerms] 
         )
@@ -25,8 +27,22 @@ class Meaning{
         return rows
     }
 
+    static async getById(idMeaning, conn = null){
+        const executor = conn || db
+
+        const [rows] = await executor.execute(`
+            SELECT * FROM meaning_data WHERE idMeaning = ?    
+        `, [idMeaning])
+
+        if(rows.length === 0){
+            return false
+        }
+
+        return rows[0]
+    }
+
     // CREATE
-    static async create(conn, idTerm, content = null, type = 'text', publicId = null, secureURL = null){
+    static async create(idTerm, content = null, type = 'text', publicId = null, secureURL = null, conn = null){
         const executor = conn || db
 
         if(content == null){
@@ -44,7 +60,7 @@ class Meaning{
     }
 
     // UPDATE
-    static async updateTextContent(idMeaning, value, conn){
+    static async updateTextContent(idMeaning, value, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -60,7 +76,7 @@ class Meaning{
     }
 
     // DELETE
-    static async deleteTextContent(idMeaning, conn){
+    static async delete(idMeaning, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -75,7 +91,9 @@ class Meaning{
     }
 
     // OTHERS
-    static async processAndCreateMeanings(connection, idTerm, meanings, userId){
+    static async processAndCreateMeanings(idTerm, meanings, userId, conn = null){
+        const executor = conn || db
+        
         for(const meaning of meanings){
             if(meaning.type == "image"){ // upload image
                 try{
@@ -85,12 +103,12 @@ class Meaning{
                     })
 
                     await this.create(
-                        connection,
                         idTerm,
                         uploadResult.secure_url,
                         "image",
                         uploadResult.public_id,
-                        uploadResult.secure_url
+                        uploadResult.secure_url,
+                        conn
                     )
                 }catch(err){
                     console.error("Cloudinary Upload error: ", err)
@@ -106,7 +124,7 @@ class Meaning{
                     }
                 }
             }else{
-                await this.create(connection, idTerm, meaning.content, "text")
+                await this.create(idTerm, meaning.content, "text", null, null, executor)
             }
         }
     }

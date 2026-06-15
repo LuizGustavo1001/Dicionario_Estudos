@@ -33,7 +33,7 @@ class User{
         return rows[0]
     }
 
-    static async getTokenByName(conn, username){
+    static async getTokenByName(username, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -49,7 +49,7 @@ class User{
         return rows[0]
     }
 
-    static async getTokenById(conn, idUser){
+    static async getTokenById(idUser, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -65,7 +65,7 @@ class User{
         return rows[0]
     }
 
-    static async getTokenStatusById(conn, idUser){
+    static async getTokenStatusById(idUser, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -82,7 +82,7 @@ class User{
     }
 
     // CREATE
-    static async create(conn, name, password){
+    static async create(name, password, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -96,7 +96,7 @@ class User{
         return result.insertId
     }
 
-    static async delete(idUser, conn){
+    static async delete(idUser, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -112,7 +112,7 @@ class User{
     }
 
     // UPDATE
-    static async updatePassword(conn, newPassword, newToken, idUser){
+    static async updatePassword(newPassword, newToken, idUser, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -128,7 +128,7 @@ class User{
         return true
     }
 
-    static async updateUsername(newUsername, idUser, conn){
+    static async updateUsername(newUsername, idUser, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -144,7 +144,7 @@ class User{
         return true
     }
 
-    static async updateTokenStatus(conn, idUser, status){
+    static async updateTokenStatus(idUser, status, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`
@@ -160,7 +160,7 @@ class User{
         return true
     }
 
-    static async updateRecoveryToken(conn, idUser, hashedToken){
+    static async updateRecoveryToken(idUser, hashedToken, conn = null){
         const executor = conn || db
 
         const [result] = await executor.execute(`

@@ -68,10 +68,10 @@ exports.register = async (req, res) => {
         await connection.beginTransaction()
 
         const hashed            = await bcrypt.hash(password, 10)
-        const addUser           = await User.create(connection, username, hashed)
-        const exampleFolder     = await Folder.create(connection, addUser)
-        const exampleTerm       = await Term.create(connection, exampleFolder)
-        const exampleMeaning    = await Meaning.create(connection, exampleTerm)
+        const addUser           = await User.create(username, hashed, connection)
+        const exampleFolder     = await Folder.create(addUser, connection)
+        const exampleTerm       = await Term.create(exampleFolder, connection)
+        const exampleMeaning    = await Meaning.create(exampleTerm, connection)
 
         await connection.commit()
 
@@ -99,7 +99,7 @@ exports.auth = async (req, res) => {
 
         await connection.beginTransaction()
 
-        const userRow = await User.getTokenStatusById(connection, idUser)
+        const userRow = await User.getTokenStatusById(idUser, connection)
 
         if(!userRow){
             await connection.rollback()
@@ -122,7 +122,7 @@ exports.auth = async (req, res) => {
         const saltRounds    = 10
         const hashedToken   = await bcrypt.hash(newRawToken, saltRounds)
 
-        await User.updateRecoveryToken(connection, idUser, hashedToken)
+        await User.updateRecoveryToken(idUser, hashedToken, connection)
 
         await connection.commit()
 
@@ -188,7 +188,7 @@ exports.verifyToken = async (req, res) => {
     try{
         await connection.beginTransaction()
 
-        const userData      = await User.getTokenById(connection, idUser)
+        const userData      = await User.getTokenById(idUser, connection)
         const tokenMatch    = await bcrypt.compare(typedToken, userData.token)
 
         if(!tokenMatch){
@@ -196,7 +196,7 @@ exports.verifyToken = async (req, res) => {
             return res.status(400).json({ error: "incorrectToken" })
         }
 
-        await User.updateTokenStatus(connection, idUser, true)
+        await User.updateTokenStatus(idUser, true, connection)
 
         // new JWT -> token confirmed
         await connection.commit()
@@ -246,7 +246,7 @@ exports.changePassword = async (req, res) => {
         }
 
         // verify if typedToken matches with database userToken
-        const userToken = await User.getTokenById(connection, userData.idUser)
+        const userToken = await User.getTokenById(userData.idUser, connection)
         if(!userToken){
             await connection.rollback()
             return res.status(404).json({ error: "tokenNotFound" })
@@ -265,8 +265,8 @@ exports.changePassword = async (req, res) => {
         const saltRounds    = 10
         const hashedToken   = await bcrypt.hash(newRawToken, saltRounds)
 
-        await User.updatePassword(connection, newHashedPassword, hashedToken, userData.idUser)
-        await User.updateTokenStatus(connection, userData.idUser, false)
+        await User.updatePassword(newHashedPassword, hashedToken, userData.idUser, connection)
+        await User.updateTokenStatus(userData.idUser, false, connection)
 
         await connection.commit()
 
@@ -282,7 +282,7 @@ exports.changePassword = async (req, res) => {
 
 exports.changeUsername = async (req, res) => {
     const { currentUsername, newUsername, typedToken } = req.body
-    if(!currentUsername || !newUsername || !typedToken) {
+    if(!currentUsername || !newUsername || !typedToken){
         return res.status(400).json({ error: "missingFields" })
     }
 
@@ -293,7 +293,7 @@ exports.changeUsername = async (req, res) => {
         await connection.beginTransaction()
 
         // verify if typedToken matches with userToken stored in database
-        const userToken = await User.getTokenById(connection, idUser)
+        const userToken = await User.getTokenById(idUser, connection)
         if(!userToken){
             await connection.rollback()
             return res.status(404).json({ error: "tokenNotFound" })
@@ -315,7 +315,7 @@ exports.changeUsername = async (req, res) => {
 
         // change username + change userToken status to "not_auth/false"
         await User.updateUsername(newUsername, idUser, connection)
-        await User.updateTokenStatus(connection, idUser, false)
+        await User.updateTokenStatus(idUser, false, connection)
 
         await connection.commit()
 
@@ -339,7 +339,7 @@ exports.newToken = async (req, res) => {
     try{
         await connection.beginTransaction()
 
-        const userToken = await User.getTokenById(connection, idUser)
+        const userToken = await User.getTokenById(idUser, connection)
         if(!userToken){
             await connection.rollback()
             return res.status(404).json({ error: "tokenNotFound" })
@@ -353,7 +353,7 @@ exports.newToken = async (req, res) => {
         }
 
         // update token status
-        await User.updateTokenStatus(connection, idUser, false)
+        await User.updateTokenStatus(idUser, false, connection)
         
         await connection.commit()
         return res.status(201).json({ message: "tokenCreated" })

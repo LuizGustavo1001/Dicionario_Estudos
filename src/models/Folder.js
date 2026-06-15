@@ -14,9 +14,13 @@ class Folder{
         return rows
     }
 
-    static async getByIdUser(idUser){
-        const [rows] = await db.execute(`
-            SELECT * FROM folder_data WHERE idUser = ?    
+    static async getByIdUser(idUser, conn = null){
+        const executor = conn || db
+        
+        const [rows] = await executor.execute(`
+            SELECT * 
+            FROM folder_data 
+            WHERE idUser = ?    
         `, [idUser])
 
 
@@ -27,7 +31,7 @@ class Folder{
         return rows
     }
 
-    static async getByName(conn, nameFolder){
+    static async getByName(nameFolder, conn = null){
         const executor = conn || db
 
         const [rows] = await executor.execute(`
@@ -43,7 +47,7 @@ class Folder{
     }
 
     // CREATE
-    static async create(conn, idUser, nameFolder = null, color = null){
+    static async create(idUser, nameFolder = null, color = null, conn = null){
         const executor = conn || db
 
         if(nameFolder == null){
@@ -62,8 +66,10 @@ class Folder{
     }
 
     // DELETE
-    static async delete(idFolder){
-        const [result] = await db.execute(`
+    static async delete(idFolder, conn = null){
+        const executor = conn || db
+
+        const [result] = await executor.execute(`
             DELETE FROM folder_data
             WHERE idFolder = ?
         `, [idFolder])
@@ -76,7 +82,9 @@ class Folder{
     }
 
     // MODIFY
-    static async editData(folderId, data){
+    static async editData(folderId, data, conn = null){
+        const executor = conn || db
+
         const entries = Object.entries(data).filter(([_, value]) => value !== undefined)
 
         if(entries.length === 0) throw new Error("No data provided to update")
@@ -87,7 +95,7 @@ class Folder{
 
         values.push(folderId)
 
-        const [result] = await db.execute(`
+        const [result] = await executor.execute(`
             UPDATE folder_data
             SET ${setClause}
             WHERE idFolder = ?    

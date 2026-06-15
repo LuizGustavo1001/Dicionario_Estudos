@@ -42,6 +42,6 @@ router.get("/me/meanings", authMiddleware.protect, meaningController.getByTerm)
 router.post("/me/terms/:idTerm/meanings", authMiddleware.protect, upload.single('image'), meaningController.create)
 router.patch("/me/terms/meanings/text/:idMeaning", authMiddleware.protect, meaningController.updateTextContent)
 router.delete("/me/terms/meanings/text/:idMeaning", authMiddleware.protect, meaningController.deleteTextContent)
-//router.delete("/me/terms/:termId/meanings", authMiddleware.protect,)
+router.delete("/me/terms/meanings/image", authMiddleware.protect, meaningController.deleteImageContent)
 
 module.exports = router

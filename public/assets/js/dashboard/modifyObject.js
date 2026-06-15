@@ -2,43 +2,47 @@ import { setWarningCookie, fillWarning } from "/assets/js/base.js"
 import { renderFolderList } from "/assets/js/dashboard/renderContents.js"
 import { closePopup } from "/assets/js/init.js"
 
-const popupSubmitBtns = document.querySelectorAll(".btn.submit-popup-form, .btn.warning-btn")
-if(popupSubmitBtns){
-    popupSubmitBtns.forEach(btn => {
-        btn.addEventListener("click", async (e) => {
-            e.preventDefault()
-            btn.classList.add("waiting")
-            
-            const routeLabel = btn.dataset.id || null
+document.addEventListener("click", async (e) => {
+    const closestBtn = e.target.closest("[data-id='rmv-image'], .btn.submit-popup-form, .btn.warning-btn")
 
-            if(routeLabel){
-                const popupSection  = document.querySelector(`#${routeLabel}`)
-                const closestForm   = btn.closest("form")
+    if(!closestBtn) return
 
-                if(routeLabel === "add-folder"){
-                    mapAddFolder(btn, popupSection)
-                }else if(routeLabel === "add-term"){
-                    mapAddTerm(btn, popupSection)
-                }else if(routeLabel === "edit-folder"){
-                    mapEditFolder(btn, popupSection)
-                }else if(routeLabel === "rmv-folder"){
-                    mapRemoveFolder(btn)
-                }else if(routeLabel === "add-meaning-text"){
-                    mapAddTextMeaning(btn, popupSection, closestForm)
-                }else if(routeLabel === "add-meaning-image"){
-                    mapAddImageMeaning(btn, popupSection, closestForm)
-                }else{
-                    btn.classList.remove("waiting")
-                    console.error('System error')
-                }
+    e.preventDefault()
+    e.stopPropagation()
 
-                btn.classList.remove("waiting")
+    const routeLabel = closestBtn.dataset.id || null
 
-                if(closestForm){ closestForm.reset() }
-            }
-        })
-    })
-}
+    if(routeLabel){
+        const popupSection  = document.querySelector(`#${routeLabel}`)
+        const closestForm   = closestBtn.closest("form")
+
+        if(routeLabel === "add-folder"){
+            mapAddFolder(closestBtn, popupSection)
+        }else if(routeLabel === "add-term"){
+            mapAddTerm(closestBtn, popupSection)
+        }else if(routeLabel === "edit-folder"){
+            mapEditFolder(closestBtn, popupSection)
+        }else if(routeLabel === "rmv-folder"){
+            mapRemoveFolder(closestBtn)
+        }else if(routeLabel === "add-meaning-text"){
+            mapAddTextMeaning(closestBtn, popupSection, closestForm)
+        }else if(routeLabel === "add-meaning-image"){
+            mapAddImageMeaning(closestBtn, popupSection, closestForm)
+        }else if(routeLabel === "rmv-image"){
+            mapRemoveImage(closestBtn)
+        }else{
+            closestBtn.classList.remove("waiting")
+            console.error('System error')
+        }
+
+        closestBtn.classList.remove("waiting")
+
+        if(closestForm && routeLabel !== "rmv-image"){ 
+            closestForm.reset()
+        }
+    }
+    
+})
 
 async function mapAddFolder(clickedBtn, popup){
     const nameFolder    = popup.querySelector("#ifolder")
@@ -60,7 +64,7 @@ async function mapAddTerm(clickedBtn, popup){
     }
     
     const folderId      = selectedFolder.dataset.id
-    const newTermName   = popup.querySelector("#iNewTerm").value || null
+    const newTermName   = popup.querySelector("#iNewTerm").value.trim() || null
     const meanings      = popup.querySelectorAll(".term-input, .image-input")
 
     const formData = new FormData()
@@ -89,7 +93,7 @@ async function mapAddTerm(clickedBtn, popup){
             }else{
                 meaningsMap.push({
                     type: "text",
-                    content: meaning.value
+                    content: meaning.value.trim()
                 })
             }
         }
@@ -112,7 +116,7 @@ async function mapEditFolder(clickedBtn, popup){
         return
     }
 
-    const newNameFolder    = popup.querySelector("#inameFolder").value || null
+    const newNameFolder    = popup.querySelector("#inameFolder").value.trim() || null
     const newClr           = popup.querySelector("#inewClr").value || null
 
     if(newNameFolder && newClr){
@@ -132,7 +136,17 @@ async function mapRemoveFolder(clickedBtn){
     removeFolder(selectedFolderId)
 }
 
-//async function removeTermMap(){}
+async function mapRemoveImage(clickedBtn){
+    const selectedMeaning = clickedBtn.closest("[data-meaning]")
+
+    if(!selectedMeaning){
+        fillWarning("noSelectedMeaning", 0)
+        return
+    }
+
+    const selectedMeaningId = selectedMeaning.dataset.meaning
+    removeImage(selectedMeaningId)
+}
 
 async function mapAddTextMeaning(clickedBtn, popup, closestForm){
     const newMeaning = popup.querySelector("#inewTextMeaning")
@@ -281,6 +295,36 @@ async function removeFolder(idFolder){
         fillWarning(data.message, 1)
         closePopup()
         renderFolderList(null, idFolder)
+    }catch(err){
+        console.error("Server error", err)
+        return
+    }
+}
+
+async function removeImage(idMeaning){
+    try{
+        const response = await fetch(`/api/me/terms/meanings/image`, {
+            method: "DELETE",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                idMeaning: idMeaning
+            })
+        }) 
+
+        const data = await response.json()
+
+        if(!response.ok){
+            fillWarning(data.error, 0)
+            return
+        }
+        
+        // snackbar + popupEvent + refresh folderList
+        fillWarning(data.message, 1)
+        closePopup()
+        renderFolderList(null, localStorage.getItem("lastFolder") || -1)
     }catch(err){
         console.error("Server error", err)
         return

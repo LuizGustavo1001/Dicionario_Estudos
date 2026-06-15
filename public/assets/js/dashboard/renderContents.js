@@ -129,7 +129,7 @@ export async function mapFolders(filter = null){
 const searchFolder = document.querySelector("#search-folder")
 if(searchFolder){
     searchFolder.addEventListener("input", async (e) => {
-        const searchTerm = e.target.value
+        const searchTerm = e.target.value.trim()
 
         const foldersMap = await mapFolders(searchTerm)
 
@@ -138,23 +138,24 @@ if(searchFolder){
 }
 
 const searchFilter = document.querySelector("#term-search")
-searchFilter.addEventListener("input", async (e) => {
-    const selectedFolder = refreshCurrentFolder()
-    if(!selectedFolder) return
+if(searchFilter){
+    searchFilter.addEventListener("input", async (e) => {
+        const selectedFolder = refreshCurrentFolder()
+        if(!selectedFolder) return
 
-    const value = selectedFolder.idFolder
+        const value = selectedFolder.idFolder
 
-    const searchTerm = e.target.value
+        const searchTerm = e.target.value.trim()
 
-    const termsMap = await mapFolderTerms(value, "search", searchTerm)
-    renderTermsArea(termsMap)
-})
+        const termsMap = await mapFolderTerms(value, "search", searchTerm)
+        renderTermsArea(termsMap)
+    })
+}
 
 export async function mapFolderTerms(idFolder, type = null, filter = null){
     try{
         const foldersList = await getFolderTerms()
         if(!foldersList) return []
-
         let currentFolderTerms = foldersList.filter(t => t.idFolder == idFolder) // terms from selected folder
 
         if(type == "search"){
@@ -166,8 +167,10 @@ export async function mapFolderTerms(idFolder, type = null, filter = null){
         }
 
         if(type == "select"){
-            if(filter){
-                currentFolderTerms = currentFolderTerms.filter(t => t.content[0] == filter)
+            if(filter && typeof filter === "string"){
+                const filterChar = filter.toLowerCase()
+
+                currentFolderTerms = currentFolderTerms.filter(t => t.content && t.content[0]?.toLowerCase() === filterChar)
             }
         }
         
@@ -201,7 +204,10 @@ export async function renderTermsArea(termsMap = null){
         }
 
         const termMeanings = await getTermMeanings()
-        if(!termMeanings) return
+        if(!termMeanings) {
+            fillWarning("serverError", 0)
+            return
+        }
 
         termsMap.forEach(term => {
             const selectedTermMeanings = termMeanings.filter(m => m.idTerm === term.idTerm)
@@ -238,12 +244,33 @@ export async function renderTermsArea(termsMap = null){
 
             selectedTermMeanings.forEach(meaning => {
                 if(meaning.type == "image"){
+                    const imageBox = document.createElement("div")
+                    imageBox.dataset.meaning = meaning.idMeaning
+                    imageBox.style.position = "relative"
+                    imageBox.style.width = "fit-content"
+
+                    const removeImage = document.createElement("span")
+                   
+                    removeImage.classList.add("btn", "warning-btn")
+                    removeImage.dataset.id = "rmv-image"
+                    removeImage.style.position = "absolute"
+                    removeImage.style.top = "0.5em"
+                    removeImage.style.right = "0.5em"
+                    removeImage.style.padding = "0.3em"
+                    removeImage.title = "Clique aqui para remover a imagem selecionada"
+
+                    const removeImageIcon = document.createElement("i")
+                    removeImageIcon.dataset.icon = "removeImage"
+
                     const image = document.createElement("img")
                     image.classList.add("meaning")
                     image.src = meaning.content
                     image.alt = `${term.content} image meaning`
 
-                    contentInner.append(image)
+                    removeImage.append(removeImageIcon)
+                    imageBox.append(removeImage, image)
+
+                    contentInner.append(imageBox)
                 }else{
                     const meaningText = document.createElement("p")
                     meaningText.classList.add("meaning")
@@ -458,12 +485,33 @@ export async function renderExpandedTerm(idTerm){
                 meaning.innerHTML = el.meaningContent
                 contentMeanings.append(meaning)
             }else{
+                const imageBox = document.createElement("div")
+                imageBox.style.position = "relative"
+                imageBox.style.width = "fit-content"
+
+                const removeImage = document.createElement("span")
+                removeImage.dataset.meaning = el.idMeaning
+                removeImage.classList.add("btn", "warning-btn")
+                removeImage.dataset.id = "rmv-image"
+                removeImage.style.position = "absolute"
+                removeImage.style.top = "0.5em"
+                removeImage.style.right = "0.5em"
+                removeImage.style.padding = "0.3em"
+                removeImage.title = "Clique aqui para remover a imagem selecionada"
+
+                const removeImageIcon = document.createElement("i")
+                removeImageIcon.dataset.icon = "removeImage"
+
                 const meaning = document.createElement("img")
-                meaning.dataset.meaning = el.idMeaning
                 meaning.classList.add("meaning")
                 meaning.src = el.meaningContent
                 meaning.alt = `${el.termName} image meaning`
                 contentMeanings.append(meaning)
+
+                removeImage.append(removeImageIcon)
+                imageBox.append(removeImage, meaning)
+
+                contentMeanings.append(imageBox)
             }
             counter++
         })

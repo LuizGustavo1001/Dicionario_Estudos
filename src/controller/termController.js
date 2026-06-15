@@ -6,7 +6,7 @@ const db = require("../database/connection")
 exports.getFolderTerms = async (req, res) => {
     const { folders } = req.query
     if(!folders){
-        return res.status(400).json({ error: "missingFields" });
+        return res.status(400).json({ error: "missingFields" })
     }
 
     try{
@@ -85,7 +85,7 @@ exports.create = async (req, res) => {
         await connection.beginTransaction()
 
         // insert term
-        const newTermId = await Term.create(connection, folderId, termName)
+        const newTermId = await Term.create(folderId, termName, connection)
         if(!newTermId){
             await connection.rollback()
             await deleteTempFiles(files)
@@ -94,7 +94,7 @@ exports.create = async (req, res) => {
 
         // insert meanings
         if(meanings && meanings.length > 0){
-            await Meaning.processAndCreateMeanings(connection, newTermId, updatedMeanings, idUser)
+            await Meaning.processAndCreateMeanings(newTermId, updatedMeanings, idUser, connection)
         }
 
         await connection.commit()
